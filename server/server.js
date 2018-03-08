@@ -1,22 +1,26 @@
-const bodyParser = require('body-parser')
-const express = require('express')
-const fs = require('fs')
-const historyApiFallback = require('connect-history-api-fallback')
-const mongoose = require('mongoose')
-const path = require('path')
-const webpack = require('webpack')
-const webpackDevMiddleware = require('webpack-dev-middleware')
-const webpackHotMiddleware = require('webpack-hot-middleware')
+// default modules
+import express from 'express'
+import path from 'path'
+import bodyParser from 'body-parser'
+import fs from 'fs'
+import historyApiFallback from 'connect-history-api-fallback'
+import mongoose from 'mongoose'
+import webpack from 'webpack'
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
 
-const config = require('../config/config')
-const webpackConfig = require('../webpack.config')
+import webpackDevServer from 'webpack-dev-server'
+import config from '../config/config'
+import webpackConfig from '../webpack.config.babel'
 
 const isDev = process.env.NODE_ENV !== 'production'
-const port  = process.env.PORT || 8080
 
+// sets heroku port if it exists, otherwise local machine
+const port = process.env.PORT || 8080
 
 // Configuration
 // ================================================================================================
+console.log(`mode: ${isDev}`)
 
 // Set up Mongoose
 mongoose.connect(isDev ? config.db_dev : config.db, {
@@ -29,39 +33,82 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // API routes
-require('./routes')(app)
+// to convert this => require('./routes')(app), use:
+import Routes from './routes'
+const routes = Routes(app)
 
 if (isDev) {
   const compiler = webpack(webpackConfig)
 
-  app.use(historyApiFallback({
-    verbose: false
-  }))
+  app.use(
+    historyApiFallback({
+      verbose: false
+    })
+  )
 
-  app.use(webpackDevMiddleware(compiler, {
-    publicPath: webpackConfig.output.publicPath,
-    contentBase: path.resolve(__dirname, '../client/public'),
-    stats: {
-      colors: true,
-      hash: false,
-      timings: true,
-      chunks: false,
-      chunkModules: false,
-      modules: false
-    }
-  }))
+  app.use(
+    webpackDevMiddleware(compiler, {
+      publicPath: webpackConfig.output.publicPath,
+      contentBase: path.resolve(__dirname, '../client/public'),
+      stats: {
+        colors: true,
+        hash: false,
+        timings: true,
+        chunks: false,
+        chunkModules: false,
+        modules: false
+      }
+    })
+  )
 
   app.use(webpackHotMiddleware(compiler))
   app.use(express.static(path.resolve(__dirname, '../dist')))
 } else {
   app.use(express.static(path.resolve(__dirname, '../dist')))
-  app.get('*', function (req, res) {
+  app.get('*', function(req, res) {
     res.sendFile(path.resolve(__dirname, '../dist/index.html'))
     res.end()
   })
 }
 
-app.listen(port, '0.0.0.0', (err) => {
+// if (isDev) {
+//   const compiler = webpack(webpackConfig)
+
+//   new webpackDevServer(webpack(webpackConfig), {
+//     contentBase: path.resolve(__dirname, '../client/public'),
+//     publicPath: webpackConfig.output.publicPath,
+//     hot: true,
+//     historyApiFallback: true
+// port: port,
+// before(app) {
+//   webpackDevMiddleware(compiler, {
+//     // publicPath: webpackConfig.output.publicPath,
+//     // contentBase: path.resolve(__dirname, '../client/public'),
+//     stats: {
+//       colors: true,
+//       hash: false,
+//       timings: true,
+//       chunks: false,
+//       chunkModules: false,
+//       modules: false
+//     }
+//   })
+//   app.use(webpackHotMiddleware(compiler))
+//   app.use(express.static(path.resolve(__dirname, '../dist')))
+// }
+//   }).listen(port, '0.0.0.0', err => {
+//     if (err) {
+//       console.log(err)
+//     }
+
+//     console.info(
+//       '>>> 🌎 Open http://0.0.0.0:%s/ in your browser. Should have webpack.',
+//       port
+//     )
+//   })
+// }
+
+app.listen(port, '0.0.0.0', err => {
   if (err) {
     console.log(err)
   }
@@ -69,4 +116,4 @@ app.listen(port, '0.0.0.0', (err) => {
   console.info('>>> 🌎 Open http://0.0.0.0:%s/ in your browser.', port)
 })
 
-module.exports = app
+export default app

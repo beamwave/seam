@@ -1,0 +1,144 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+{\fonttbl\f0\fnil\fcharset0 OperatorMono-Book;\f1\fnil\fcharset0 OperatorMono-Bold;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid301\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid4}
+{\list\listtemplateid5\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid401\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid5}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}{\listoverride\listid5\listoverridecount0\ls5}}
+\margl1440\margr1440\vieww21080\viewh17540\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs28 \cf0 \
+\
+\
+INITIALIZE
+\fs24 \
+\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls1\ilvl0\cf0 {\listtext	1.	}run 
+\f1\b npm i
+\f0\b0  to install all modules. \'93dependencies\'94 and \'93devDependencies\'94 will install in place\
+{\listtext	2.	}run 
+\f1\b npm run start:dev
+\f0\b0  and go to url localhost:8080 (for some reason npm start doesn\'92t work)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+
+\fs28 DESCRIPTION
+\fs24 \
+\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls2\ilvl0\cf0 {\listtext	\'95	}
+\f1\b babel
+\f0\b0  to convert server-side es6/es7 syntax to es5\
+{\listtext	\'95	}
+\f1\b sass
+\f0\b0  for styling components\
+{\listtext	\'95	}no-reload, instant update HMR when changing sass properties like color\
+{\listtext	\'95	}
+\f1\b mongodb
+\f0\b0  connection\
+{\listtext	\'95	}
+\f1\b react
+\f0\b0  front-end\
+{\listtext	\'95	}
+\f1\b webpack
+\f0\b0  serves react\
+{\listtext	\'95	}link to local 
+\f1\b font-awesome
+\f0\b0  icons\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+
+\fs28 USAGE
+\fs24 \
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls3\ilvl0\cf0 \
+{\listtext	\'95	}all react components must be linked to \'93index.jsx\'94 in the client folder root directory\
+{\listtext	\'95	}index.jsx is inserted into the div with the id of \'93root\'94 in index.html in the public folder\
+{\listtext	\'95	}all sass files must be linked to \'93styles.sass\'94 in the client folder root directory\
+{\listtext	\'95	}image folder is in the public directory in the assets folder\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+
+\fs28 SCRIPTS\
+\
+  "scripts": \{\
+    "start": "webpack -p --progress --profile --colors && babel-node server.js",\
+    "start:dev": "babel-node server/server.js",\
+    "test": "jest --config=jest.config.json --watchAll",\
+	"heroku-postbuild": "npm run build:prod"		// when you deploy to heroku, it runs this command\
+  \}\
+\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls4\ilvl0
+\fs24 \cf0 {\listtext	\'95	}to test application with, instead of npm run start:dev, 
+\f1\b run npm test
+\f0\b0  (or is it 
+\f1\b npm run test
+\f0\b0 ?)\
+{\listtext	\'95	}use 
+\f1\b import fetch from 'isomorphic-fetch'
+\f0\b0  in components that are tested in order to use fetch\
+{\listtext	\'95	}for \'93start-dev\'94, you could also run 
+\f1\b "start:dev": "webpack-dev-server --hot"
+\f0\b0 , and you would have hot module reload (instantaneously) for both sass AND components, but you would lose access to having a running backend server on express with mongodb database. Instant reload only works if you have 
+\f1\b "react-hot-loader": "^4.0.0"
+\f0\b0 , 
+\f1\b import \{ hot \} from 'react-hot-loader'
+\f0\b0  in routes file, and 
+\f1\b export default hot(module)(AppRouter)
+\f0\b0  export. In webpack, you need   entry: \{\
+{\listtext	\'95	}  app: ['webpack-hot-middleware/client?reload=true']\
+{\listtext	\'95	}\},	// in webpack.dev.js\
+{\listtext	\'95	}and \
+{\listtext	\'95	}new webpack.HotModuleReplacementPlugin(), in webpack.common.js\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+
+\fs28 DEPENDENCIES
+\fs24 \
+\
+\
+
+\fs28 DEVDEPENDENCIES
+\fs24 \
+\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls5\ilvl0\cf0 {\listtext	1.	}"babel-eslint": "^8.0.3\'94,\
+{\listtext	2.	}"jest": "^22.3.0",          					               // test files with .test appended to them (i.e. app.test.jsx)\
+{\listtext	3.	}"babel-jest": "^22.2.2",							          // transpile es6/es7 to es5\
+{\listtext	4.	}"react-test-renderer": "^16.2.0"						          // enables you to create snapshots in jest\
+{\listtext	5.	}"isomorphic-fetch": "^2.2.1",						          // enable the use of fetch api\
+{\listtext	6.	}"babel-preset-stage-0": "^6.24.1",\
+{\listtext	7.	}"babel-plugin-transform-react-jsx-source": "^6.22.0\'94,\
+{\listtext	8.	}"css-loader": "^0.28.7",\
+{\listtext	9.	}"eslint": "^4.13.0",\
+{\listtext	10.	}"file-loader": "^1.1.5"\
+{\listtext	11.	}"react-hot-loader": "^4.0.0",\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+
+\fs28 .BABELRC FILE
+\fs24 \
+\{\
+  "presets": [\
+    "env",\
+    "stage-0",								// allows you to use es6 arrow functions to define methods in components\
+    "react"\
+  ],\
+  \'93plugins\'94: ["transform-react-jsx-source"] 		// adds source file and line number to JSX elements.\
+\}\
+\
+\
+\
+}

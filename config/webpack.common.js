@@ -1,19 +1,18 @@
-const webpack = require('webpack')
-const autoprefixer = require('autoprefixer')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+import webpack from 'webpack'
+import autoprefixer from 'autoprefixer'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
+import path from 'path'
 
-const helpers = require('./helpers')
+import helpers from './helpers'
 
 const NODE_ENV = process.env.NODE_ENV
 const isProd = NODE_ENV === 'production'
 
 module.exports = {
   entry: {
-    'app': [
-      helpers.root('client/app/index.jsx')
-    ]
+    app: [helpers.root('client/app/app.jsx')]
   },
 
   output: {
@@ -24,7 +23,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.json', '.css', '.scss', '.html'],
     alias: {
-      'app': 'client/app'
+      app: 'client/app'
     }
   },
 
@@ -40,7 +39,15 @@ module.exports = {
       {
         test: /\.jsx?$/,
         include: helpers.root('client'),
-        loader: 'babel-loader'
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader'
+            // options: {
+            //   "presets": [["env", {"modules": false}], "react"]
+            // }
+          }
+        ]
       },
 
       // SCSS files
@@ -56,16 +63,14 @@ module.exports = {
             {
               loader: 'css-loader',
               options: {
-                'sourceMap': true,
-                'importLoaders': 1
+                sourceMap: true,
+                importLoaders: 1
               }
             },
             {
               loader: 'postcss-loader',
               options: {
-                plugins: () => [
-                  autoprefixer
-                ]
+                plugins: () => [autoprefixer]
               }
             },
             'sass-loader'
@@ -92,12 +97,16 @@ module.exports = {
     }),
 
     new ExtractTextPlugin({
-      filename: 'css/[name].[hash].css',
+      filename: 'css/style.css',
+      // filename: '/css/style.css',
+      // filename: 'css/[name].[hash].css',
       disable: !isProd
     }),
 
-    new CopyWebpackPlugin([{
-      from: helpers.root('client/public')
-    }])
+    new CopyWebpackPlugin([
+      {
+        from: helpers.root('client/public')
+      }
+    ])
   ]
 }
