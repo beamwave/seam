@@ -10,7 +10,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 
 import webpackDevServer from 'webpack-dev-server'
-import config from '../config/config'
+import config from '../config/config.js'
 import webpackConfig from '../webpack.config.babel'
 
 const isDev = process.env.NODE_ENV !== 'production'
