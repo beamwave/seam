@@ -1,17 +1,28 @@
-import React from 'react'
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { startLogin } from '../actions/auth'
 
-const LoginPage = () => (
-  <div>
-    <h2>Stuff</h2>
-    <p>You definitely need to rename this to something better.</p>
-    <ol>
-      <li>Car</li>
-      <li>Spending</li>
-      <li>College</li>
-      <li>Business</li>
-      <li>Loans</li>
-    </ol>
-  </div>
-)
+export class LoginPage extends Component {
+  state = {}
 
-export default LoginPage
+  render = () => {
+    const { startLogin } = this.props
+    return (
+      <form>
+        <label>username</label>
+        <input type="text" />
+        <label>password</label>
+        <input type="password" />
+        <Link to="/">Submit</Link>
+        <button onClick={startLogin}>Login</button>
+      </form>
+    )
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  startLogin: () => dispatch(startLogin())
+})
+
+export default connect(undefined, mapDispatchToProps)(LoginPage)

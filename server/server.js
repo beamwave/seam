@@ -12,6 +12,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpackDevServer from 'webpack-dev-server'
 import config from '../config/config.js'
 import webpackConfig from '../webpack.config.babel'
+import dotenv from 'dotenv'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
@@ -20,12 +21,16 @@ const port = process.env.PORT || 8080
 
 // Configuration
 // ================================================================================================
-console.log(`mode: ${isDev}`)
+// console.log(`mode: ${isDev}`)
+
+// enable environment variables
+dotenv.config()
 
 // Set up Mongoose
-mongoose.connect(isDev ? config.db_dev : config.db, {
-  useMongoClient: true
-})
+mongoose.connect(isDev ? config.db_dev : config.db)
+// mongoose.connect(isDev ? config.db_dev : config.db, {
+//   useMongoClient: true
+// })
 mongoose.Promise = global.Promise
 
 const app = express()
