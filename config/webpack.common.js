@@ -12,7 +12,7 @@ const isProd = NODE_ENV === 'production'
 
 module.exports = {
   entry: {
-    app: [helpers.root('client/app/app.jsx')]
+    app: ['babel-polyfill', helpers.root('client/app/app.jsx')]
   },
 
   output: {

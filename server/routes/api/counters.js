@@ -2,7 +2,6 @@ const Counter = require('../../models/Counter')
 
 module.exports = app => {
   app.get('/api/counters', (req, res, next) => {
-    console.log('hit get counters route')
     Counter.find()
       .exec()
       .then(counter => res.json(counter))
@@ -10,7 +9,6 @@ module.exports = app => {
   })
 
   app.post('/api/counters', function(req, res, next) {
-    console.log('hit create counters route')
     const counter = new Counter()
 
     counter

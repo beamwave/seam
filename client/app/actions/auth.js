@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios'
 import api from '../api'
 
 export const login = user => ({
@@ -7,25 +6,32 @@ export const login = user => ({
   user
 })
 
-export const startLogin = credentials =>
+export const startLogin = credentials => dispatch =>
   api.user.login(credentials).then(user => {
     localStorage.appJWT = user.token
-    console.log('user logged in and local storage set.')
-    return user
+    dispatch(login(user))
   })
 
-export const logout = credentials => ({
+export const logout = () => ({
   type: 'LOGOUT'
 })
 
 // TODO: handle logout
-export const startLogout = () => {
+export const startLogout = () => dispatch => {
   localStorage.removeItem('appJWT')
-  return
+  dispatch(logout())
 }
 
 export const startSignup = data => dispatch =>
   api.user.signup(data).then(user => {
-    // localStorage.appJWT = user.token
+    localStorage.appJWT = user.token
     dispatch(login(user))
   })
+
+export const handleToken = token => async dispatch => {
+  const res = await api.user.payWith(token)
+  console.log('res:')
+  console.log(res)
+
+  // dispatch({ type: FETCH_USER, payload: res.data })
+}

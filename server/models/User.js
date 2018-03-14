@@ -24,6 +24,10 @@ const schema = new Schema(
     verifiedToken: {
       type: String,
       default: ''
+    },
+    stripe: {
+      type: String,
+      defualt: ''
     }
   },
   {
@@ -37,9 +41,9 @@ schema.methods.setPassword = function setPassword(password) {
   this.passwordHash = bcrypt.hashSync(password, 10)
 }
 
-// schema.methods.setVerificationToken = function setVerificationToken() {
-//   this.verifiedToken = this.generateJWT()
-// }
+schema.methods.setVerificationToken = function setVerificationToken() {
+  this.verifiedToken = this.generateJWT()
+}
 
 // schema.methods.generateConfirmationUrl = function generateConfirmationUrl() {
 //   return `${process.env.HOST}/verification/${this.verifiedToken}`
