@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
-// import Modal from 'react-modal'
+import { connect } from 'react-redux'
+import Modal from '../Modal.jsx'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
+import { hideModal } from '../../actions/modal'
 
 export class BuyModal extends Component {
+  onClose = () => this.props.hideModal()
+
   render = () => {
     return (
-      <Modal>
-        <FontAwesomeIcon icon="times" />
+      <Modal onClose={this.onClose}>
+        <FontAwesomeIcon icon="times" onClick={this.onClose} />
         <form>
           <label htmlFor="name">Name</label>
           <input type="text" name="name" />
@@ -48,4 +52,8 @@ export class BuyModal extends Component {
   }
 }
 
-export default BuyModal
+const mapDispatchToProps = dispatch => ({
+  hideModal: () => dispatch(hideModal())
+})
+
+export default connect(null, mapDispatchToProps)(BuyModal)

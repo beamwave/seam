@@ -10,14 +10,14 @@ export class Modal extends Component {
 
   componentDidMount = () => {
     if (this.props.onClose) {
-      window.addEventListener('keydown', listenKeyboard, true)
+      window.addEventListener('keydown', this.listenKeyboard, true)
     }
   }
 
   // prevent memory leaks
   componentWillUnmount = () => {
     if (this.props.onClose) {
-      window.removeEventListener('keydown', listenKeyboard, true)
+      window.removeEventListener('keydown', this.listenKeyboard, true)
     }
   }
 
@@ -31,6 +31,8 @@ export class Modal extends Component {
   render = () => (
     <div>
       <div className="modal-overlay-div" />
+
+      {/* <div className="modal-content-div" onClick={this.onOverlayClick}> */}
       <div className="modal-content-div">
         <div className="modal-dialog-div" onClick={this.onDialogClick}>
           {this.props.children}

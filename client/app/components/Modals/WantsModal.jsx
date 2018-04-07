@@ -1,15 +1,19 @@
 import React, { Component } from 'react'
-// import Modal from 'react-modal'
+import { connect } from 'react-redux'
+import Modal from '../Modal.jsx'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
+import { hideModal } from '../../actions/modal'
 
 export class WantsModal extends Component {
+  onClose = () => this.props.hideModal()
+
   render = () => {
     return (
-      <Modal>
+      <Modal onClose={this.onClose}>
         <div className="wants-modal_header">
           <h2>New Want</h2>
-          <FontAwesomeIcon icon="times" />
+          <FontAwesomeIcon icon="times" onClick={this.onClose} />
           <p>
             <span>27</span> points remaining
           </p>
@@ -44,4 +48,8 @@ export class WantsModal extends Component {
   }
 }
 
-export default WantsModal
+const mapDispatchToProps = dispatch => ({
+  hideModal: () => dispatch(hideModal())
+})
+
+export default connect(null, mapDispatchToProps)(WantsModal)

@@ -11,8 +11,10 @@ export const modalReducer = (state = initialModalState, action = {}) => {
         ...state,
         modalType: action.modalType
       }
+
     case 'HIDE_MODAL':
       return initialModalState
+
     default:
       return state
   }

@@ -6,7 +6,6 @@ import Header from '../components/Header.jsx'
 import Sidebar from 'react-sidebar'
 import SidebarContent from '../components/SidebarContent.jsx'
 import ModalContainer from '../components/ModalContainer.jsx'
-import { toggleSidebar } from '../actions/app'
 
 const mql = window.matchMedia(`(min-width: 800px)`)
 

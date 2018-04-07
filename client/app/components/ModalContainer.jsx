@@ -8,6 +8,7 @@ import TransferModal from './Modals/TransferModal.jsx'
 import DistributeModal from './Modals/DistributeModal.jsx'
 import WipeModal from './Modals/WipeModal.jsx'
 import FlushModal from './Modals/FlushModal.jsx'
+import BuyModal from './Modals/BuyModal.jsx'
 
 // import modal type constants
 import {
@@ -16,7 +17,8 @@ import {
   TRANSFER_MODAL,
   DISTRIBUTE_MODAL,
   WIPE_MODAL,
-  FLUSH_MODAL
+  FLUSH_MODAL,
+  BUY_MODAL
 } from '../constants/modaltypes'
 
 // modal directory based on props.modalType
@@ -26,7 +28,8 @@ const MODAL_COMPONENTS = {
   TRANSFER_MODAL: TransferModal,
   DISTRIBUTE_MODAL: DistributeModal,
   WIPE_MODAL: WipeModal,
-  FLUSH_MODAL: FlushModal
+  FLUSH_MODAL: FlushModal,
+  BUY_MODAL: BuyModal
 }
 
 const ModalContainer = props => {
@@ -36,7 +39,7 @@ const ModalContainer = props => {
   }
 
   // object lookup
-  const SpecficModal = MODAL_COMPONENTS[props.modalType]
+  const SpecificModal = MODAL_COMPONENTS[props.modalType]
 
   return <SpecificModal />
 }
