@@ -7,13 +7,13 @@ module.exports = app => {
   app.post('/api/signup', async (req, res, next) => {
     const { email, password } = req.body.user
 
-    const customer = await stripe.customers.create({ email })
-    console.log('await customer created by stripe:')
-    console.log(customer)
+    // const customer = await stripe.customers.create({ email })
+    // console.log('await customer created by stripe:')
+    // console.log(customer)
 
     const user = new User({ email })
 
-    user.stripe = customer.id
+    // user.stripe = customer.id
 
     user.setPassword(password)
     console.log('password set.')
@@ -23,13 +23,19 @@ module.exports = app => {
 
     user
       .save()
-      .then(user => {
+      .then(async user => {
+        const customer = await stripe.customers.create({ email })
+        console.log('await customer created by stripe:')
+        console.log(customer)
+        user.stripe = customer.id
+
         // sendConfirmationEmail(user)
         res.json({ user: user.toAuthJSON() })
       })
       .catch(err => {
-        console.log(err)
-        res.status(400).json({ errors: parseErrors(err.errors) })
+        console.log('YOUR ERROR: ', err.errors.email.message)
+        // res.status(400).json({ errors: parseErrors(err.errors) })
+        res.status(400).json({ errors: { global: err.errors.email.message } })
       })
   })
 
@@ -37,17 +43,15 @@ module.exports = app => {
     // takes credentials out of object
     const { credentials } = req.body
 
-    console.log('hit login route')
-    console.log(credentials)
-
     User.findOne({ email: credentials.email }).then(async user => {
       if (user && user.isValidPassword(credentials.password)) {
-        if (user.stripe == undefined) {
+        if (user.stripe === undefined) {
           const customer = await stripe.customers.create({
             email: credentials.email
           })
           console.log('customer created:')
           console.log(customer)
+
           user.stripe = customer.id
           console.log('stripe property added:')
           console.log(user.stripe)
@@ -56,6 +60,8 @@ module.exports = app => {
             res.json({ user: user.toAuthJSON() })
           })
         } else {
+          console.log('user: ')
+          console.log(user)
           res.json({ user: user.toAuthJSON() })
         }
       } else {

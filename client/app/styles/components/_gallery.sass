@@ -1,0 +1,44 @@
+
+.container
+  max-width: 50vw
+  margin-left: auto
+
+  #current
+    margin-bottom: 10px
+
+  .images-container
+    display: grid
+    grid-template-columns: repeat(5, 1fr)
+    grid-gap: 10px
+
+    .image-container
+      display: block
+      position: relative
+      height: 70px
+
+      &:hover
+        > .delete-button
+          opacity: 1
+
+      .delete-button
+        position: absolute
+        top: 5px
+        right: 5px
+        width: 9px
+        opacity: 0
+        transition: .2s all
+        color: white
+        z-index: 20
+        &:hover
+          filter: brightness(60%)
+        &:hover + .thumbnail
+          filter: brightness(50%)
+
+      .thumbnail
+        height: 100%
+        width: 100%
+        z-index: 10
+        &:hover
+          filter: brightness(50%)
+
+

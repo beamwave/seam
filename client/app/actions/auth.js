@@ -30,8 +30,29 @@ export const startSignup = data => dispatch =>
 
 export const handleToken = token => async dispatch => {
   const res = await api.user.payWith(token)
-  console.log('res:')
-  console.log(res)
 
   // dispatch({ type: FETCH_USER, payload: res.data })
+}
+
+export const display = images => ({
+  type: 'IMAGES',
+  images
+})
+
+export const startDisplay = email => async dispatch => {
+  api.user.getImages(email).then(images => {
+    dispatch(display(images))
+  })
+}
+
+export const startUpload = file => async dispatch => {
+  api.user.uploadImage(file).then(images => {
+    dispatch(display(images))
+  })
+}
+
+export const startImageDelete = data => async dispatch => {
+  api.user.deleteImage(data).then(images => {
+    dispatch(display(images))
+  })
 }

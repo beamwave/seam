@@ -6,6 +6,8 @@ export const authReducer = (state = {}, action = {}) => {
       return action.user
     case 'LOGOUT':
       return {}
+    case 'IMAGES':
+      return { ...state, images: action.images }
     default:
       return state
   }

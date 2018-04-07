@@ -27,8 +27,15 @@ const schema = new Schema(
     },
     stripe: {
       type: String,
-      defualt: ''
-    }
+      default: ''
+    },
+    images: {
+      // place in wants & needs
+      type: Array,
+      default: []
+    },
+    wants: {},
+    needs: {}
   },
   {
     timestamps: true
@@ -55,19 +62,23 @@ schema.methods.isValidPassword = function isValidPassword(password) {
   return bcrypt.compareSync(password, this.passwordHash)
 }
 
+// YOU HAVE TO STORE DECODABLE STATE PROPERTIES IN HERE!
 schema.methods.generateJWT = function generateJWT() {
   return jwt.sign(
     {
-      email: this.email
+      email: this.email,
+      images: this.images
     },
     process.env.JWT_SECRET
   )
 }
 
+// this function determines what is saved in localstorage
 schema.methods.toAuthJSON = function toAuthJSON() {
   return {
     email: this.email,
     confirmed: this.verified,
+    images: this.images,
     token: this.generateJWT()
   }
 }

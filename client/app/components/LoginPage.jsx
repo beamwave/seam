@@ -82,6 +82,8 @@ export class LoginPage extends Component {
     const { errors } = this.state
     return (
       <div>
+        <Link to="/">Seam</Link>
+        <h2>Login</h2>
         <form onChange={this.onFieldChange} onSubmit={this.onSubmit}>
           <label>email</label>
           <input type="email" name="email" />
@@ -92,6 +94,9 @@ export class LoginPage extends Component {
           <button>Login</button>
         </form>
         {errors.global && <p>{errors.global}</p>}
+        <p>
+          Don't have an account?<Link to="/signup"> Sign Up</Link>
+        </p>
       </div>
     )
   }

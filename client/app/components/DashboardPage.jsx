@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import Sidebar from 'react-sidebar'
 import Header from './Header.jsx'
 
 class DashboardPage extends Component {
@@ -6,92 +8,62 @@ class DashboardPage extends Component {
     counters: []
   }
 
-  componentDidMount = () => {
-    fetch('/api/counters')
-      .then(res => res.json())
-      .then(json => {
-        this.setState({
-          counters: json
-        })
-      })
-  }
-
-  newCounter = () => {
-    fetch('/api/counters', { method: 'POST' })
-      .then(res => res.json())
-      .then(json => {
-        let data = this.state.counters
-        data.push(json)
-
-        this.setState({
-          counters: data
-        })
-      })
-  }
-
-  incrementCounter = index => {
-    const id = this.state.counters[index]._id
-
-    fetch(`/api/counters/${id}/increment`, { method: 'PUT' })
-      .then(res => res.json())
-      .then(json => {
-        this._modifyCounter(index, json)
-      })
-  }
-
-  decrementCounter = index => {
-    const id = this.state.counters[index]._id
-
-    fetch(`/api/counters/${id}/decrement`, { method: 'PUT' })
-      .then(res => res.json())
-      .then(json => {
-        this._modifyCounter(index, json)
-      })
-  }
-
-  deleteCounter = index => {
-    const id = this.state.counters[index]._id
-
-    fetch(`/api/counters/${id}`, { method: 'DELETE' }).then(_ => {
-      this._modifyCounter(index, null)
-    })
-  }
-
-  _modifyCounter = (index, data) => {
-    let prevData = this.state.counters
-
-    if (data) {
-      prevData[index] = data
-    } else {
-      prevData.splice(index, 1)
-    }
-
-    this.setState({
-      counters: prevData
-    })
-  }
-
   render = () => {
     return (
       <div>
-        <h2>Counters:</h2>
+        <h2>Income</h2>
+        <form>
+          <input type="text" placeholder="add money to accounts..." />
+          {this.props.accounts !== undefined ? (
+            <button type="submit" disabled>
+              Split
+            </button>
+          ) : (
+            <button type="submit" disabled>
+              Split
+            </button>
+          )}
+        </form>
+        <h2>Wants</h2>
+        {this.props.accounts !== undefined ? (
+          this.props.accounts.map(account => (
+            <div>
+              <h2>account.name</h2>
+              <p>account.percent</p>
+              <p>account.total</p>
+            </div>
+          ))
+        ) : (
+          <div>
+            <p>(0)</p>
+            <p>You have no accounts</p>
+          </div>
+        )}
+        <button>Create Need</button>
 
-        <ul>
-          {this.state.counters &&
-            this.state.counters.map((counter, i) => (
-              <li key={i}>
-                <span> {counter.count} </span>
-                <button onClick={() => this.incrementCounter(i)}>+</button>
-                <button onClick={() => this.decrementCounter(i)}>-</button>
-                <button onClick={() => this.deleteCounter(i)}>x</button>
-              </li>
-            ))}
-        </ul>
-
-        <button onClick={this.newCounter}>New counter</button>
+        <h2>Needs</h2>
+        {this.props.goals !== undefined ? (
+          this.props.goals.map(goal => (
+            <div>
+              <h2>goal.name</h2>
+              <p>goal.percent</p>
+              <p>goal.total</p>
+            </div>
+          ))
+        ) : (
+          <div>
+            <p>(0)</p>
+            <p>You have no accounts</p>
+          </div>
+        )}
+        <button>Create Want</button>
       </div>
     )
   }
 }
 
-export default DashboardPage
+const mapStateToProps = state => ({
+  sidebarOpen: state.sidebarOpen
+})
+
+export default connect(mapStateToProps)(DashboardPage)
