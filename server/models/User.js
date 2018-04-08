@@ -34,8 +34,14 @@ const schema = new Schema(
       type: Array,
       default: []
     },
-    wants: {},
-    needs: {}
+    wants: {
+      type: Array,
+      default: []
+    },
+    needs: {
+      type: Array,
+      default: []
+    }
   },
   {
     timestamps: true
@@ -67,6 +73,7 @@ schema.methods.generateJWT = function generateJWT() {
   return jwt.sign(
     {
       email: this.email,
+      wants: this.wants,
       images: this.images
     },
     process.env.JWT_SECRET
@@ -78,6 +85,7 @@ schema.methods.toAuthJSON = function toAuthJSON() {
   return {
     email: this.email,
     confirmed: this.verified,
+    wants: this.wants,
     images: this.images,
     token: this.generateJWT()
   }

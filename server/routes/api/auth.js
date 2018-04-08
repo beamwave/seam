@@ -69,4 +69,8 @@ module.exports = app => {
       }
     })
   })
+
+  app.post('/api/get_user', (req, res) => {
+    User.findOne({ email: req.body.email }).then(user => res.json(user))
+  })
 }

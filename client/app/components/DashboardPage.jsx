@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import Sidebar from 'react-sidebar'
 import Header from './Header.jsx'
 
+import { startSetUser } from '../actions/app'
+
 class DashboardPage extends Component {
+  componentDidMount = () => this.props.startSetUser({ email: this.props.email })
+
   state = {
     counters: []
   }
@@ -25,21 +30,23 @@ class DashboardPage extends Component {
           )}
         </form>
         <h2>Wants</h2>
-        {this.props.accounts !== undefined ? (
-          this.props.accounts.map(account => (
-            <div>
-              <h2>account.name</h2>
-              <p>account.percent</p>
-              <p>account.total</p>
-            </div>
-          ))
+        {this.props.wants.length > 0 ? (
+          <div>
+            <p>({this.props.wants.length})</p>
+            {this.props.wants.map((want, i) => (
+              <Link key={i} to="/dashboard">
+                <h2>{want.name}</h2>
+                <p>{want.percent}</p>
+                <p>{want.goal}</p>
+              </Link>
+            ))}
+          </div>
         ) : (
           <div>
             <p>(0)</p>
-            <p>You have no accounts</p>
+            <p>You have not created any wants.</p>
           </div>
         )}
-        <button>Create Need</button>
 
         <h2>Needs</h2>
         {this.props.goals !== undefined ? (
@@ -56,14 +63,15 @@ class DashboardPage extends Component {
             <p>You have no accounts</p>
           </div>
         )}
-        <button>Create Want</button>
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  sidebarOpen: state.sidebarOpen
+  sidebarOpen: state.sidebarOpen,
+  wants: state.wants,
+  email: state.auth.email
 })
 
-export default connect(mapStateToProps)(DashboardPage)
+export default connect(mapStateToProps, { startSetUser })(DashboardPage)

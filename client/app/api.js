@@ -21,6 +21,11 @@ export default {
         }
       }),
 
+    getUser: email => axios.post('/api/get_user', email).then(res => res.data),
+
+    createWant: details =>
+      axios.post('/api/create_want', details).then(res => res.data.wants),
+
     getImages: email =>
       axios.post('/api/get_images', email).then(res => res.data.images),
 

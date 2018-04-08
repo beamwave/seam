@@ -33,7 +33,8 @@ if (localStorage.appJWT) {
   const user = {
     token: localStorage.appJWT,
     email: payload.email,
-    images: payload.images,
+    // wants: payload.wants,
+    // images: payload.images,
     confirmed: payload.confirmed
   }
   store.dispatch(login(user))

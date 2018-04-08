@@ -4,9 +4,25 @@ import Modal from '../Modal.jsx'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 import { hideModal } from '../../actions/modal'
+import { startCreateWant } from '../../actions/wants'
 
 export class WantsModal extends Component {
   onClose = () => this.props.hideModal()
+
+  onCreateWant = e => {
+    const { name, percent, goal, description } = e.target
+    e.preventDefault()
+    // console.log('lets begin, here is the form data: ')
+    console.log('email: ', this.props.email)
+    this.props.createWant({
+      email: this.props.email,
+      name: name.value,
+      percent: percent.value,
+      goal: goal.value,
+      description: description.value
+    })
+    this.props.hideModal()
+  }
 
   render = () => {
     return (
@@ -18,17 +34,17 @@ export class WantsModal extends Component {
             <span>27</span> points remaining
           </p>
         </div>
-        <form>
+        <form onSubmit={this.onCreateWant}>
           <label htmlFor="name">Name</label>
-          <input type="text" name="name" />
+          <input type="text" name="name" required />
 
           <label htmlFor="percent">Percent</label>
           <span>%</span>
-          <input type="number" placeholder="0" />
+          <input type="number" placeholder="0" name="percent" required />
 
           <label htmlFor="goal">Goal</label>
           <span>$</span>
-          <input type="text" placeholder="0" />
+          <input type="text" placeholder="0" name="goal" required />
 
           <label htmlFor="description">Description</label>
           <textarea name="description" />
@@ -48,8 +64,13 @@ export class WantsModal extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  hideModal: () => dispatch(hideModal())
+const mapStateToProps = state => ({
+  email: state.auth.email
 })
 
-export default connect(null, mapDispatchToProps)(WantsModal)
+const mapDispatchToProps = dispatch => ({
+  hideModal: () => dispatch(hideModal()),
+  createWant: details => dispatch(startCreateWant(details))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(WantsModal)
