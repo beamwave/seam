@@ -5,6 +5,7 @@ export const authReducer = (state = {}, action = {}) => {
   switch (action.type) {
     case 'LOGIN':
       return {
+        id: action.user.userId,
         token: action.user.token,
         email: action.user.email,
         confirmed: action.user.confirmed
@@ -13,8 +14,6 @@ export const authReducer = (state = {}, action = {}) => {
     case 'LOGOUT':
       return {}
 
-    case 'IMAGES':
-      return { ...state, images: action.images }
     default:
       return state
   }

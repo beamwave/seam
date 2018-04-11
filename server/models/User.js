@@ -4,6 +4,37 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 import uniqueValidator from 'mongoose-unique-validator'
 
+const Wants = new Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
+  name: {
+    type: String,
+    default: ''
+  },
+  percent: {
+    type: Number,
+    default: 0
+  },
+  goal: {
+    type: Number,
+    default: 0
+  },
+  description: {
+    type: String,
+    default: ''
+  },
+  wallpaper: {
+    type: String,
+    default: ''
+  },
+  images: {
+    type: Array,
+    default: []
+  }
+})
+
 const schema = new Schema(
   {
     email: {
@@ -29,15 +60,7 @@ const schema = new Schema(
       type: String,
       default: ''
     },
-    images: {
-      // place in wants & needs
-      type: Array,
-      default: []
-    },
-    wants: {
-      type: Array,
-      default: []
-    },
+    wants: [Wants],
     needs: {
       type: Array,
       default: []
@@ -73,10 +96,11 @@ schema.methods.generateJWT = function generateJWT() {
   return jwt.sign(
     {
       email: this.email,
-      wants: this.wants,
-      images: this.images
+      wants: this.wants
+      // images: this.images
     },
-    process.env.JWT_SECRET
+    process.env.JWT_SECRET,
+    { expiresIn: 2 } // fix check for expired tokens! (redux middleware)
   )
 }
 
@@ -86,7 +110,6 @@ schema.methods.toAuthJSON = function toAuthJSON() {
     email: this.email,
     confirmed: this.verified,
     wants: this.wants,
-    images: this.images,
     token: this.generateJWT()
   }
 }

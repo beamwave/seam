@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
-import { startUpload, startImageDelete } from '../actions/auth'
+import { startUpload, startImageDelete } from '../actions/wants'
+import { format } from 'util'
 
 export class Gallery extends Component {
   state = {
@@ -10,17 +11,18 @@ export class Gallery extends Component {
   }
 
   fileSelectedHandler = ({ target }) =>
-    this.setState({ selectedFile: target.files[0] })
+    this.setState({ selectedFile: target.files[0] }, this.fileUploadHandler)
 
-  fileUploadHandler = e => {
+  fileUploadHandler = () => {
     const { selectedFile } = this.state
-    const { email } = this.props
+    const { email, id } = this.props
 
-    e.preventDefault()
+    // e.preventDefault()
 
     let formData = new FormData()
     formData.append('file', selectedFile)
     formData.append('email', email)
+    formData.append('id', id)
 
     this.props.startUpload(formData)
   }
@@ -30,21 +32,23 @@ export class Gallery extends Component {
   }
 
   deleteImage = url => {
-    const { email } = this.props
+    // user email
+    // want id
+    const { email, id } = this.props
 
     const data = {
       url,
       email
     }
 
-    console.log(data)
+    // console.log(data)
     this.props.startImageDelete(data)
   }
 
   render() {
     return (
       <div>
-        <form onSubmit={this.fileUploadHandler}>
+        <form>
           <label>Upload an image</label>
           <input
             className="file-upload"
@@ -56,14 +60,14 @@ export class Gallery extends Component {
             data-cloudinary-field="image_id" // ?
           />
           <button
+            type="submit"
             onClick={e => {
               e.preventDefault()
               this.fileInput.click()
             }}
           >
-            Choose
+            Upload
           </button>
-          <button type="submit">Upload</button>
         </form>
         <h2>Dreamboard</h2>
         <div className="container">
@@ -106,9 +110,9 @@ export class Gallery extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, props) => ({
   email: state.auth.email,
-  images: state.auth.images
+  images: state.wants.find(want => want._id === props.url).images
 })
 
 export default connect(mapStateToProps, { startUpload, startImageDelete })(

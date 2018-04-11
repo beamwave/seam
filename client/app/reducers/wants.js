@@ -11,6 +11,9 @@ export const wantsReducer = (state = {}, action = {}) => {
     case 'CREATE_WANT':
       return [action.details, ...state]
 
+    case 'IMAGES':
+      return action.wants
+
     default:
       return state
   }

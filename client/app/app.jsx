@@ -8,11 +8,16 @@ import {
   faSearch,
   faBell,
   faCaretDown,
+  faAngleLeft,
+  faAngleRight,
   faArrowLeft,
   faPlus,
   faDollarSign,
   faShoppingCart,
-  faSlidersH
+  faSlidersH,
+  faSitemap,
+  faEraser,
+  faTrash
 } from '@fortawesome/fontawesome-free-solid'
 
 fontawesome.library.add(
@@ -21,11 +26,16 @@ fontawesome.library.add(
   faSearch,
   faBell,
   faCaretDown,
+  faAngleLeft,
+  faAngleRight,
   faArrowLeft,
   faPlus,
   faDollarSign,
   faShoppingCart,
-  faSlidersH
+  faSlidersH,
+  faSitemap,
+  faEraser,
+  faTrash
 )
 
 import './styles/styles.sass'

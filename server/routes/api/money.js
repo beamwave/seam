@@ -1,6 +1,4 @@
 import cloudinary from 'cloudinary'
-// import path from 'path'
-// import Datauri from 'datauri'
 import multer from 'multer'
 import crypto from 'crypto'
 import mime from 'mime'
@@ -41,32 +39,33 @@ module.exports = app => {
     })
   })
 
-  app.post('/api/upload_image', upload.single('file'), (req, res) => {
-    // console.log('req.file:', req.file)
+  // app.post('/api/upload_image', upload.single('file'), (req, res) => {
+  //   // console.log('req.file:', req.file)
 
-    User.find({ email: req.body.email }).then(userInArr => {
-      let user = userInArr[0]
+  //   User.find({ email: req.body.email }).then(userInArr => {
+  //     let user = userInArr[0]
 
-      cloudinary.v2.uploader.upload(
-        req.file.path,
-        {
-          folder: user.id,
-          tags: [user.id]
-        },
-        (e, result) => {
-          if (e) {
-            console.log('cloudinary error: ', e)
-          } else {
-            user.images.unshift(result.secure_url)
-            user.save().then(user => {
-              console.log('image url saved and updated user sent to client.')
-              res.json(user)
-            })
-          }
-        }
-      )
-    })
-  })
+  //     // folder prop defines cloudinary folder name
+  //     cloudinary.v2.uploader.upload(
+  //       req.file.path,
+  //       {
+  //         folder: user.id,
+  //         tags: [user.id]
+  //       },
+  //       (e, result) => {
+  //         if (e) {
+  //           console.log('cloudinary error: ', e)
+  //         } else {
+  //           user.images.unshift(result.secure_url)
+  //           user.save().then(user => {
+  //             console.log('image url saved and updated user sent to client.')
+  //             res.json(user)
+  //           })
+  //         }
+  //       }
+  //     )
+  //   })
+  // })
 
   app.post('/api/delete_image', (req, res) => {
     User.findOne({ email: req.body.email }).then(user => {
@@ -90,14 +89,6 @@ module.exports = app => {
           }
         )
       })
-      // cloudinary.uploader // image filename ie sample.jpg
-      //   .destroy(req.body.name)
-      //   .then(result => {
-      //     console.log(
-      //       `Image ${result.secure_url} successfully deleted from cloudinary.`
-      //     )
-      //   })
-      //   .catch(e => console.log('Error deleteing image: ', e))
     })
   })
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import Modal from '../Modal.jsx'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
@@ -26,4 +27,8 @@ export class WipeModal extends Component {
   }
 }
 
-export default WipeModal
+const mapDispatchToProps = dispatch => ({
+  hideModal: () => dispatch(hideModal())
+})
+
+export default connect(null, mapDispatchToProps)(WipeModal)

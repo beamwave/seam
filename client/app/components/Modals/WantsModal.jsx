@@ -7,20 +7,39 @@ import { hideModal } from '../../actions/modal'
 import { startCreateWant } from '../../actions/wants'
 
 export class WantsModal extends Component {
+  state = {
+    selectedFile: null
+  }
+
   onClose = () => this.props.hideModal()
 
+  fileSelectedHandler = ({ target }) =>
+    this.setState({ selectedFile: target.files[0] })
+
   onCreateWant = e => {
-    const { name, percent, goal, description } = e.target
     e.preventDefault()
-    // console.log('lets begin, here is the form data: ')
-    console.log('email: ', this.props.email)
-    this.props.createWant({
-      email: this.props.email,
-      name: name.value,
-      percent: percent.value,
-      goal: goal.value,
-      description: description.value
-    })
+
+    const { name, percent, goal, description } = e.target
+    const { email } = this.props
+    const selectedFile = this.state.selectedFile
+
+    let formData = new FormData()
+    formData.append('file', selectedFile)
+    formData.append('email', email)
+    formData.append('name', name.value)
+    formData.append('percent', percent.value)
+    formData.append('goal', goal.value)
+    formData.append('description', description.value)
+
+    this.props.createWant(formData)
+
+    // this.props.createWant({
+    //   email: this.props.email,
+    //   name: name.value,
+    //   percent: percent.value,
+    //   goal: goal.value,
+    //   description: description.value
+    // })
     this.props.hideModal()
   }
 
@@ -49,8 +68,14 @@ export class WantsModal extends Component {
           <label htmlFor="description">Description</label>
           <textarea name="description" />
 
-          <label htmlFor="image">Upload Image</label>
-          <input type="file" placeholder="new image" />
+          <label htmlFor="file">Upload Image</label>
+          <input
+            className="file-upload"
+            name="file"
+            type="file"
+            onChange={this.fileSelectedHandler}
+            data-cloudinary-field="image_id" // ?
+          />
 
           <div className="jpeg-placeholder" />
 

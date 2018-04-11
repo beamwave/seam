@@ -1,6 +1,10 @@
 import React from 'react'
 import api from '../api'
 
+export const editMode = () => ({
+  type: 'EDITMODE'
+})
+
 export const toggleSidebar = () => ({
   type: 'SIDEBAR'
 })
