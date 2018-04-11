@@ -8,17 +8,42 @@ export class WantsPage extends Component {
   //   this.props.startSetUser({ email: this.props.email })
   // }
 
-  render = () => (
-    <div>
-      <h2>{this.props.want.name}</h2>
-      <h3>Goal</h3>
-      <p>{this.props.want.goal}</p>
+  render = () => {
+    const { name, goal, percent, _id, description } = this.props.want
 
-      <h3>Percent</h3>
-      <p>{this.props.want.percent}</p>
-      <Gallery id={this.props.want._id} url={this.props.match.params.id} />
-    </div>
-  )
+    return (
+      <div className="want-page">
+        <header className="want-header">
+          <div className="primary-header">
+            <h2 className="name">{name}</h2>
+          </div>
+          <div className="want-subhead">
+            <div className="description">
+              <h3>Description</h3>
+              {description.length > 0 ? (
+                <p>{description}</p>
+              ) : (
+                <p>You have not given this account a description.</p>
+              )}
+            </div>
+            <div className="percent">
+              <h3>Percent</h3>
+              <p>{percent}</p>
+            </div>
+          </div>
+        </header>
+        <main className="want-body">
+          <div className="goal">
+            <h3>Goal</h3>
+            <p>{goal}</p>
+          </div>
+          <div className="gallery">
+            <Gallery id={_id} url={this.props.match.params.id} />
+          </div>
+        </main>
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = (state, props) => ({

@@ -48,28 +48,34 @@ export class Gallery extends Component {
   render() {
     return (
       <div>
-        <form>
-          <label>Upload an image</label>
-          <input
-            className="file-upload"
-            style={{ display: 'none' }}
-            name="file"
-            type="file"
-            onChange={this.fileSelectedHandler}
-            ref={fileInput => (this.fileInput = fileInput)}
-            data-cloudinary-field="image_id" // ?
-          />
-          <button
-            type="submit"
-            onClick={e => {
-              e.preventDefault()
-              this.fileInput.click()
-            }}
-          >
-            Upload
-          </button>
-        </form>
-        <h2>Dreamboard</h2>
+        <div className="gallery-header">
+          <h3>Dreamboard</h3>
+          <form>
+            <input
+              className="file-upload"
+              style={{ display: 'none' }}
+              name="file"
+              type="file"
+              onChange={this.fileSelectedHandler}
+              ref={fileInput => (this.fileInput = fileInput)}
+              data-cloudinary-field="image_id" // ?
+            />
+            <button
+              type="submit"
+              onClick={e => {
+                e.preventDefault()
+                this.fileInput.click()
+              }}
+            >
+              <FontAwesomeIcon
+                icon="plus"
+                size="xs"
+                onClick={() => this.deleteImage(url)}
+              />
+              &nbsp;Upload Image
+            </button>
+          </form>
+        </div>
         <div className="container">
           <div
             id="current"

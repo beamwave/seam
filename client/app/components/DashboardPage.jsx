@@ -12,27 +12,41 @@ class DashboardPage extends Component {
   componentDidMount = () => this.props.startSetUser({ email: this.props.email })
 
   render = () => {
+    const { editMode } = this.props
+
     return (
-      <div>
-        {this.props.editMode === true && <p>Edit Mode</p>}
-        <h2>Income</h2>
-        <form>
-          <input type="text" placeholder="add money to accounts..." />
+      <div className="dashboard-body">
+        {this.props.editMode === true && (
+          <div className="edit-title">
+            <p className="title">Edit Mode</p>
+            <button className="save">Save Changes</button>
+          </div>
+        )}
+        <form
+          className="divvy-group"
+          style={{ marginTop: editMode === false ? 57 : 0 }}
+        >
+          <label className="title">Income</label>
+          <input
+            className="input"
+            type="text"
+            placeholder="add money to accounts..."
+          />
           {this.props.accounts !== undefined ? (
-            <button type="submit" disabled>
+            <button className="button" type="submit" disabled>
               Split
             </button>
           ) : (
-            <button type="submit" disabled>
+            <button className="button" type="submit" disabled>
               Split
             </button>
           )}
         </form>
-        <h2>Wants</h2>
         {this.props.wants.length > 0 &&
           this.props.editMode === false && (
             <div>
-              <div className="wants-header">
+              <div className="wn-headers">
+                <h2>Wants</h2>
                 <p>({this.props.wants.length})</p>
               </div>
               <div className="wants-group">
@@ -61,11 +75,16 @@ class DashboardPage extends Component {
                     <div className="want-meta">
                       <div className="goal">
                         <h3>goal</h3>
-                        <p>{want.goal}</p>
+                        <p>
+                          <span className="dollar-symbol">$</span>
+                          {want.goal}
+                        </p>
                       </div>
                       <div className="progress">
                         <h3>progress</h3>
-                        <p>0</p>
+                        <p>
+                          <span className="dollar-symbol">$</span>0
+                        </p>
                         {/* <p>{want.progress}</p> */}
                       </div>
                     </div>
@@ -78,7 +97,8 @@ class DashboardPage extends Component {
         {this.props.wants.length > 0 &&
           this.props.editMode === true && (
             <div>
-              <div className="wants-header">
+              <div className="wn-headers">
+                <h2>Wants</h2>
                 <p>({this.props.wants.length})</p>
               </div>
               <div className="wants-group">
@@ -95,21 +115,32 @@ class DashboardPage extends Component {
                         }}
                       />
                       <div className="percent">
-                        <FontAwesomeIcon icon="angle-left" />
+                        <FontAwesomeIcon
+                          icon="angle-left"
+                          className="angleleft"
+                        />
                         <p className="text">{want.percent}</p>
                         <p className="symbol">%</p>
-                        <FontAwesomeIcon icon="angle-right" />
+                        <FontAwesomeIcon
+                          icon="angle-right"
+                          className="angleright"
+                        />
                       </div>
                       <h2 className="name">{want.name}</h2>
                     </div>
                     <div className="want-meta">
                       <div className="goal">
                         <h3>goal</h3>
-                        <p>{want.goal}</p>
+                        <p>
+                          <span className="dollar-symbol">$</span>
+                          {want.goal}
+                        </p>
                       </div>
                       <div className="progress">
                         <h3>progress</h3>
-                        <p>0</p>
+                        <p>
+                          <span className="dollar-symbol">$</span>0
+                        </p>
                         {/* <p>{want.progress}</p> */}
                       </div>
                     </div>
@@ -118,17 +149,23 @@ class DashboardPage extends Component {
               </div>
             </div>
           )}
-        {this.props.wants.length > 0 &&
+        {this.props.wants.length === 0 &&
           this.props.editMode === false && (
             <div>
-              <p>(0)</p>
+              <div className="wn-headers">
+                <h2>Wants</h2>
+                <p>(0)</p>
+              </div>
               <p>You have not created any wants.</p>
             </div>
           )}
-        <h2>Needs</h2>
         {this.props.goals !== undefined ? (
           this.props.goals.map(goal => (
             <div>
+              <div className="wn-headers">
+                <h2>Needs</h2>
+                <p>(0)</p>
+              </div>
               <h2>goal.name</h2>
               <p>goal.percent</p>
               <p>goal.total</p>
@@ -136,7 +173,10 @@ class DashboardPage extends Component {
           ))
         ) : (
           <div>
-            <p>(0)</p>
+            <div className="wn-headers">
+              <h2>Needs</h2>
+              <p>(0)</p>
+            </div>
             <p>You have no accounts</p>
           </div>
         )}
