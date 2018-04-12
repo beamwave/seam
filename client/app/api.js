@@ -33,7 +33,9 @@ export default {
       axios.post('/api/upload_image', file).then(res => res.data),
 
     deleteImage: data =>
-      axios.post('/api/delete_image', data).then(res => res.data.images)
+      axios.post('/api/delete_image', data).then(res => res.data.images),
+
+    nuke: email => axios.post('/api/nuke', email).then(res => res.data)
   }
 }
 

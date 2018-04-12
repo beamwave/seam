@@ -24,3 +24,12 @@ export const startSetUser = email => dispatch => {
     )
   })
 }
+
+export const nuke = () => ({
+  type: 'NUKE'
+})
+
+export const startNuke = email => dispatch =>
+  api.user.nuke(email).then(user => {
+    dispatch(nuke())
+  })

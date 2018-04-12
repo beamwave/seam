@@ -33,57 +33,94 @@ export class WantsModal extends Component {
 
     this.props.createWant(formData)
 
-    // this.props.createWant({
-    //   email: this.props.email,
-    //   name: name.value,
-    //   percent: percent.value,
-    //   goal: goal.value,
-    //   description: description.value
-    // })
     this.props.hideModal()
   }
 
   render = () => {
     return (
       <Modal onClose={this.onClose}>
-        <div className="wants-modal_header">
-          <h2>New Want</h2>
-          <FontAwesomeIcon icon="times" onClick={this.onClose} />
-          <p>
+        <div className="wants-modal">
+          <div className="wants-modal_header">
+            <h2 className="title">New Want</h2>
+            <FontAwesomeIcon
+              icon="times"
+              className="close"
+              onClick={this.onClose}
+            />
+          </div>
+          <p className="remaining-points">
             <span>27</span> points remaining
           </p>
+          <form className="wants-form" onSubmit={this.onCreateWant}>
+            <div className="input-group">
+              <label className="title" htmlFor="name">
+                Name
+              </label>
+              <input type="text" name="name" required />
+            </div>
+
+            <div className="wants-numerical-data">
+              <div className="input-group">
+                <label className="title" htmlFor="percent">
+                  Percent
+                </label>
+                <span className="percent-symbol">%</span>
+                <input
+                  className="percent"
+                  type="number"
+                  placeholder="0"
+                  name="percent"
+                  required
+                />
+              </div>
+
+              <div className="input-group">
+                <label className="title" htmlFor="goal">
+                  Goal
+                </label>
+                <span className="dollar-symbol">$</span>
+                <input
+                  className="goal"
+                  type="text"
+                  placeholder="0"
+                  name="goal"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="input-group">
+              <label className="title" htmlFor="description">
+                Description
+              </label>
+              <textarea className="description" name="description" />
+            </div>
+
+            <div className="input-group">
+              <label className="title" htmlFor="file">
+                Upload Image
+              </label>
+              <input
+                className="upload"
+                name="file"
+                type="file"
+                onChange={this.fileSelectedHandler}
+                data-cloudinary-field="image_id" // ?
+              />
+            </div>
+
+            <div className="jpeg-placeholder" />
+
+            <div className="wants-modal_buttons">
+              <button className="cancel" onClick={this.onClose}>
+                Cancel
+              </button>
+              <button className="submit" type="submit">
+                Create
+              </button>
+            </div>
+          </form>
         </div>
-        <form onSubmit={this.onCreateWant}>
-          <label htmlFor="name">Name</label>
-          <input type="text" name="name" required />
-
-          <label htmlFor="percent">Percent</label>
-          <span>%</span>
-          <input type="number" placeholder="0" name="percent" required />
-
-          <label htmlFor="goal">Goal</label>
-          <span>$</span>
-          <input type="text" placeholder="0" name="goal" required />
-
-          <label htmlFor="description">Description</label>
-          <textarea name="description" />
-
-          <label htmlFor="file">Upload Image</label>
-          <input
-            className="file-upload"
-            name="file"
-            type="file"
-            onChange={this.fileSelectedHandler}
-            data-cloudinary-field="image_id" // ?
-          />
-
-          <div className="jpeg-placeholder" />
-
-          <div className="wants-modal_buttons">
-            <button>Cancel</button>
-            <button type="submit">Create</button>
-          </div>
-        </form>
       </Modal>
     )
   }

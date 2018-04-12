@@ -11,46 +11,80 @@ export class NeedsModal extends Component {
   render = () => {
     return (
       <Modal onClose={this.onClose}>
-        <div className="needs-modal_header">
-          <h2>New Need</h2>
-          <FontAwesomeIcon icon="times" onClick={this.onClose} />
-          <p>
+        <div className="needs-modal">
+          <div className="needs-modal_header">
+            <h2 className="title">New Need</h2>
+            <FontAwesomeIcon
+              icon="times"
+              className="close"
+              onClick={this.onClose}
+            />
+          </div>
+          <p className="remaining-points">
             <span>27</span> points remaining
           </p>
-        </div>
-        <form>
-          <label htmlFor="name">Name</label>
-          <input type="text" name="name" />
+          <form className="needs-form">
+            <div className="input-group">
+              <label className="title" htmlFor="name">
+                Name
+              </label>
+              <input type="text" name="name" />
+            </div>
 
-          <label htmlFor="percent">Percent</label>
-          <span>%</span>
-          <input type="number" placeholder="0" />
+            <div className="needs-numerical-data">
+              <div className="input-group">
+                <label className="title" htmlFor="percent">
+                  Percent
+                </label>
+                <span className="percent-symbol">%</span>
+                <input className="percent" type="number" placeholder="0" />
+              </div>
 
-          <label htmlFor="method">Method</label>
-          <span>$</span>
-          <select type="text" name="method" placeholder="0">
-            <option value="recurrent">Recurrent</option>
-            <option value="growth">Growth</option>
-          </select>
+              <div className="input-group">
+                <label className="title" htmlFor="method">
+                  Method
+                </label>
+                <select
+                  className="method"
+                  type="text"
+                  name="method"
+                  placeholder="0"
+                >
+                  <option value="recurrent">Recurrent</option>
+                  <option value="growth">Growth</option>
+                </select>
+              </div>
+            </div>
 
-          <label htmlFor="date">Date</label>
-          {/* <select name="date">
+            {/* <label htmlFor="date">Date</label> */}
+            {/* <select name="date">
             <option value="" />
           </select> */}
 
-          <label htmlFor="description">Description</label>
-          <textarea name="description" />
+            <div className="input-group">
+              <label className="title" htmlFor="description">
+                Description
+              </label>
+              <textarea className="description" name="description" />
+            </div>
 
-          <label htmlFor="image">Upload Image</label>
-          <input type="file" placeholder="new image" />
+            <div className="input-group">
+              <label className="title" htmlFor="image">
+                Upload Image
+              </label>
+              <input className="upload" type="file" placeholder="new image" />
+            </div>
 
-          <div className="jpeg-placeholder" />
+            <div className="jpeg-placeholder" />
 
-          <div className="needs-modal_buttons">
-            <button>Cancel</button>
-            <button type="submit">Create</button>
-          </div>
-        </form>
+            <div className="needs-modal_buttons">
+              <button className="cancel">Cancel</button>
+              <button className="submit" type="submit">
+                Create
+              </button>
+            </div>
+          </form>
+        </div>
       </Modal>
     )
   }

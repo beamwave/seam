@@ -60,6 +60,16 @@ const schema = new Schema(
       type: String,
       default: ''
     },
+    points: {
+      type: Number,
+      default: 100,
+      min: 0,
+      max: 100
+    },
+    undistributedCash: {
+      type: Number,
+      default: 0
+    },
     wants: [Wants],
     needs: {
       type: Array,

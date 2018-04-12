@@ -5,6 +5,8 @@ import mime from 'mime'
 
 import User from '../../models/User'
 
+// GET READY TO REMOVE THIS, JUST MAKE SURE YOU PORT OVER ROUTES
+
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     crypto.pseudoRandomBytes(16, (e, raw) => {

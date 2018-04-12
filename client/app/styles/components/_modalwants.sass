@@ -1,0 +1,95 @@
+.wants-modal
+  padding: 25px
+
+
+.wants-modal_header
+  display: grid
+  grid-template-columns: 1fr 1fr
+
+  .title
+    justify-self: start
+    margin: 0
+  
+  .close
+    justify-self: end
+    color: $grey
+    &:hover
+      color: $darkgrey
+
+
+.remaining-points
+  margin: 0
+  text-align: center
+
+.wants-form
+  display: grid
+  
+  > .upload
+    justify-self: center
+    margin: 0 0 20px 0
+
+
+.wants-numerical-data
+  display: grid
+  grid-template-columns: repeat(2, 1fr)
+  grid-column-gap: 30px
+
+
+.input-group
+  display: grid
+  position: relative
+  width: 100%
+  margin-top: 10px
+
+  > .title
+    justify-self: start
+    margin-bottom: 5px
+
+  > .percent
+    padding-left: 5px
+
+  > .goal
+    padding-left: 25px
+
+  > .upload
+    justify-self: center
+    margin-bottom: 10px
+
+  > .description
+    height: 100px
+    resize: none
+
+  > .percent-symbol
+    position: absolute
+    top: 33px
+    left: 28px
+
+  > .dollar-symbol
+    position: absolute
+    top: 33px
+    left: 10px
+  
+
+
+.wants-modal_buttons
+  display: grid
+  grid-template-columns: repeat(2, max-content)
+  grid-gap: 10px
+  justify-self: end
+
+  > .cancel
+    border: none
+    background: none
+    color: $grey
+    &:hover
+      transition: 300ms
+      filter: brightness(80%)
+
+  > .submit
+    padding: 5px 15px
+    border: none
+    color: $white
+    background: $want-green-text
+    &:hover
+      transition: 300ms
+      filter: brightness(95%)

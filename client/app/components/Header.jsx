@@ -17,15 +17,29 @@ export class Header extends Component {
     const { isAuthenticated, startLogout } = this.props
 
     return (
-      <header>
-        <FontAwesomeIcon icon="bars" onClick={this.toggleSidebar} />
-        <Link to="/dashboard">Seam</Link>
-        <FontAwesomeIcon icon="search" />
-        <input type="text" placeholder="Search" />
-        <FontAwesomeIcon icon="bell" onClick={this.toggleSidebar} />
+      <header className="nav-header">
+        <FontAwesomeIcon
+          icon="bars"
+          className="bars"
+          onClick={this.toggleSidebar}
+        />
+        <Link to="/dashboard" className="seam-sm">
+          Seam
+        </Link>
+        <div className="search-group">
+          <FontAwesomeIcon icon="search" className="icon" />
+          <input type="text" className="input" placeholder="Search" />
+        </div>
+        <FontAwesomeIcon
+          icon="bell"
+          className="alerts"
+          onClick={this.toggleSidebar}
+        />
         <FontAwesomeIcon icon="caret-down" />
         {isAuthenticated ? (
-          <button onClick={() => startLogout()}>Logout</button>
+          <button className="logout" onClick={() => startLogout()}>
+            Logout
+          </button>
         ) : null}
       </header>
     )
