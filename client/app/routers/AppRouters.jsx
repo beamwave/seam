@@ -49,7 +49,7 @@ if (localStorage.appJWT) {
 }
 
 export class AppRouter extends Component {
-  componentDidMount = () => console.log(configureStore)
+  // componentDidMount = () => console.log(configureStore)
 
   render = () => {
     return (
@@ -63,6 +63,7 @@ export class AppRouter extends Component {
                 <PublicRoute path="/signup" component={SignupPage} />
                 <PrivateRoute path="/dashboard" component={DashboardPage} />
                 <PrivateRoute path="/wants/:id" component={WantsPage} />
+                <PrivateRoute path="/needs/:id" component={NeedsPage} />
                 {/* <PrivateRoute path="/needs" component={NeedsPage} />
                 <PrivateRoute path="/wants" component={WantsPage} />
                 <PrivateRoute path="/payments" component={PaymentPage} /> */}

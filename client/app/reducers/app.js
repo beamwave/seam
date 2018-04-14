@@ -16,6 +16,9 @@ export const appReducer = (state = initialState, action = {}) => {
     case 'CREATE_WANT':
       return { ...state, points: action.points }
 
+    case 'CREATE_NEED':
+      return { ...state, points: action.points }
+
     default:
       return state
   }

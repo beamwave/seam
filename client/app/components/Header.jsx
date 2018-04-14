@@ -103,7 +103,7 @@ export class Header extends Component {
 //   </header>
 // )
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     isAuthenticated: !!state.auth.token,
     wants: state.wants

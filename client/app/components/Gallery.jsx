@@ -76,7 +76,7 @@ export class Gallery extends Component {
             </button>
           </form>
         </div>
-        <div className="container">
+        <div className="gallery-container">
           <div
             id="current"
             ref={current => (this.primaryImage = current)}

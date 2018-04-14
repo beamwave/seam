@@ -7,6 +7,8 @@ import Sidebar from 'react-sidebar'
 import SidebarContent from '../components/SidebarContent.jsx'
 import ModalContainer from '../components/ModalContainer.jsx'
 
+import { startSetUser } from '../actions/app'
+
 const mql = window.matchMedia(`(min-width: 800px)`)
 
 class PrivateRoute extends Component {
@@ -17,6 +19,7 @@ class PrivateRoute extends Component {
   }
 
   componentWillMount = () => {
+    this.props.startSetUser({ email: this.props.email })
     mql.addListener(this.mediaQueryChanged)
     this.setState({ mql: mql, sidebarDocked: mql.matches })
   }
@@ -93,7 +96,8 @@ class PrivateRoute extends Component {
 // }
 
 const mapStateToProps = state => ({
-  isAuthenticated: !!state.auth.token
+  isAuthenticated: !!state.auth.token,
+  email: state.auth.email
 })
 
-export default connect(mapStateToProps)(PrivateRoute)
+export default connect(mapStateToProps, { startSetUser })(PrivateRoute)

@@ -4,15 +4,44 @@ import Modal from '../Modal.jsx'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 import { hideModal } from '../../actions/modal'
+import { startCreateNeed } from '../../actions/needs'
 
 export class NeedsModal extends Component {
+  state = {
+    selectedFile: null
+  }
+
   onClose = () => this.props.hideModal()
+
+  fileSelectedHandler = ({ target }) =>
+    this.setState({ selectedFile: target.files[0] })
+
+  onCreateNeed = e => {
+    e.preventDefault()
+
+    const { name, percent, method, payment, description } = e.target
+    const { email } = this.props
+    const selectedFile = this.state.selectedFile
+
+    let formData = new FormData()
+    formData.append('file', selectedFile)
+    formData.append('email', email)
+    formData.append('name', name.value)
+    formData.append('percent', percent.value)
+    formData.append('method', method.value)
+    formData.append('payment', payment.value)
+    formData.append('description', description.value)
+
+    this.props.createNeed(formData)
+
+    this.props.hideModal()
+  }
 
   render = () => {
     return (
       <Modal onClose={this.onClose}>
         <div className="needs-modal">
-          <div className="needs-modal_header">
+          <div className="modal_header">
             <h2 className="title">New Need</h2>
             <FontAwesomeIcon
               icon="times"
@@ -23,7 +52,7 @@ export class NeedsModal extends Component {
           <p className="remaining-points">
             <span>{this.props.points}</span> points remaining
           </p>
-          <form className="needs-form">
+          <form className="needs-form" onSubmit={this.onCreateNeed}>
             <div className="input-group">
               <label className="title" htmlFor="name">
                 Name
@@ -37,7 +66,12 @@ export class NeedsModal extends Component {
                   Percent
                 </label>
                 <span className="percent-symbol">%</span>
-                <input className="percent" type="number" placeholder="0" />
+                <input
+                  className="percent"
+                  name="percent"
+                  type="number"
+                  placeholder="0"
+                />
               </div>
 
               <div className="input-group">
@@ -62,6 +96,14 @@ export class NeedsModal extends Component {
           </select> */}
 
             <div className="input-group">
+              <label className="title" htmlFor="payment">
+                Payment
+              </label>
+              <span className="dollar-symbol">$</span>
+              <input className="payment" type="text" name="payment" />
+            </div>
+
+            <div className="input-group">
               <label className="title" htmlFor="description">
                 Description
               </label>
@@ -72,13 +114,20 @@ export class NeedsModal extends Component {
               <label className="title" htmlFor="image">
                 Upload Image
               </label>
-              <input className="upload" type="file" placeholder="new image" />
+              <input
+                className="upload"
+                type="file"
+                placeholder="new image"
+                onChange={this.fileSelectedHandler}
+              />
             </div>
 
             <div className="jpeg-placeholder" />
 
             <div className="needs-modal_buttons">
-              <button className="cancel">Cancel</button>
+              <button className="cancel" onClick={this.onClose}>
+                Cancel
+              </button>
               <button className="submit" type="submit">
                 Create
               </button>
@@ -91,11 +140,13 @@ export class NeedsModal extends Component {
 }
 
 const mapStateToProps = state => ({
+  email: state.auth.email,
   points: state.app.points
 })
 
 const mapDispatchToProps = dispatch => ({
-  hideModal: () => dispatch(hideModal())
+  hideModal: () => dispatch(hideModal()),
+  createNeed: details => dispatch(startCreateNeed(details))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NeedsModal)

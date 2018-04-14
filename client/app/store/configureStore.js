@@ -6,6 +6,7 @@ import { appReducer } from '../reducers/app'
 import { authReducer } from '../reducers/auth'
 import { modalReducer } from '../reducers/modal'
 import { wantsReducer } from '../reducers/wants'
+import { needsReducer } from '../reducers/needs'
 
 import storage from 'redux-persist/lib/storage'
 
@@ -24,7 +25,8 @@ export const configureStore = () => {
         app: appReducer,
         auth: authReducer,
         modal: modalReducer,
-        wants: wantsReducer
+        wants: wantsReducer,
+        needs: needsReducer
       })
     ),
     composeEnhancers(applyMiddleware(thunk))

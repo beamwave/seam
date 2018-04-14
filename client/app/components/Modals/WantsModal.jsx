@@ -40,7 +40,7 @@ export class WantsModal extends Component {
     return (
       <Modal onClose={this.onClose}>
         <div className="wants-modal">
-          <div className="wants-modal_header">
+          <div className="modal_header">
             <h2 className="title">New Want</h2>
             <FontAwesomeIcon
               icon="times"

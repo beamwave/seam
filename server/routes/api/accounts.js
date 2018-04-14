@@ -71,6 +71,56 @@ module.exports = app => {
     })
   })
 
+  app.post('/api/create_need', upload.single('file'), (req, res) => {
+    User.findOne({ email: req.body.email }).then(async user => {
+      const name = req.body.name
+      const percent = req.body.percent
+      const method = req.body.method
+      const payment = req.body.payment
+      const description = req.body.description ? req.body.description : ''
+
+      console.log('reached need route')
+
+      if (user.points - percent >= 0) {
+        cloudinary.v2.uploader.upload(
+          req.file.path,
+          {
+            folder: user.id, // folder name on cloudinary
+            tags: [user.id] // tags for images
+          },
+          (e, result) => {
+            if (e) {
+              console.log('cloudinary error: ', e) // HANDLE BETTER FOR PROD
+            } else {
+              // add new want to array
+              user.needs.unshift({
+                _id: mongoose.Types.ObjectId(),
+                name,
+                percent,
+                method,
+                payment,
+                description,
+                images: [result.secure_url],
+                wallpaper: result.secure_url
+              })
+
+              console.log('uploaded to cloudinary')
+
+              // subtract points
+              user.points = user.points - percent
+
+              user.save().then(user => {
+                res.json(user)
+              })
+            }
+          }
+        )
+      } else {
+        console.log('sorry, you do not have enough points.')
+      }
+    })
+  })
+
   app.post('/api/upload_image', upload.single('file'), (req, res) => {
     // console.log('req.file:', req.file)
 

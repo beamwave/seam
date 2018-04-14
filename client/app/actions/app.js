@@ -19,7 +19,8 @@ export const startSetUser = email => dispatch => {
     // set what information is put in redux on reloads
     dispatch(
       setUser({
-        wants: user.wants
+        wants: user.wants,
+        needs: user.needs
       })
     )
   })

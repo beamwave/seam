@@ -39,6 +39,41 @@ const Wants = new Schema({
   }
 })
 
+const Needs = new Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
+  name: {
+    type: String,
+    default: ''
+  },
+  percent: {
+    type: Number,
+    default: 0
+  },
+  payment: {
+    type: Number,
+    default: 0
+  },
+  method: {
+    type: String,
+    default: 'growth' // confirm this makes sense to do
+  },
+  description: {
+    type: String,
+    default: ''
+  },
+  wallpaper: {
+    type: String,
+    default: ''
+  },
+  images: {
+    type: Array,
+    default: []
+  }
+})
+
 const schema = new Schema(
   {
     email: {
@@ -75,10 +110,7 @@ const schema = new Schema(
       default: 0
     },
     wants: [Wants],
-    needs: {
-      type: Array,
-      default: []
-    }
+    needs: [Needs]
   },
   {
     timestamps: true
