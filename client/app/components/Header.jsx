@@ -1,14 +1,25 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from 'reactstrap'
 import { startLogout } from '../actions/auth'
 import { toggleSidebar } from '../actions/app'
-// import Sidebar from 'react-sidebar'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
-// import Sidebar from './Sidebar.jsx'
 
 export class Header extends Component {
+  state = {
+    dropdownOpen: false
+  }
+
+  toggleDropdown = () =>
+    this.setState({ dropdownOpen: !this.state.dropdownOpen })
+
   toggleSidebar = () => {
     this.props.onSetSidebarOpen()
   }
@@ -30,17 +41,47 @@ export class Header extends Component {
           <FontAwesomeIcon icon="search" className="icon" />
           <input type="text" className="input" placeholder="Search" />
         </div>
+
         <FontAwesomeIcon
           icon="bell"
           className="alerts"
           onClick={this.toggleSidebar}
         />
-        <FontAwesomeIcon icon="caret-down" />
-        {isAuthenticated ? (
-          <button className="logout" onClick={() => startLogout()}>
-            Logout
-          </button>
-        ) : null}
+
+        <Dropdown
+          isOpen={this.state.dropdownOpen}
+          toggle={this.toggleDropdown}
+          className="dropdown-root"
+        >
+          <DropdownToggle className="dropdown-toggle">
+            <div
+              className="image"
+              style={{
+                background: `url(${
+                  this.props.wants[0].wallpaper
+                }) center / cover no-repeat`
+              }}
+            />
+            <FontAwesomeIcon icon="angle-down" className="icon" />
+          </DropdownToggle>
+          <DropdownMenu
+            right
+            className="dropdown-menu"
+            style={{
+              display: this.state.dropdownOpen === false ? 'none' : 'block'
+            }}
+          >
+            <DropdownItem className="dropdown-item">Profile</DropdownItem>
+            <DropdownItem className="dropdown-item">Settings</DropdownItem>
+            <DropdownItem className="dropdown-item">
+              {isAuthenticated ? (
+                <p className="logout" onClick={() => startLogout()}>
+                  Logout
+                </p>
+              ) : null}
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </header>
     )
   }
@@ -64,7 +105,8 @@ export class Header extends Component {
 
 function mapStateToProps(state) {
   return {
-    isAuthenticated: !!state.auth.token
+    isAuthenticated: !!state.auth.token,
+    wants: state.wants
   }
 }
 

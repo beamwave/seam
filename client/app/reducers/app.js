@@ -1,6 +1,6 @@
 import React from 'react'
 
-const initialState = { sidebarOpen: true, editMode: false }
+const initialState = { sidebarOpen: true, editMode: false, points: 100 }
 
 export const appReducer = (state = initialState, action = {}) => {
   switch (action.type) {
@@ -9,6 +9,12 @@ export const appReducer = (state = initialState, action = {}) => {
 
     case 'EDITMODE':
       return { ...state, editMode: !state.editMode }
+
+    case 'NUKE':
+      return { ...state, points: 100 }
+
+    case 'CREATE_WANT':
+      return { ...state, points: action.points }
 
     default:
       return state

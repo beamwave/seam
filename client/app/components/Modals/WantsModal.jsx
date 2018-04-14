@@ -49,7 +49,7 @@ export class WantsModal extends Component {
             />
           </div>
           <p className="remaining-points">
-            <span>27</span> points remaining
+            <span>{this.props.points}</span> points remaining
           </p>
           <form className="wants-form" onSubmit={this.onCreateWant}>
             <div className="input-group">
@@ -127,7 +127,8 @@ export class WantsModal extends Component {
 }
 
 const mapStateToProps = state => ({
-  email: state.auth.email
+  email: state.auth.email,
+  points: state.app.points
 })
 
 const mapDispatchToProps = dispatch => ({

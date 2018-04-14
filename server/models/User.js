@@ -21,6 +21,10 @@ const Wants = new Schema({
     type: Number,
     default: 0
   },
+  progress: {
+    type: Number,
+    default: 0
+  },
   description: {
     type: String,
     default: ''

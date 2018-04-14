@@ -42,7 +42,15 @@ export class SidebarContent extends Component {
   setAdjust = () => this.setState({ buttonSet: 'adjust', activeSet: 1 })
   setDelete = () => this.setState({ buttonSet: 'delete', activeSet: 2 })
 
+  getPoints = () => {
+    const { wants } = this.props
+    return wants.length > 0
+      ? wants.map(want => want.progress).reduce((a, b) => a + b)
+      : 0
+  }
+
   render = () => {
+    const { points } = this.props
     return (
       <div className="sidebar">
         <Link to="/dashboard" className="seam">
@@ -50,11 +58,16 @@ export class SidebarContent extends Component {
         </Link>
         <div className="sidebar-group">
           <h3 className="title">Remaining Points</h3>
-          <p className="details">0</p>
+          <p
+            className="details"
+            style={{ color: points < 100 && points > 0 ? '#e87c7c' : 'white' }}
+          >
+            {points}
+          </p>
         </div>
         <div className="sidebar-group">
           <h3 className="title">Total Cash</h3>
-          <p className="details">$435,212</p>
+          <p className="details">${this.getPoints()}</p>
         </div>
         <div className="sidebar-group">
           <h3 className="title">Undistributed Cash</h3>
@@ -135,9 +148,14 @@ export class SidebarContent extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  points: state.app.points,
+  wants: state.wants
+})
+
 const mapDispatchToProps = dispatch => ({
   loadModal: modalType => dispatch(loadModal(modalType)),
   editMode: () => dispatch(editMode())
 })
 
-export default connect(null, mapDispatchToProps)(SidebarContent)
+export default connect(mapStateToProps, mapDispatchToProps)(SidebarContent)

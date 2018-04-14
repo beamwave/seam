@@ -1,15 +1,15 @@
 import React from 'react'
 import api from '../api'
 
-export const createWant = details => ({
+export const createWant = user => ({
   type: 'CREATE_WANT',
-  details
+  details: user.wants[0],
+  points: user.points
 })
 
 export const startCreateWant = data => dispatch =>
-  api.user.createWant(data).then(wants => {
-    const lastestWant = wants[0]
-    dispatch(createWant(lastestWant))
+  api.user.createWant(data).then(user => {
+    dispatch(createWant(user))
   })
 
 export const display = wants => ({

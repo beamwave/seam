@@ -54,8 +54,8 @@ class PrivateRoute extends Component {
               >
                 <Header onSetSidebarOpen={this.onSetSidebarOpen} />
                 <Component {...props} />
+                <ModalContainer />
               </Sidebar>
-              <ModalContainer />
             </div>
           ) : (
             <Redirect to="/login" />

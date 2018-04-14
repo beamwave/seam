@@ -1,6 +1,6 @@
 
 .dashboard-body
-  margin: 0 25px 0
+  margin: 0 25px 0 75px
 
 .edit-title
   display: grid
@@ -41,10 +41,11 @@
   width: max-content
   box-sizing: border-box
   border: 1px solid transparent
-  // filter: drop-shadow(0 10px 4px rgba(0, 0, 0, .3))
+  filter: drop-shadow(0 5px 3px rgba(0, 0, 0, .2))
+  transition: 200ms all
 
   &:hover
-    border: 1px solid $want-green-bg
+    filter: brightness(90%) drop-shadow(0 5px 3px rgba(0, 0, 0, .3))
 
 .want-image
   display: block

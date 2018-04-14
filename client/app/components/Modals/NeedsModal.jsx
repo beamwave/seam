@@ -21,7 +21,7 @@ export class NeedsModal extends Component {
             />
           </div>
           <p className="remaining-points">
-            <span>27</span> points remaining
+            <span>{this.props.points}</span> points remaining
           </p>
           <form className="needs-form">
             <div className="input-group">
@@ -90,8 +90,12 @@ export class NeedsModal extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  points: state.app.points
+})
+
 const mapDispatchToProps = dispatch => ({
   hideModal: () => dispatch(hideModal())
 })
 
-export default connect(null, mapDispatchToProps)(NeedsModal)
+export default connect(mapStateToProps, mapDispatchToProps)(NeedsModal)

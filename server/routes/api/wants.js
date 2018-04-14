@@ -34,32 +34,40 @@ module.exports = app => {
       const goal = req.body.goal
       const description = req.body.description ? req.body.description : ''
 
-      cloudinary.v2.uploader.upload(
-        req.file.path,
-        {
-          folder: user.id, // folder name on cloudinary
-          tags: [user.id] // tags for images
-        },
-        (e, result) => {
-          if (e) {
-            console.log('cloudinary error: ', e) // HANDLE BETTER FOR PROD
-          } else {
-            // user.images.unshift(result.secure_url)
-            user.wants.unshift({
-              _id: mongoose.Types.ObjectId(),
-              name,
-              percent,
-              goal,
-              description,
-              images: [result.secure_url],
-              wallpaper: result.secure_url
-            })
-            user.save().then(user => {
-              res.json(user)
-            })
+      if (user.points - percent >= 0) {
+        cloudinary.v2.uploader.upload(
+          req.file.path,
+          {
+            folder: user.id, // folder name on cloudinary
+            tags: [user.id] // tags for images
+          },
+          (e, result) => {
+            if (e) {
+              console.log('cloudinary error: ', e) // HANDLE BETTER FOR PROD
+            } else {
+              // add new want to array
+              user.wants.unshift({
+                _id: mongoose.Types.ObjectId(),
+                name,
+                percent,
+                goal,
+                description,
+                images: [result.secure_url],
+                wallpaper: result.secure_url
+              })
+
+              // subtract points
+              user.points = user.points - percent
+
+              user.save().then(user => {
+                res.json(user)
+              })
+            }
           }
-        }
-      )
+        )
+      } else {
+        console.log('sorry, you do not have enough points.')
+      }
     })
   })
 

@@ -12,6 +12,8 @@ module.exports = app => {
     User.findOne({ email: req.body.email }).then(user => {
       user.wants = []
 
+      user.points = 100
+
       // delete all images from users cloudinary folder
       cloudinary.v2.api.delete_resources_by_prefix(user.id, result => {
         user.save().then(user => res.json(user))
