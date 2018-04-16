@@ -25,7 +25,7 @@ export class Header extends Component {
   }
 
   render = () => {
-    const { isAuthenticated, startLogout } = this.props
+    const { isAuthenticated, startLogout, photo } = this.props
 
     return (
       <header className="nav-header">
@@ -57,9 +57,7 @@ export class Header extends Component {
             <div
               className="image"
               style={{
-                background: `url(${
-                  this.props.wants[0].wallpaper
-                }) center / cover no-repeat`
+                background: `url(${photo}) center / cover no-repeat`
               }}
             />
             <FontAwesomeIcon icon="angle-down" className="icon" />
@@ -71,8 +69,9 @@ export class Header extends Component {
               display: this.state.dropdownOpen === false ? 'none' : 'block'
             }}
           >
-            <DropdownItem className="dropdown-item">Profile</DropdownItem>
-            <DropdownItem className="dropdown-item">Settings</DropdownItem>
+            <DropdownItem className="dropdown-item">
+              <Link to="/settings">Settings</Link>
+            </DropdownItem>
             <DropdownItem className="dropdown-item">
               {isAuthenticated ? (
                 <p className="logout" onClick={() => startLogout()}>
@@ -106,6 +105,7 @@ export class Header extends Component {
 const mapStateToProps = state => {
   return {
     isAuthenticated: !!state.auth.token,
+    photo: state.auth.photo,
     wants: state.wants
   }
 }

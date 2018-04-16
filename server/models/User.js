@@ -76,6 +76,10 @@ const Needs = new Schema({
 
 const schema = new Schema(
   {
+    username: {
+      type: String,
+      required: true
+    },
     email: {
       type: String,
       lowercase: true,
@@ -94,6 +98,11 @@ const schema = new Schema(
     verifiedToken: {
       type: String,
       default: ''
+    },
+    photo: {
+      type: String,
+      default:
+        'http://res.cloudinary.com/project-phantom/image/upload/v1523817544/global/blank-profile-picture.png'
     },
     stripe: {
       type: String,
@@ -145,17 +154,18 @@ schema.methods.generateJWT = function generateJWT() {
       wants: this.wants
       // images: this.images
     },
-    process.env.JWT_SECRET,
-    { expiresIn: 2 } // fix check for expired tokens! (redux middleware)
+    process.env.JWT_SECRET
+    // { expiresIn: 2 } // fix check for expired tokens! (redux middleware)
   )
 }
 
 // this function determines what is saved in localstorage
 schema.methods.toAuthJSON = function toAuthJSON() {
   return {
+    username: this.username,
     email: this.email,
+    photo: this.photo,
     confirmed: this.verified,
-    wants: this.wants,
     token: this.generateJWT()
   }
 }

@@ -79,6 +79,10 @@ module.exports = app => {
 
       user.save().then(user => {
         // public id = folder/image without ext
+
+        // CORRECT THIS FOR SINGLE IMAGE DELETIONS IN WANTS/NEEDS FOLDERS
+        // console.log('delete by string: ', req.body.url.substr(68, 45))
+        // console.log(`${user._id}`)
         cloudinary.v2.uploader.destroy(
           req.body.url.substr(68, 45),
           (e, result) => {

@@ -57,6 +57,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.0.0",
+    "react-image-gallery": "^0.8.7",
     "react-modal": "^3.3.2",
     "react-moment": "^0.7.0",
     "react-redux": "^5.0.7",

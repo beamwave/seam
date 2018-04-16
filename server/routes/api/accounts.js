@@ -38,7 +38,7 @@ module.exports = app => {
         cloudinary.v2.uploader.upload(
           req.file.path,
           {
-            folder: user.id, // folder name on cloudinary
+            folder: `${user.id}/wants`, // folder name on cloudinary
             tags: [user.id] // tags for images
           },
           (e, result) => {
@@ -85,7 +85,7 @@ module.exports = app => {
         cloudinary.v2.uploader.upload(
           req.file.path,
           {
-            folder: user.id, // folder name on cloudinary
+            folder: `${user.id}/needs`, // folder name on cloudinary
             tags: [user.id] // tags for images
           },
           (e, result) => {

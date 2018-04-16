@@ -81,22 +81,41 @@ export class LoginPage extends Component {
   render = () => {
     const { errors } = this.state
     return (
-      <div>
-        <Link to="/">Seam</Link>
-        <h2>Login</h2>
-        <form onChange={this.onFieldChange} onSubmit={this.onSubmit}>
-          <label>email</label>
-          <input type="email" name="email" />
-          {errors.email && <p>{errors.email}</p>}
-          <label>password</label>
-          <input type="password" name="password" />
-          {errors.password && <p>{errors.password}</p>}
-          <button>Login</button>
+      <div className="login-page">
+        <Link to="/" className="seam">
+          Seam
+        </Link>
+        <form
+          className="auth-form"
+          onChange={this.onFieldChange}
+          onSubmit={this.onSubmit}
+        >
+          {errors.global && <p className="errors-global">{errors.global}</p>}
+          <h2 className="header">Login</h2>
+          <div className="input-group">
+            <label className="title">email</label>
+            <input type="email" name="email" />
+            {errors.email && <p>{errors.email}</p>}
+          </div>
+          <div className="input-group">
+            <label className="title">password</label>
+            <input type="password" name="password" />
+            {errors.password && <p>{errors.password}</p>}
+          </div>
+          <div className="input-group">
+            <button type="submit" className="submit">
+              Login
+            </button>
+          </div>
+          <div className="other-page">
+            <p className="text">Don't have an account?</p>
+            <Link to="/signup" className="link">
+              &nbsp;Signup
+            </Link>
+          </div>
         </form>
-        {errors.global && <p>{errors.global}</p>}
-        <p>
-          Don't have an account?<Link to="/signup"> Sign Up</Link>
-        </p>
+        <div className="overlay" />
+        <div className="bg" />
       </div>
     )
   }

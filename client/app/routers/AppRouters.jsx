@@ -13,6 +13,7 @@ import PublicRoute from './PublicRoute.jsx'
 import SplashPage from '../components/SplashPage.jsx'
 import LoginPage from '../components/LoginPage.jsx'
 import SignupPage from '../components/SignupPage.jsx'
+import SettingsPage from '../components/SettingsPage.jsx'
 import DashboardPage from '../components/DashboardPage.jsx'
 import NeedsPage from '../components/NeedsPage.jsx'
 import WantsPage from '../components/WantsPage.jsx'
@@ -49,8 +50,6 @@ if (localStorage.appJWT) {
 }
 
 export class AppRouter extends Component {
-  // componentDidMount = () => console.log(configureStore)
-
   render = () => {
     return (
       <Provider store={store}>
@@ -61,6 +60,7 @@ export class AppRouter extends Component {
                 <PublicRoute exact path="/" component={SplashPage} />
                 <PublicRoute path="/login" component={LoginPage} />
                 <PublicRoute path="/signup" component={SignupPage} />
+                <PrivateRoute path="/settings" component={SettingsPage} />
                 <PrivateRoute path="/dashboard" component={DashboardPage} />
                 <PrivateRoute path="/wants/:id" component={WantsPage} />
                 <PrivateRoute path="/needs/:id" component={NeedsPage} />

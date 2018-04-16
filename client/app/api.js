@@ -21,6 +21,15 @@ export default {
         }
       }),
 
+    updateGeneral: file =>
+      axios.post('/api/general_settings', file).then(res => res.data),
+
+    updatePassword: file =>
+      axios.post('/api/password_settings', file).then(res => res.data),
+
+    updateTransfer: file =>
+      axios.post('/api/transfer_settings', file).then(res => res.data),
+
     getUser: email => axios.post('/api/get_user', email).then(res => res.data),
 
     createWant: details =>

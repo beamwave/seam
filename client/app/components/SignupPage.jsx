@@ -5,9 +5,11 @@ import { startSignup } from '../actions/auth'
 
 export class SignupPage extends Component {
   state = {
+    username: '',
     email: '',
     password: '',
     errors: {
+      username: '',
       email: '',
       password: ''
     }
@@ -23,6 +25,7 @@ export class SignupPage extends Component {
   onSubmit = e => {
     e.preventDefault()
     const data = {
+      username: this.state.username,
       email: this.state.email,
       password: this.state.password
     }
@@ -39,20 +42,49 @@ export class SignupPage extends Component {
   render = () => {
     const { errors } = this.state
     return (
-      <div>
-        <Link to="/">Seam</Link>
-        <h2>Sign Up</h2>
-        <form onChange={this.onFieldChange} onSubmit={this.onSubmit}>
-          <label>email</label>
-          <input type="email" name="email" />
-          <label>password</label>
-          <input type="password" name="password" />
-          <button>Signup</button>
+      <div className="signup-page">
+        <Link to="/" className="seam">
+          Seam
+        </Link>
+        <form
+          className="auth-form"
+          onChange={this.onFieldChange}
+          onSubmit={this.onSubmit}
+        >
+          <h2 className="header">Sign Up</h2>
+          <div className="input-group">
+            <label htmlFor="username" className="title">
+              username
+            </label>
+            <input type="text" name="username" />
+          </div>
+          <div className="input-group">
+            <label htmlFor="email" className="title">
+              email
+            </label>
+            <input type="email" name="email" />
+          </div>
+          <div className="input-group">
+            <label htmlFor="email" className="title">
+              password
+            </label>
+            <input type="password" name="password" />
+          </div>
+          <div className="input-group">
+            <button type="submit" className="submit">
+              Signup
+            </button>
+          </div>
+          <div className="other-page">
+            <p className="text">Already have an account?</p>
+            <Link to="/login" className="link">
+              &nbsp;Login
+            </Link>
+          </div>
         </form>
         {errors.global && <p>{errors.global}</p>}
-        <p>
-          Already have an account?<Link to="/login"> Login</Link>
-        </p>
+        <div className="overlay" />
+        <div className="bg" />
       </div>
     )
   }
