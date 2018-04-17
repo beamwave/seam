@@ -38,14 +38,23 @@ export default {
     createNeed: details =>
       axios.post('/api/create_need', details).then(res => res.data),
 
-    getImages: email =>
-      axios.post('/api/get_images', email).then(res => res.data.images),
+    setWallpaper: data =>
+      axios.post('/api/set_wallpaper', data).then(res => res.data),
+
+    // getImages: email =>
+    //   axios.post('/api/get_images', email).then(res => res.data.images),
 
     uploadImage: file =>
       axios.post('/api/upload_image', file).then(res => res.data),
 
+    // deleteWantImage: data =>
+    //   axios.post('/api/delete_want_image', data).then(res => res.data.wants),
+
+    // deleteNeedImage: data =>
+    //   axios.post('/api/delete_need_image', data).then(res => res.data.needs),
+
     deleteImage: data =>
-      axios.post('/api/delete_image', data).then(res => res.data.images),
+      axios.post('/api/delete_image', data).then(res => res.data),
 
     nuke: email => axios.post('/api/nuke', email).then(res => res.data)
   }

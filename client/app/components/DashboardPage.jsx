@@ -14,22 +14,46 @@ class DashboardPage extends Component {
     slider: 0
   }
 
-  componentDidMount = () => {
-    // this.props.startSetUser({ email: this.props.email })
-    // setTimeout(() => {
-    //   this.setState({ render: true })
-    // }, 0)
-  }
+  // componentDidMount = () => {
+  //   this.props.startSetUser({ email: this.props.email })
+  //   setTimeout(() => {
+  //     this.setState({ render: true })
+  //   }, 0)
+  // }
 
   simplifyNumber = num => {
     let amount = num.toString()
     // console.log('length: ', num.toString().length)
     if (amount.length > 3 && amount.length < 7) {
-      return `${amount[0]}k`
+      if (amount.length === 4) {
+        return `${amount[0]}k`
+      }
+      if (amount.length === 5) {
+        return `${amount[0]}${amount[1]}k`
+      }
+      if (amount.length === 6) {
+        return `${amount[0]}${amount[1]}${amount[2]}k`
+      }
     } else if (amount.length > 7 && amount.length < 10) {
-      return `${amount[0]}m`
+      if (amount.length === 4) {
+        return `${amount[0]}m`
+      }
+      if (amount.length === 5) {
+        return `${amount[0]}${amount[1]}m`
+      }
+      if (amount.length === 6) {
+        return `${amount[0]}${amount[1]}${amount[2]}m`
+      }
     } else if (amount.length > 10 && amount.length < 13) {
-      return `${amount[0]}b`
+      if (amount.length === 4) {
+        return `${amount[0]}b`
+      }
+      if (amount.length === 5) {
+        return `${amount[0]}${amount[1]}b`
+      }
+      if (amount.length === 6) {
+        return `${amount[0]}${amount[1]}${amount[2]}b`
+      }
     } else {
       return num
     }
@@ -62,13 +86,12 @@ class DashboardPage extends Component {
             className="divvy-container"
             style={{ marginTop: editMode === false ? 31 : 0 }}
           >
-            <label className="title">Income</label>
+            <h2 className="title">Income</h2>
             <input
               className="input"
               type="text"
               placeholder="add money to accounts..."
             />
-            {/* {console.log('wants: ', wants.length)} */}
             {wants.length === 0 && needs.length === 0 ? (
               <button className="button" type="submit" disabled>
                 Split
@@ -88,7 +111,7 @@ class DashboardPage extends Component {
               </div>
               {/* if number of wants equals 0 (warning message) */}
               {wants.length === 0 && (
-                <div>
+                <div className="empty-container">
                   <p>You have not created any wants.</p>
                 </div>
               )}
@@ -248,7 +271,7 @@ class DashboardPage extends Component {
                   ))}
                 </div>
               ) : (
-                <div className="container">
+                <div className="empty-container">
                   <p>You have not created any needs.</p>
                 </div>
               )}
@@ -364,7 +387,7 @@ class DashboardPage extends Component {
                   ))}
                 </div>
               ) : (
-                <div className="container">
+                <div className="empty-container">
                   <p>You have not created any needs.</p>
                 </div>
               )}

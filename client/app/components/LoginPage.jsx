@@ -31,7 +31,7 @@ export class LoginPage extends Component {
     if (this.state.email.length === 0) {
       this.setState(prevState => ({
         errors: {
-          email: 'email field must not be blank',
+          email: 'email field cannot be blank',
           password: prevState.errors.password
         }
       }))
@@ -45,7 +45,7 @@ export class LoginPage extends Component {
     } else if (!this.state.email.match(emailRegex)) {
       this.setState(prevState => ({
         errors: {
-          email: 'must enter valid email',
+          email: 'please enter a valid email',
           password: prevState.errors.password
         }
       }))
@@ -56,7 +56,7 @@ export class LoginPage extends Component {
       this.setState(prevState => ({
         errors: {
           email: prevState.errors.email,
-          password: 'password field must not be blank'
+          password: 'password field cannot be blank'
         }
       }))
     } else if (this.state.password.length > 0) {
@@ -94,13 +94,27 @@ export class LoginPage extends Component {
           <h2 className="header">Login</h2>
           <div className="input-group">
             <label className="title">email</label>
-            <input type="email" name="email" />
-            {errors.email && <p>{errors.email}</p>}
+            <input
+              type="email"
+              name="email"
+              style={{
+                border: !!errors.email ? '2px solid #e87c7c' : 'none'
+              }}
+            />
+            {errors.email && <p className="inline-errors">{errors.email}</p>}
           </div>
           <div className="input-group">
             <label className="title">password</label>
-            <input type="password" name="password" />
-            {errors.password && <p>{errors.password}</p>}
+            <input
+              type="password"
+              name="password"
+              style={{
+                border: !!errors.password ? '2px solid #e87c7c' : 'none'
+              }}
+            />
+            {errors.password && (
+              <p className="inline-errors">{errors.password}</p>
+            )}
           </div>
           <div className="input-group">
             <button type="submit" className="submit">

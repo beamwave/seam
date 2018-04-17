@@ -4,6 +4,7 @@ import AppRouter from './routers/AppRouters.jsx'
 import fontawesome from '@fortawesome/fontawesome'
 import {
   faTimes,
+  faEllipsisH,
   faBars,
   faSearch,
   faBell,
@@ -23,6 +24,7 @@ import {
 
 fontawesome.library.add(
   faTimes,
+  faEllipsisH,
   faBars,
   faSearch,
   faBell,

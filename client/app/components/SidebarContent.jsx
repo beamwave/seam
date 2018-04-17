@@ -60,7 +60,8 @@ export class SidebarContent extends Component {
           <h3 className="title">Remaining Points</h3>
           <p
             className="details"
-            style={{ color: points < 100 && points > 0 ? '#e87c7c' : 'white' }}
+            style={{ color: 'white' }}
+            // style={{ color: points < 100 && points > 0 ? '#e87c7c' : 'white' }}
           >
             {points}
           </p>

@@ -32,7 +32,6 @@ export const history = createHistory()
 // const store = store() // matches configureStore import
 // console.log('store: ', store)
 // console.log('persistor: ', persistor)
-console.log('configureStore: ', configureStore)
 const store = configureStore().store
 const persistor = configureStore().persistor
 

@@ -19,6 +19,9 @@ export const appReducer = (state = initialState, action = {}) => {
     case 'CREATE_NEED':
       return { ...state, points: action.points }
 
+    case 'IMAGES':
+      return { ...state, wallpaper: action.user.wallpaper }
+
     default:
       return state
   }

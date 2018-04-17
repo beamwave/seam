@@ -5,7 +5,7 @@
   bottom: 0
   left: 0
   opacity: .85
-  background-color: $want-green-bg
+  background-color: $want-green
   z-index: -1
 
 .bg
@@ -56,11 +56,19 @@
     color: $headergrey
 
   > .input-group
+    box-sizing: border-box
 
     > .title
       text-transform: uppercase
       letter-spacing: .8px
       color: $titlegrey
+
+    > .inline-errors
+      position: absolute
+      top: 55px
+      right: 10px
+      font-style: italic
+      color: $delete-red-bg
 
     input
       padding: 5px 15px
@@ -74,7 +82,7 @@
     margin-top: 10px
     border: none
     color: $white
-    background-color: $want-green-bg
+    background-color: $want-green
     transition: 300ms
     &:hover
       filter: brightness(90%)

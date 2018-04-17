@@ -20,28 +20,32 @@
     grid-template-columns: repeat(5, 1fr)
     grid-gap: 10px
 
+    .keep-tint
+      filter: brightness(60%)
+
+    .keep-button
+      opacity: 1 !important
+      filter: brightness(60%)
+
     .image-container
       display: block
       position: relative
       height: 70px
-
       &:hover
-        > .delete-button
+        .options-button
           opacity: 1
 
-      .delete-button
+      .options-button
         position: absolute
         top: 5px
-        right: 5px
-        width: 9px
+        right: 10px
         opacity: 0
         transition: .2s all
-        color: white
+        color: $white
+        font-size: 16px
         z-index: 20
         &:hover
           filter: brightness(60%)
-        &:hover + .thumbnail
-          filter: brightness(50%)
 
       .thumbnail
         height: 100%
@@ -51,3 +55,44 @@
           filter: brightness(50%)
 
 
+  
+.image-dropdown-root
+  display: grid
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  height: 15px
+  z-index: 100
+
+  &:hover + .thumbnail
+    filter: brightness(50%)
+
+  > .dropdown-toggle
+    justify-self: end
+
+
+  .dropdown-menu
+    display: grid
+    justify-content: center
+    margin: 10px auto 0
+    background-color: $white
+    filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.2))
+
+    .dropdown-item
+      display: grid
+      width: 100%
+      padding: 10px 30px 10px 20px
+      // margin: 0 auto
+      text-align: left
+      border: none
+      background: none
+
+      &:first-of-type
+        padding-top: 20px
+
+      &:last-of-type
+        padding-bottom: 20px
+      
+      &:hover
+        background: $lightgrey

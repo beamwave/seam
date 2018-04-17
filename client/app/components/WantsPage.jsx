@@ -9,6 +9,7 @@ export class WantsPage extends Component {
   // }
 
   render = () => {
+    // _id = id of specific want
     const { name, goal, percent, _id, description } = this.props.want
 
     return (
@@ -38,7 +39,11 @@ export class WantsPage extends Component {
             <p>{goal}</p>
           </div>
           <div className="gallery">
-            <Gallery id={_id} url={this.props.match.params.id} />
+            <Gallery
+              id={_id}
+              url={this.props.match.params.id}
+              acctype="wants"
+            />
           </div>
         </main>
       </div>

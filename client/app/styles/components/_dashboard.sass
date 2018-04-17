@@ -29,18 +29,23 @@
   .input
     width: 25vw
     padding: 5px 15px
+    border: none
+    background-color: $lightgrey
+    color: $titlegrey
 
   .button
     padding: 5px 25px
     border: none
     color: $white
-    background-color: $want-green-text
+    background-color: $want-green
     transition: 300ms all
     &:hover
-      background-color: darken($want-green-text, 5%)
+      background-color: darken($want-green, 10%)
     &:disabled
       background-color: darken($lightgrey, 10%)
       color: $white
+
+
 .header
   display: grid
   grid-template-columns: repeat(2, max-content)
@@ -55,6 +60,10 @@
   > p
     margin: 0
     padding: 0
+
+
+.empty-container
+  height: 200px
 
 
 .slider-container

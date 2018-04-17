@@ -12,26 +12,21 @@ export const startCreateWant = data => dispatch =>
     dispatch(createWant(user))
   })
 
-export const display = wants => ({
-  type: 'IMAGES',
-  wants
-})
+// I think you can delete
+// export const startDisplay = email => async dispatch => {
+//   api.user.getImages(email).then(images => {
+//     dispatch(display(images))
+//   })
+// }
 
-export const startDisplay = email => async dispatch => {
-  api.user.getImages(email).then(images => {
-    dispatch(display(images))
-  })
-}
+// this too
+// export const displayUpdates = wants => ({
+//   type: 'UPDATED_WANT_IMAGES',
+//   wants
+// })
 
-export const startUpload = file => async dispatch => {
-  api.user.uploadImage(file).then(wants => {
-    console.log('return data (images or user) from api call: ', wants)
-    dispatch(display(wants))
-  })
-}
-
-export const startImageDelete = data => async dispatch => {
-  api.user.deleteImage(data).then(images => {
-    dispatch(display(images))
-  })
-}
+// export const startWantImageDelete = data => async dispatch => {
+//   api.user.deleteWantImage(data).then(wants => {
+//     dispatch(display(wants))
+//   })
+// }

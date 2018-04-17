@@ -71,6 +71,56 @@ module.exports = app => {
     })
   })
 
+  app.post('/api/delete_image', (req, res) => {
+    User.findOne({ email: req.body.email }).then(user => {
+      const folder = req.body.acctype
+
+      if (folder === 'wants') {
+        const gallery = user.wants
+          .id(req.body.id)
+          .images.filter((image, i) => image !== req.body.url)
+
+        user.wants.id(req.body.id).images = gallery
+
+        // if deleted image === wallpaper, reset wallpaper
+        if (user.wants.id(req.body.id).wallpaper === req.body.url) {
+          user.wants.id(req.body.id).wallpaper = user.wants.id(
+            req.body.id
+          ).images[0]
+        }
+      }
+
+      if (folder === 'needs') {
+        const gallery = user.needs
+          .id(req.body.id)
+          .images.filter((image, i) => image !== req.body.url)
+
+        user.needs.id(req.body.id).images = gallery
+
+        // if deleted image === wallpaper, reset wallpaper
+        if (user.needs.id(req.body.id).wallpaper === req.body.url) {
+          user.needs.id(req.body.id).wallpaper = user.needs.id(
+            req.body.id
+          ).images[0]
+        }
+      }
+
+      user.save().then(user => {
+        // public id = folder/image without ext
+
+        const img = req.body.url.slice(-24, -4)
+        const public_id = `${user._id}/${folder}/${img}`
+        cloudinary.v2.uploader.destroy(public_id, (e, result) => {
+          if (e) {
+            console.log('cloudinary error: ', e)
+          } else {
+            res.json(user)
+          }
+        })
+      })
+    })
+  })
+
   app.post('/api/create_need', upload.single('file'), (req, res) => {
     User.findOne({ email: req.body.email }).then(async user => {
       const name = req.body.name
@@ -130,7 +180,7 @@ module.exports = app => {
       cloudinary.v2.uploader.upload(
         req.file.path,
         {
-          folder: user.id,
+          folder: `${user.id}/wants`,
           tags: [user.id]
         },
         (e, result) => {
@@ -140,11 +190,22 @@ module.exports = app => {
             user.wants.id(req.body.id).images.unshift(result.secure_url)
 
             user.save().then(user => {
-              res.json(user.wants)
+              res.json(user)
             })
           }
         }
       )
+    })
+  })
+
+  app.post('/api/set_wallpaper', (req, res) => {
+    User.findOne({ email: req.body.email }).then(user => {
+      const wallpaper = req.body.wallpaper
+      user.wants.id(req.body.id).wallpaper = wallpaper
+
+      user.save().then(user => {
+        res.json(user)
+      })
     })
   })
 }

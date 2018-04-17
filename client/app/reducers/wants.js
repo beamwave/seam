@@ -11,8 +11,14 @@ export const wantsReducer = (state = {}, action = {}) => {
     case 'CREATE_WANT':
       return [action.details, ...state]
 
+    case 'SET_WALLPAPER':
+      return action.user.wants
+
+    // case 'UPDATED_WANTS_IMAGES':
+    //   return action.wants
+
     case 'IMAGES':
-      return action.wants
+      return action.user.wants
 
     case 'NUKE':
       return []

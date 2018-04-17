@@ -26,6 +26,32 @@ export const startSetUser = email => dispatch => {
   })
 }
 
+export const display = user => ({
+  type: 'IMAGES',
+  user
+})
+
+export const startUpload = file => async dispatch => {
+  api.user.uploadImage(file).then(user => {
+    dispatch(display(user))
+  })
+}
+
+export const setWallpaper = user => ({
+  type: 'SET_WALLPAPER',
+  user
+})
+
+export const startWallpaper = data => async dispatch => {
+  api.user.setWallpaper(data).then(user => dispatch(setWallpaper(user)))
+}
+
+export const deleteImage = data => async dispatch => {
+  api.user.deleteImage(data).then(user => {
+    dispatch(display(user))
+  })
+}
+
 export const nuke = () => ({
   type: 'NUKE'
 })

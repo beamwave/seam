@@ -68,33 +68,4 @@ module.exports = app => {
   //     )
   //   })
   // })
-
-  app.post('/api/delete_image', (req, res) => {
-    User.findOne({ email: req.body.email }).then(user => {
-      const updatedGallery = user.images.filter(
-        (image, i) => image !== req.body.url
-      )
-
-      user.images = updatedGallery
-
-      user.save().then(user => {
-        // public id = folder/image without ext
-
-        // CORRECT THIS FOR SINGLE IMAGE DELETIONS IN WANTS/NEEDS FOLDERS
-        // console.log('delete by string: ', req.body.url.substr(68, 45))
-        // console.log(`${user._id}`)
-        cloudinary.v2.uploader.destroy(
-          req.body.url.substr(68, 45),
-          (e, result) => {
-            if (e) {
-              console.log('cloudinary error: ', e)
-            } else {
-              console.log('image successfully deleted')
-              res.json(user)
-            }
-          }
-        )
-      })
-    })
-  })
 }

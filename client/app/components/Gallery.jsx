@@ -1,13 +1,49 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from 'reactstrap'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
-import { startUpload, startImageDelete } from '../actions/wants'
+import { startUpload, startWallpaper, deleteImage } from '../actions/app'
+// import { startWantImageDelete } from '../actions/wants'
+// import { startNeedImageDelete } from '../actions/needs'
 import { format } from 'util'
 
 export class Gallery extends Component {
   state = {
-    selectedFile: null
+    selectedFile: null,
+    dropdownOpen: false,
+    dropdownIndex: null
+  }
+
+  toggleDropdown = e => {
+    const i =
+      e.currentTarget.dataset !== undefined
+        ? +e.currentTarget.dataset.index
+        : null
+    if (i == null) {
+      this.setState({
+        dropdownOpen: false
+      })
+    }
+    if (this.state.dropdownOpen === false) {
+      this.setState({
+        dropdownIndex: i,
+        dropdownOpen: true
+      })
+    } else {
+      this.setState({
+        dropdownIndex: i
+      })
+    }
+
+    // if (this.state.dropdownOpen === true) {
+    //   this.setState({ dropdownOpen: !this.state.dropdownOpen })
+    // }
   }
 
   fileSelectedHandler = ({ target }) =>
@@ -16,8 +52,6 @@ export class Gallery extends Component {
   fileUploadHandler = () => {
     const { selectedFile } = this.state
     const { email, id } = this.props
-
-    // e.preventDefault()
 
     let formData = new FormData()
     formData.append('file', selectedFile)
@@ -31,18 +65,30 @@ export class Gallery extends Component {
     this.primaryImage.style.backgroundImage = `url(${e.target.id})`
   }
 
+  setWallpaper = e => {
+    const { email } = this.props
+    const wallpaper = e.currentTarget.dataset.url
+    // _id = id of specific want
+    this.props.startWallpaper({ wallpaper, email, id: this.props.id })
+  }
+
   deleteImage = url => {
+    const { acctype, deleteImage } = this.props
+    // const { acctype, startWantImageDelete, startNeedImageDelete } = this.props
     // user email
     // want id
     const { email, id } = this.props
+    const data = { email, id, url, acctype }
 
-    const data = {
-      url,
-      email
-    }
+    // if (acctype === 'wants') {
+    //   startWantImageDelete(data)
+    // }
 
-    // console.log(data)
-    this.props.startImageDelete(data)
+    // if (acctype === 'needs') {
+    //   startNeedImageDelete(data)
+    // }
+
+    deleteImage(data)
   }
 
   render() {
@@ -91,14 +137,61 @@ export class Gallery extends Component {
             {this.props.images.length > 0 ? (
               this.props.images.map((url, i) => (
                 <div className="image-container" key={url}>
-                  <FontAwesomeIcon
+                  <Dropdown
+                    isOpen={this.state.dropdownIndex === i}
+                    toggle={this.toggleDropdown}
+                    className="image-dropdown-root"
+                  >
+                    <DropdownToggle className="dropdown-toggle" data-index={i}>
+                      <FontAwesomeIcon
+                        icon="ellipsis-h"
+                        className={
+                          this.state.dropdownOpen &&
+                          this.state.dropdownIndex === i
+                            ? 'keep-button options-button'
+                            : 'options-button'
+                        }
+                      />
+                    </DropdownToggle>
+                    <DropdownMenu
+                      right
+                      className="dropdown-menu"
+                      style={{
+                        display:
+                          this.state.dropdownOpen &&
+                          this.state.dropdownIndex === i
+                            ? 'block'
+                            : 'none'
+                      }}
+                    >
+                      <DropdownItem
+                        className="dropdown-item"
+                        data-url={url}
+                        onClick={this.setWallpaper}
+                      >
+                        Wallpaper
+                      </DropdownItem>
+                      <DropdownItem
+                        className="dropdown-item"
+                        onClick={() => this.deleteImage(url)}
+                      >
+                        Delete
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                  {/* <FontAwesomeIcon
                     icon="times"
                     className="delete-button"
                     onClick={() => this.deleteImage(url)}
-                  />
+                  /> */}
                   <div
                     id={url}
-                    className="thumbnail"
+                    // className="thumbnail"
+                    className={
+                      this.state.dropdownOpen && this.state.dropdownIndex === i
+                        ? 'keep-tint thumbnail'
+                        : 'thumbnail'
+                    }
                     onClick={this.setCurrentImage}
                     style={{
                       background: `url(${url}) center / cover no-repeat`
@@ -121,6 +214,8 @@ const mapStateToProps = (state, props) => ({
   images: state.wants.find(want => want._id === props.url).images
 })
 
-export default connect(mapStateToProps, { startUpload, startImageDelete })(
-  Gallery
-)
+export default connect(mapStateToProps, {
+  startUpload,
+  startWallpaper,
+  deleteImage
+})(Gallery)

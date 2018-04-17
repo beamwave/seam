@@ -50,7 +50,7 @@ module.exports = app => {
       .save()
       .then(async user => {
         const customer = await stripe.customers.create({ email })
-        console.log('await customer created by stripe:')
+        console.log('stripe customer created:')
         console.log(customer)
         user.stripe = customer.id
 
@@ -85,8 +85,6 @@ module.exports = app => {
             res.json({ user: user.toAuthJSON() })
           })
         } else {
-          console.log('user: ')
-          console.log(user)
           res.json({ user: user.toAuthJSON() })
         }
       } else {
