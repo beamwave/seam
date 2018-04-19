@@ -55,6 +55,7 @@
     "numeral": "^2.0.6",
     "postcss-loader": "^2.0.6",
     "react": "^16.2.0",
+    "react-countup": "^3.0.3",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.0.0",
     "react-image-gallery": "^0.8.7",

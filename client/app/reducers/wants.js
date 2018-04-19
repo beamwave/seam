@@ -14,8 +14,8 @@ export const wantsReducer = (state = {}, action = {}) => {
     case 'SET_WALLPAPER':
       return action.user.wants
 
-    // case 'UPDATED_WANTS_IMAGES':
-    //   return action.wants
+    case 'DIVVY':
+      return action.user.wants
 
     case 'IMAGES':
       return action.user.wants

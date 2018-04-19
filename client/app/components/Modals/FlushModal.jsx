@@ -42,7 +42,7 @@ export class FlushModal extends Component {
               <button className="cancel" onClick={this.onClose}>
                 Cancel
               </button>
-              <button className="submit" type="submit">
+              <button className="submit" type="submit" autoFocus="true">
                 Yes
               </button>
             </div>

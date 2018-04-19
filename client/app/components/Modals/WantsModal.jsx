@@ -28,7 +28,7 @@ export class WantsModal extends Component {
     formData.append('email', email)
     formData.append('name', name.value)
     formData.append('percent', percent.value)
-    formData.append('goal', goal.value)
+    formData.append('goal', goal.value * 100)
     formData.append('description', description.value)
 
     this.props.createWant(formData)
@@ -49,7 +49,7 @@ export class WantsModal extends Component {
             />
           </div>
           <p className="remaining-points">
-            <span>{this.props.points}</span> points remaining
+            <span>{this.props.newPoints}</span> points remaining
           </p>
           <form className="wants-form" onSubmit={this.onCreateWant}>
             <div className="input-group">
@@ -128,7 +128,7 @@ export class WantsModal extends Component {
 
 const mapStateToProps = state => ({
   email: state.auth.email,
-  points: state.app.points
+  newPoints: state.app.newPoints
 })
 
 const mapDispatchToProps = dispatch => ({

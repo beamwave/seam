@@ -1,17 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
+import numeral from 'numeral'
+import CountUp from 'react-countup'
 import Sidebar from 'react-sidebar'
 import Header from './Header.jsx'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 
-import { startSetUser } from '../actions/app'
+import { startSetUser, startDivvy } from '../actions/app'
 
 class DashboardPage extends Component {
   state = {
     render: true,
-    slider: 0
+    slider: 0,
+    income: '',
+    divvyCreatedAt: moment()
   }
 
   // componentDidMount = () => {
@@ -23,6 +28,7 @@ class DashboardPage extends Component {
 
   simplifyNumber = num => {
     let amount = num.toString()
+    // console.log('amount: ', num.toString())
     // console.log('length: ', num.toString().length)
     if (amount.length > 3 && amount.length < 7) {
       if (amount.length === 4) {
@@ -34,24 +40,24 @@ class DashboardPage extends Component {
       if (amount.length === 6) {
         return `${amount[0]}${amount[1]}${amount[2]}k`
       }
-    } else if (amount.length > 7 && amount.length < 10) {
-      if (amount.length === 4) {
+    } else if (amount.length >= 7 && amount.length < 10) {
+      if (amount.length === 7) {
         return `${amount[0]}m`
       }
-      if (amount.length === 5) {
+      if (amount.length === 8) {
         return `${amount[0]}${amount[1]}m`
       }
-      if (amount.length === 6) {
+      if (amount.length === 9) {
         return `${amount[0]}${amount[1]}${amount[2]}m`
       }
-    } else if (amount.length > 10 && amount.length < 13) {
-      if (amount.length === 4) {
+    } else if (amount.length >= 10 && amount.length < 13) {
+      if (amount.length === 10) {
         return `${amount[0]}b`
       }
-      if (amount.length === 5) {
+      if (amount.length === 11) {
         return `${amount[0]}${amount[1]}b`
       }
-      if (amount.length === 6) {
+      if (amount.length === 12) {
         return `${amount[0]}${amount[1]}${amount[2]}b`
       }
     } else {
@@ -68,8 +74,30 @@ class DashboardPage extends Component {
     this.setState(state => ({ slider: state.slider + 230 }))
   }
 
+  onIncomeChange = ({ target }) => {
+    const regex = /^\d{1,}(\.\d{0,2})?$/
+
+    if (!target.value || target.value.match(regex)) {
+      this.setState(() => ({ income: target.value }))
+    }
+  }
+
+  onDivvy = e => {
+    e.preventDefault()
+
+    const { email, startDivvy } = this.props
+
+    console.log('ssending income: ', parseFloat(this.state.income, 10) * 100)
+
+    startDivvy({
+      email,
+      income: parseFloat(this.state.income, 10) * 100, // convert to pennies
+      createdAt: this.state.divvyCreatedAt
+    })
+  }
+
   render = () => {
-    const { editMode, wants, needs } = this.props
+    const { editMode, newPoints, wants, needs } = this.props
 
     let renderContainer = false
 
@@ -84,19 +112,47 @@ class DashboardPage extends Component {
           )}
           <form
             className="divvy-container"
+            onSubmit={this.onDivvy}
             style={{ marginTop: editMode === false ? 31 : 0 }}
           >
             <h2 className="title">Income</h2>
-            <input
-              className="input"
-              type="text"
-              placeholder="add money to accounts..."
-            />
-            {wants.length === 0 && needs.length === 0 ? (
-              <button className="button" type="submit" disabled>
-                Split
-              </button>
-            ) : (
+            {wants.length === 0 &&
+              needs.length === 0 &&
+              newPoints === 100 && (
+                <input
+                  className="input"
+                  type="text"
+                  placeholder={`create want or need from sidebar`}
+                  disabled
+                />
+              )}
+            {newPoints > 0 &&
+              newPoints < 100 && (
+                <input
+                  className="input"
+                  type="text"
+                  placeholder={`${newPoints} points still need to be used`}
+                  disabled
+                />
+              )}
+            {newPoints === 0 && (
+              <input
+                className="input"
+                type="text"
+                placeholder="Enter income"
+                name="income"
+                value={this.state.income}
+                onChange={this.onIncomeChange}
+              />
+            )}
+
+            {newPoints > 0 &&
+              newPoints <= 100 && (
+                <button className="button" type="submit" disabled>
+                  Split
+                </button>
+              )}
+            {newPoints === 0 && (
               <button className="button" type="submit">
                 Split
               </button>
@@ -162,14 +218,19 @@ class DashboardPage extends Component {
                               <h3>progress</h3>
                               <p>
                                 <span className="dollar-symbol">$</span>
-                                {want.progress}
+                                <Countup
+                                  start={0}
+                                  end={want.progress / 100}
+                                  duration={2.75}
+                                  useEasing={true}
+                                />
                               </p>
                             </div>
                             <div className="block">
                               <h3>goal</h3>
                               <p>
                                 <span className="dollar-symbol">$</span>
-                                {this.simplifyNumber(want.goal)}
+                                {this.simplifyNumber(want.goal / 100)}
                               </p>
                             </div>
                           </div>
@@ -210,14 +271,23 @@ class DashboardPage extends Component {
                             <h3>progress</h3>
                             <p>
                               <span className="dollar-symbol">$</span>
-                              {this.simplifyNumber(want.progress)}
+                              <CountUp
+                                ref={progress => {
+                                  this.progress = progress
+                                }}
+                                start={0}
+                                end={want.progress / 100}
+                                duration={5}
+                                useEasing={true}
+                              />
+                              {/* {this.simplifyNumber(want.progress / 100)} */}
                             </p>
                           </div>
                           <div className="block">
                             <h3>goal</h3>
                             <p>
                               <span className="dollar-symbol">$</span>
-                              {this.simplifyNumber(want.goal)}
+                              {this.simplifyNumber(want.goal / 100)}
                             </p>
                           </div>
                         </div>
@@ -318,14 +388,14 @@ class DashboardPage extends Component {
                           <h3>progress</h3>
                           <p>
                             <span className="dollar-symbol">$</span>
-                            {this.simplifyNumber(want.progress)}
+                            {this.simplifyNumber(want.progress / 100)}
                           </p>
                         </div>
                         <div className="block">
                           <h3>goal</h3>
                           <p>
                             <span className="dollar-symbol">$</span>
-                            {this.simplifyNumber(want.goal)}
+                            {this.simplifyNumber(want.goal / 100)}
                           </p>
                         </div>
                       </div>
@@ -403,9 +473,12 @@ class DashboardPage extends Component {
 const mapStateToProps = state => ({
   sidebarOpen: state.sidebarOpen,
   editMode: state.app.editMode,
+  email: state.auth.email,
+  newPoints: state.app.newPoints,
   wants: state.wants,
-  needs: state.needs,
-  email: state.auth.email
+  needs: state.needs
 })
 
-export default connect(mapStateToProps, { startSetUser })(DashboardPage)
+export default connect(mapStateToProps, { startSetUser, startDivvy })(
+  DashboardPage
+)

@@ -47,9 +47,16 @@ export const startWallpaper = data => async dispatch => {
 }
 
 export const deleteImage = data => async dispatch => {
-  api.user.deleteImage(data).then(user => {
-    dispatch(display(user))
-  })
+  api.user.deleteImage(data).then(user => dispatch(display(user)))
+}
+
+export const divvy = user => ({
+  type: 'DIVVY',
+  user
+})
+
+export const startDivvy = data => async dispatch => {
+  api.user.divvy(data).then(user => dispatch(divvy(user)))
 }
 
 export const nuke = () => ({

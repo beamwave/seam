@@ -8,6 +8,41 @@ module.exports = app => {
     api_secret: process.env.CLOUD_API_SECRET
   })
 
+  app.post('/api/divvy', (req, res) => {
+    User.findOne({ email: req.body.email }).then(user => {
+      console.log('income: ', req.body.income)
+      const input = req.body.income
+      user.wants.forEach(want => {
+        const multiplier = want.percent / 100
+        const haul = input * multiplier
+
+        console.log('want haul: ', haul)
+
+        const revenue = want.progress + haul
+
+        if (revenue > want.goal) {
+          const leftover = revenue - want.goal
+
+          want.progress += revenue - leftover
+          user.undistributedCash += leftover
+        } else {
+          want.progress += haul
+        }
+      })
+
+      user.needs.forEach(need => {
+        const multiplier = need.percent / 100
+        const haul = input * multiplier
+
+        console.log('need haul: ', haul)
+
+        need.total += haul
+      })
+
+      user.save().then(user => res.json(user))
+    })
+  })
+
   app.post('/api/nuke', (req, res) => {
     User.findOne({ email: req.body.email }).then(user => {
       user.wants = []

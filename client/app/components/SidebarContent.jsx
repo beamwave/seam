@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import CountUp from 'react-countup'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 // sidebar is used as HOC in AppRouters.jsx
@@ -42,15 +43,35 @@ export class SidebarContent extends Component {
   setAdjust = () => this.setState({ buttonSet: 'adjust', activeSet: 1 })
   setDelete = () => this.setState({ buttonSet: 'delete', activeSet: 2 })
 
-  getPoints = () => {
-    const { wants } = this.props
-    return wants.length > 0
-      ? wants.map(want => want.progress).reduce((a, b) => a + b)
-      : 0
+  // getCash = () => {
+  //   const { wants } = this.props
+  //   return wants.length > 0
+  //     ? wants.map(want => want.progress / 100).reduce((a, b) => a + b)
+  //     : 0
+  // }
+
+  getCash = () => {
+    const { wants, needs } = this.props
+    let wcash, ncash
+    if (wants.length > 0) {
+      wcash = wants.map(want => want.progress / 100).reduce((a, b) => a + b)
+    } else {
+      wcash = 0
+    }
+    console.log('wcash: ', wcash)
+
+    if (needs.length > 0) {
+      ncash = needs.map(need => need.total / 100).reduce((a, b) => a + b)
+    } else {
+      ncash = 0
+    }
+    console.log('ncash: ', ncash)
+
+    return wcash + ncash
   }
 
   render = () => {
-    const { points } = this.props
+    const { oldPoints, newPoints, undistributedCash } = this.props
     return (
       <div className="sidebar">
         <Link to="/dashboard" className="seam">
@@ -63,16 +84,21 @@ export class SidebarContent extends Component {
             style={{ color: 'white' }}
             // style={{ color: points < 100 && points > 0 ? '#e87c7c' : 'white' }}
           >
-            {points}
+            <CountUp
+              start={oldPoints}
+              end={newPoints}
+              duration={2.75}
+              useEasing={true}
+            />
           </p>
         </div>
         <div className="sidebar-group">
           <h3 className="title">Total Cash</h3>
-          <p className="details">${this.getPoints()}</p>
+          <p className="details">${this.getCash()}</p>
         </div>
         <div className="sidebar-group">
           <h3 className="title">Undistributed Cash</h3>
-          <p className="details">$5,094</p>
+          <p className="details">${undistributedCash}</p>
         </div>
         <hr />
         <div className="account-headers">
@@ -150,8 +176,11 @@ export class SidebarContent extends Component {
 }
 
 const mapStateToProps = state => ({
-  points: state.app.points,
-  wants: state.wants
+  oldPoints: state.app.oldPoints,
+  newPoints: state.app.newPoints,
+  undistributedCash: state.app.undistributedCash,
+  wants: state.wants,
+  needs: state.needs
 })
 
 const mapDispatchToProps = dispatch => ({

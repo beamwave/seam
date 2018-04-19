@@ -52,6 +52,10 @@ const Needs = new Schema({
     type: Number,
     default: 0
   },
+  total: {
+    type: Number,
+    default: 0
+  },
   payment: {
     type: Number,
     default: 0

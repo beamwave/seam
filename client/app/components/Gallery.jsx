@@ -9,8 +9,6 @@ import {
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 import { startUpload, startWallpaper, deleteImage } from '../actions/app'
-// import { startWantImageDelete } from '../actions/wants'
-// import { startNeedImageDelete } from '../actions/needs'
 import { format } from 'util'
 
 export class Gallery extends Component {
@@ -40,10 +38,6 @@ export class Gallery extends Component {
         dropdownIndex: i
       })
     }
-
-    // if (this.state.dropdownOpen === true) {
-    //   this.setState({ dropdownOpen: !this.state.dropdownOpen })
-    // }
   }
 
   fileSelectedHandler = ({ target }) =>
@@ -74,19 +68,10 @@ export class Gallery extends Component {
 
   deleteImage = url => {
     const { acctype, deleteImage } = this.props
-    // const { acctype, startWantImageDelete, startNeedImageDelete } = this.props
     // user email
     // want id
     const { email, id } = this.props
     const data = { email, id, url, acctype }
-
-    // if (acctype === 'wants') {
-    //   startWantImageDelete(data)
-    // }
-
-    // if (acctype === 'needs') {
-    //   startNeedImageDelete(data)
-    // }
 
     deleteImage(data)
   }
@@ -179,14 +164,9 @@ export class Gallery extends Component {
                       </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
-                  {/* <FontAwesomeIcon
-                    icon="times"
-                    className="delete-button"
-                    onClick={() => this.deleteImage(url)}
-                  /> */}
+
                   <div
                     id={url}
-                    // className="thumbnail"
                     className={
                       this.state.dropdownOpen && this.state.dropdownIndex === i
                         ? 'keep-tint thumbnail'
