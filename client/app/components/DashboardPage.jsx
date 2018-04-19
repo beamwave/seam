@@ -9,7 +9,8 @@ import Header from './Header.jsx'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 
-import { startSetUser, startDivvy } from '../actions/app'
+import { startDivvy } from '../actions/app'
+// import { startSetUser, startDivvy } from '../actions/app'
 
 class DashboardPage extends Component {
   state = {
@@ -475,10 +476,10 @@ const mapStateToProps = state => ({
   editMode: state.app.editMode,
   email: state.auth.email,
   newPoints: state.app.newPoints,
-  wants: state.wants,
-  needs: state.needs
+  wants: state.wants.newWants,
+  needs: state.needs.newNeeds,
+  oldWants: state.wants.oldWants,
+  oldNeeds: state.needs.oldNeeds
 })
 
-export default connect(mapStateToProps, { startSetUser, startDivvy })(
-  DashboardPage
-)
+export default connect(mapStateToProps, { startDivvy })(DashboardPage)

@@ -1,15 +1,24 @@
 import React from 'react'
 
-export const wantsReducer = (state = {}, action = {}) => {
+const initialState = {
+  oldWants: [],
+  newWants: []
+}
+
+export const wantsReducer = (state = initialState, action = {}) => {
   switch (action.type) {
     case 'INITIAL_DATA':
-      return action.data.wants
+      return { ...state, newWants: action.data.wants }
 
     case 'LOGOUT':
       return {}
 
     case 'CREATE_WANT':
-      return [action.details, ...state]
+      return {
+        ...state,
+        oldWants: state.newWants,
+        newWants: [action.details, ...state.newWants]
+      }
 
     case 'SET_WALLPAPER':
       return action.user.wants

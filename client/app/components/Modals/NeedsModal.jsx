@@ -38,6 +38,7 @@ export class NeedsModal extends Component {
   }
 
   render = () => {
+    const { newPoints } = this.props
     return (
       <Modal onClose={this.onClose}>
         <div className="needs-modal">
@@ -50,7 +51,7 @@ export class NeedsModal extends Component {
             />
           </div>
           <p className="remaining-points">
-            <span>{this.props.points}</span> points remaining
+            <span>{newPoints}</span> points remaining
           </p>
           <form className="needs-form" onSubmit={this.onCreateNeed}>
             <div className="input-group">
@@ -141,7 +142,7 @@ export class NeedsModal extends Component {
 
 const mapStateToProps = state => ({
   email: state.auth.email,
-  points: state.app.points
+  newPoints: state.app.newPoints
 })
 
 const mapDispatchToProps = dispatch => ({

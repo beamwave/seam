@@ -58,14 +58,12 @@ export class SidebarContent extends Component {
     } else {
       wcash = 0
     }
-    console.log('wcash: ', wcash)
 
     if (needs.length > 0) {
       ncash = needs.map(need => need.total / 100).reduce((a, b) => a + b)
     } else {
       ncash = 0
     }
-    console.log('ncash: ', ncash)
 
     return wcash + ncash
   }
