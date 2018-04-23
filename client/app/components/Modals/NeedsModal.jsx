@@ -53,7 +53,11 @@ export class NeedsModal extends Component {
           <p className="remaining-points">
             <span>{newPoints}</span> points remaining
           </p>
-          <form className="needs-form" onSubmit={this.onCreateNeed}>
+          <form
+            className="needs-form"
+            autoComplete="off"
+            onSubmit={this.onCreateNeed}
+          >
             <div className="input-group">
               <label className="title" htmlFor="name">
                 Name
@@ -108,7 +112,11 @@ export class NeedsModal extends Component {
               <label className="title" htmlFor="description">
                 Description
               </label>
-              <textarea className="description" name="description" />
+              <textarea
+                className="description"
+                name="description"
+                data-gramm_editor="false"
+              />
             </div>
 
             <div className="input-group">
@@ -119,6 +127,7 @@ export class NeedsModal extends Component {
                 className="upload"
                 type="file"
                 placeholder="new image"
+                accept=".jpg,.jpeg,.png,.webp"
                 onChange={this.fileSelectedHandler}
               />
             </div>

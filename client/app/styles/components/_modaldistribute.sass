@@ -1,25 +1,35 @@
-.wants-modal
+.distribute-modal
   padding: 25px
 
+.distribute-modal_header
+  display: grid
+  grid-template-columns: 1fr
+  
+  .close
+    justify-self: end
+    color: $grey
+    &:hover
+      color: $darkgrey
 
 // form
-.wants-form
+.distribute-form
   display: grid
 
 
 // percent and goal
-.wants-numerical-data
+.distribute-split-data
   display: grid
-  grid-template-columns: max-content 1fr
+  grid-template-columns: 1fr 1fr
   grid-column-gap: 30px
-
+  margin: 15px 0 25px
 
 // buttons
-.wants-modal_buttons
+.distribute-modal_buttons
   display: grid
   grid-template-columns: repeat(2, max-content)
   grid-gap: 10px
   justify-self: end
+  margin-top: 25px
 
   > .cancel
     border: none
@@ -33,7 +43,10 @@
     padding: 5px 15px
     border: none
     color: $white
-    background: $want-green-text
+    background: $need-blue-text
+    transition: 300ms all
     &:hover
       transition: 300ms
       filter: brightness(95%)
+    &:disabled
+      background-color: $buttongrey

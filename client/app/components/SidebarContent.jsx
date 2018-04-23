@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import CountUp from 'react-countup'
+import numeral from 'numeral'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 // sidebar is used as HOC in AppRouters.jsx
@@ -21,13 +22,6 @@ import {
 
 export class SidebarContent extends Component {
   state = {
-    wantModalOpened: false,
-    needModalOpened: false,
-    transferModalOpened: false,
-    distributeModalOpened: false,
-    wipeModalOpened: false,
-    flushModalOpened: false,
-    buyModalOpened: false,
     buttonSet: 'adjust',
     activeSet: 1
   }
@@ -43,33 +37,50 @@ export class SidebarContent extends Component {
   setAdjust = () => this.setState({ buttonSet: 'adjust', activeSet: 1 })
   setDelete = () => this.setState({ buttonSet: 'delete', activeSet: 2 })
 
-  // getCash = () => {
-  //   const { wants } = this.props
-  //   return wants.length > 0
-  //     ? wants.map(want => want.progress / 100).reduce((a, b) => a + b)
-  //     : 0
-  // }
-
   getCash = () => {
-    const { wants, needs } = this.props
-    let wcash, ncash
-    if (wants.length > 0) {
-      wcash = wants.map(want => want.progress / 100).reduce((a, b) => a + b)
-    } else {
-      wcash = 0
-    }
+    const {
+      wants,
+      needs,
+      oldWants,
+      oldNeeds,
+      oldUndistributedCash,
+      newUndistributedCash
+    } = this.props
 
-    if (needs.length > 0) {
-      ncash = needs.map(need => need.total / 100).reduce((a, b) => a + b)
-    } else {
-      ncash = 0
-    }
+    const prevWantsCash =
+      oldWants.length > 0
+        ? oldWants.map(want => want.progress / 100).reduce((a, b) => a + b)
+        : 0
 
-    return wcash + ncash
+    const newWantsCash =
+      wants.length > 0
+        ? wants.map(want => want.progress / 100).reduce((a, b) => a + b)
+        : 0
+
+    const prevNeedsCash = oldNeeds.length
+      ? oldNeeds.map(need => need.total / 100).reduce((a, b) => a + b)
+      : 0
+
+    const newNeedsCash =
+      needs.length > 0
+        ? needs.map(need => need.total / 100).reduce((a, b) => a + b)
+        : 0
+
+    const undistributedCash = newUndistributedCash / 100
+
+    const oldMoney = prevWantsCash + prevNeedsCash + undistributedCash
+    const newMoney = newWantsCash + newNeedsCash + undistributedCash
+
+    return { oldMoney, newMoney }
   }
 
   render = () => {
-    const { oldPoints, newPoints, undistributedCash } = this.props
+    const {
+      oldPoints,
+      newPoints,
+      oldUndistributedCash,
+      newUndistributedCash
+    } = this.props
     return (
       <div className="sidebar">
         <Link to="/dashboard" className="seam">
@@ -92,11 +103,31 @@ export class SidebarContent extends Component {
         </div>
         <div className="sidebar-group">
           <h3 className="title">Total Cash</h3>
-          <p className="details">${this.getCash()}</p>
+          <p className="details">
+            <CountUp
+              start={this.getCash().oldMoney}
+              end={this.getCash().newMoney}
+              prefix="$"
+              separator=","
+              duration={2.75}
+              useEasing={true}
+              // easingFn={'outQuintic'} //, easeOutExpo, outQuintic, outCubic
+            />
+          </p>
         </div>
         <div className="sidebar-group">
           <h3 className="title">Undistributed Cash</h3>
-          <p className="details">${undistributedCash}</p>
+          <p className="details">
+            <CountUp
+              start={oldUndistributedCash / 100}
+              end={newUndistributedCash / 100}
+              prefix="$"
+              separator=","
+              duration={2.75}
+              useEasing={true}
+              // easingFn={'outQuintic'} //, easeOutExpo, outQuintic, outCubic
+            />
+          </p>
         </div>
         <hr />
         <div className="account-headers">
@@ -176,9 +207,12 @@ export class SidebarContent extends Component {
 const mapStateToProps = state => ({
   oldPoints: state.app.oldPoints,
   newPoints: state.app.newPoints,
-  undistributedCash: state.app.undistributedCash,
-  wants: state.wants,
-  needs: state.needs
+  oldUndistributedCash: state.app.oldUndistributedCash,
+  newUndistributedCash: state.app.newUndistributedCash,
+  oldWants: state.wants.oldWants,
+  wants: state.wants.newWants,
+  oldNeeds: state.needs.oldNeeds,
+  needs: state.needs.newNeeds
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -29,6 +29,10 @@ const Wants = new Schema({
     type: String,
     default: ''
   },
+  shared: {
+    type: Array,
+    default: []
+  },
   wallpaper: {
     type: String,
     default: ''
@@ -36,6 +40,14 @@ const Wants = new Schema({
   images: {
     type: Array,
     default: []
+  },
+  completed: {
+    type: Boolean,
+    default: false
+  },
+  dateCompleted: {
+    type: String,
+    default: ''
   }
 })
 
@@ -67,6 +79,10 @@ const Needs = new Schema({
   description: {
     type: String,
     default: ''
+  },
+  shared: {
+    type: Array,
+    default: []
   },
   wallpaper: {
     type: String,

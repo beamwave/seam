@@ -1,14 +1,17 @@
 import React from 'react'
 
-const initialState = {
-  oldWants: [],
-  newWants: []
-}
+// const initialState = {
+//   oldWants: [],
+//   newWants: []
+// }
 
-export const wantsReducer = (state = initialState, action = {}) => {
+export const wantsReducer = (state = {}, action = {}) => {
   switch (action.type) {
     case 'INITIAL_DATA':
-      return { ...state, newWants: action.data.wants }
+      return { oldWants: [], newWants: action.data.wants }
+
+    case 'LOGIN':
+      return { oldWants: [], newWants: [] }
 
     case 'LOGOUT':
       return {}
@@ -16,21 +19,51 @@ export const wantsReducer = (state = initialState, action = {}) => {
     case 'CREATE_WANT':
       return {
         ...state,
-        oldWants: state.newWants,
+        oldWants: [action.details, ...state.newWants],
         newWants: [action.details, ...state.newWants]
       }
 
     case 'SET_WALLPAPER':
-      return action.user.wants
+      return {
+        oldWants: action.user.wants,
+        newWants: action.user.wants
+      }
 
     case 'DIVVY':
-      return action.user.wants
+      return {
+        oldWants: state.newWants,
+        newWants: action.user.wants
+      }
+
+    case 'TRANSFER':
+      return {
+        oldWants: state.newWants,
+        newWants: action.user.wants
+      }
 
     case 'IMAGES':
-      return action.user.wants
+      return {
+        oldWants: action.user.wants,
+        newWants: action.user.wants
+      }
+
+    case 'UPDATE':
+      return {
+        oldWants: action.user.wants,
+        newWants: action.user.wants
+      }
+
+    case 'WIPE':
+      return {
+        oldWants: action.user.wants,
+        newWants: action.user.wants
+      }
 
     case 'NUKE':
-      return []
+      return {
+        oldWants: [],
+        newWants: []
+      }
 
     default:
       return state

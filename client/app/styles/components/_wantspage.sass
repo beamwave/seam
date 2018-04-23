@@ -1,28 +1,215 @@
 
 .primary-header
-  display: grid
+  display: flex
+  justify-content: center
+  align-items: center
+  &:hover .options
+      opacity: 1 !important
 
   > .name
-    margin: 10px 0 0
+    margin: 0 0 5px
     text-align: center
+  
+  > .options
+    margin: 0 0 9px 5px
+    &:hover
+      cursor: pointer
+    
+  .ellipsis
+    color: $titlegrey
+
+
+
+.primary-header-edit
+  display: grid
+  grid-template-columns: repeat(3, 1fr)
+  align-items: center
+  justify-items: center
+  margin: 0 25px
+
+  > .title
+    display: grid
+    grid-auto-flow: column
+    align-items: center
+    justify-self: start
+    text-transform: uppercase
+
+    > .text
+      margin: 0
+
+    > .close
+      margin: 0 0 2px 10px
+      color: $buttongrey
+      &:hover
+        cursor: pointer
+        color: $delete-red
+
+
+  > .name
+    input
+      padding: 5px 10px 0
+      border: none
+      color: $grey
+      background-color: $lightgrey
+
+  > .save
+    justify-self: end
+    padding: 3px 10px
+    margin-right: 150px
+    border: none
+    color: $white
+    background-color: $need-blue-text
+    transition: 300ms all
+    &:hover
+      filter: brightness(90%)
+
+
 
 .want-subhead
   display: grid
-  grid-template-columns: repeat(2, 1fr)
+  justify-content: center
+  margin: 25px 0
 
-  > .description
-    text-align: center
+  > .progress-container
+    display: grid
+    grid-template-columns: 1fr max-content
+    justify-self: center
+    align-items: center
 
-  > .percent
-    text-align: center
+    > .progress
+      height: 10px
+      width: 20vw
+
+    > .number
+      margin: 3px 0 0 15px
+      font-weight: 600
+      color: $titlegrey
+
   
 .want-body
   display: grid
   grid-template-columns: 1fr 1fr
-  margin: 0 25px 0
+  grid-template-rows: repeat(4, max-content)
+  grid-column-gap: 75px
+  margin: 0 25px
 
-  > .goal
-    // border: 1px solid red
+  .title
+    color: $headergrey
+    &::selection 
+      background: transparent
+
+  .text
+    color: $grey
+
+  .text-edit
+    height: 85px
+    width: 100%
+    padding: 5px 10px
+    border: none
+    resize: none
+    color: $grey
+    background-color: $lightgrey
+
+  .shared
+    margin: 0
+    color: $buttongrey
+
+    > .invite-container
+      display: grid
+      justify-items: center
+      width: max-content
+      margin: 0 15px
+      transition: 300ms all
+      &:hover
+      cursor: pointer
+
+      &:hover > .invite
+        background-color: $lightgrey
+        border-color: $lightgrey
+        color: $grey
+
+      &:hover > .subhead
+        color: darken($titlegrey, 10%)
+
+
+      > .invite
+        width: max-content
+        padding: 5px 10px 3px 9px
+        border-radius: 50%
+        border: 2px solid $buttongrey
+        color: $buttongrey
+        transition: 300ms all
+
+      > .subhead
+        margin: 5px 0 0
+        font: 400 $s Amiko, Helvetica, sans-serif
+        color: $titlegrey
+        transition: 300ms all
+
+  > .percent
+    grid-column: 1
+    grid-row: 1 / 2
+
+  > .description
+    grid-column: 1
+    grid-row: 2 / 3
+
+  > .shared
+    grid-column: 1
+    grid-row: 3 / 4
 
   > .gallery
-    // border: 1px solid red
+    grid-column: 2
+    grid-row: 1 / 4
+
+
+  > .percent
+    display: grid
+    justify-self: center
+    align-content: center
+    text-align: center
+
+    > .title
+      margin: 0
+
+    > .percent-group
+      display: grid
+      grid-auto-flow: column
+      align-items: center
+      padding: 10px 0 0
+
+      > .angle
+        border-radius: 5px
+        &:hover
+          background-color: $lightgrey
+
+      > .angleleft
+        padding: 5px 15px 5px 13px
+        margin-right: 12px
+
+      > .angleright
+        padding: 5px 14px 5px 15px
+        margin-left: 12px
+
+      .icon
+        box-sizing: border-box
+        font-size: 36px
+        color: $want-green
+        &:active
+          color: darken($want-green, 8%)
+        // color: $titlegrey
+
+      > .number
+        align-self: center
+        margin: 0
+        font: 700 $xl Amiko, Helvetica, sans-serif
+        color: $headergrey
+        &::selection 
+          background: transparent
+
+
+      > .symbol
+        margin: 0 0 6px 2px
+        font: 700 24px Amiko, Helvetica, sans-serif
+        color: $grey
+

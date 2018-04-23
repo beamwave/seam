@@ -5,7 +5,8 @@ const initialState = {
   editMode: false,
   oldPoints: 100,
   newPoints: 100,
-  undistributedCash: 0
+  oldUndistributedCash: 0,
+  newUndistributedCash: 0
 }
 
 export const appReducer = (state = initialState, action = {}) => {
@@ -17,19 +18,35 @@ export const appReducer = (state = initialState, action = {}) => {
       return { ...state, editMode: !state.editMode }
 
     case 'DIVVY':
-      console.log('action: ', action)
       return {
         ...state,
         oldPoints: state.newPoints,
         newPoints: action.user.points,
-        undistributedCash: action.user.undistributedCash
+        oldUndistributedCash: state.newUndistributedCash,
+        newUndistributedCash: action.user.undistributedCash
+      }
+
+    case 'UPDATE':
+      return {
+        ...state,
+        oldPoints: state.newPoints,
+        newPoints: action.user.points
+      }
+
+    case 'WIPE':
+      return {
+        ...state,
+        oldUndistributedCash: state.newUndistributedCash,
+        newUndistributedCash: action.user.undistributedCash
       }
 
     case 'NUKE':
       return {
         ...state,
         oldPoints: 100,
-        newPoints: 100
+        newPoints: 100,
+        oldUndistributedCash: state.newUndistributedCash,
+        newUndistributedCash: action.user.undistributedCash
       }
 
     case 'CREATE_WANT':

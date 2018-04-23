@@ -4,29 +4,39 @@ import { Link } from 'react-router-dom'
 export const SplashPage = () => (
   <div>
     <header>
-      <div>
-        <Link to="#">Pricing</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/signup">Signup</Link>
-      </div>
+      <nav className="splash-nav">
+        <Link to="#" className="hook item">
+          Pricing
+        </Link>
+        <Link to="/login" className="item">
+          Login
+        </Link>
+        <Link to="/signup" className="item">
+          Signup
+        </Link>
+      </nav>
     </header>
-    <main>
-      <section>
-        <p>Take Control of Your Money</p>
-        <p>Remove the guesswork from saving financial planning.</p>
-        <Link to="/signup">Try for Free</Link>
+    <main className="splash-body">
+      <section className="block -top">
+        <h1 className="title">Take Control of Your Money</h1>
+        <p className="subtitle">Remove the guesswork from financial planning</p>
+        <Link to="/signup" className="cta">
+          Try for Free
+        </Link>
       </section>
-      <section>
-        <h2>Proactively manage income and spending</h2>
-        <ul>
+      <section className="block -middle">
+        <h2 className="title">Proactively manage income and spending</h2>
+        <ul className="list">
           <li>Create accounts that define where your money goes</li>
           <li>assign accounts to a liercentage of your income</li>
           <li>seperate income into accounts based on your percentage</li>
         </ul>
       </section>
-      <section>
-        <h2>Budget with friends and family</h2>
-        <p>Create shared accounts with others and budget together</p>
+      <section className="block -bottom">
+        <h2 className="title">Budget with friends and family</h2>
+        <p className="text">
+          Create shared accounts with others and budget together
+        </p>
       </section>
     </main>
     <footer>

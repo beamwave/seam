@@ -12,6 +12,16 @@ export const startCreateWant = data => dispatch =>
     dispatch(createWant(user))
   })
 
+export const update = user => ({
+  type: 'UPDATE',
+  user
+})
+
+export const updateWant = data => dispatch =>
+  api.user.updateAccounts(data).then(user => {
+    dispatch(update(user))
+  })
+
 // I think you can delete
 // export const startDisplay = email => async dispatch => {
 //   api.user.getImages(email).then(images => {

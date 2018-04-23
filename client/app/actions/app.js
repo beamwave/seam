@@ -55,15 +55,43 @@ export const divvy = user => ({
   user
 })
 
-export const startDivvy = data => async dispatch => {
+export const startDivvy = data => async dispatch =>
   api.user.divvy(data).then(user => dispatch(divvy(user)))
-}
 
-export const nuke = () => ({
-  type: 'NUKE'
+export const transfer = user => ({
+  type: 'TRANSFER',
+  user
+})
+
+export const startTransfer = data => async dispatch =>
+  api.user.transfer(data).then(user => dispatch(transfer(user)))
+
+export const invite = user => ({
+  type: 'INVITE',
+  user
+})
+
+export const startInvite = data => dispatch =>
+  api.user.invite(data).then(user => {
+    dispatch(invite(user))
+  })
+
+export const wipe = user => ({
+  type: 'WIPE',
+  user
+})
+
+export const startWipe = email => dispatch =>
+  api.user.wipe(email).then(user => {
+    dispatch(wipe(user))
+  })
+
+export const nuke = user => ({
+  type: 'NUKE',
+  user
 })
 
 export const startNuke = email => dispatch =>
   api.user.nuke(email).then(user => {
-    dispatch(nuke())
+    dispatch(nuke(user))
   })

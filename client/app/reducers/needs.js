@@ -13,27 +13,60 @@ export const needsReducer = (state = initialState, action = {}) => {
         newNeeds: action.data.needs
       }
 
+    case 'LOGIN':
+      return { oldNeeds: [], newNeeds: [] }
+
     case 'LOGOUT':
       return {}
 
     case 'CREATE_NEED':
       return {
         ...state,
-        oldNeeds: state.newNeeds,
+        oldNeeds: [action.details, ...state.newNeeds],
         newNeeds: [action.details, ...state.newNeeds]
       }
 
     case 'SET_WALLPAPER':
-      return action.user.needs
+      return {
+        oldNeeds: action.user.needs,
+        newNeeds: action.user.needs
+      }
 
     case 'DIVVY':
-      return action.user.needs
+      return {
+        oldNeeds: state.newNeeds,
+        newNeeds: action.user.needs
+      }
+
+    case 'TRANSFER':
+      return {
+        oldNeeds: state.newNeeds,
+        newNeeds: action.user.needs
+      }
 
     case 'IMAGES':
-      return action.user.needs
+      return {
+        oldNeeds: action.user.needs,
+        newNeeds: action.user.needs
+      }
+
+    case 'UPDATE':
+      return {
+        oldNeeds: action.user.needs,
+        newNeeds: action.user.needs
+      }
+
+    case 'WIPE':
+      return {
+        oldNeeds: action.user.needs,
+        newNeeds: action.user.needs
+      }
 
     case 'NUKE':
-      return []
+      return {
+        oldNeeds: [],
+        newNeeds: []
+      }
 
     default:
       return state

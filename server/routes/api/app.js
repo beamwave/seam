@@ -1,5 +1,6 @@
 import cloudinary from 'cloudinary'
 import User from '../../models/User'
+import moment from 'moment'
 
 module.exports = app => {
   cloudinary.config({
@@ -10,23 +11,67 @@ module.exports = app => {
 
   app.post('/api/divvy', (req, res) => {
     User.findOne({ email: req.body.email }).then(user => {
-      console.log('income: ', req.body.income)
       const input = req.body.income
       user.wants.forEach(want => {
-        const multiplier = want.percent / 100
-        const haul = input * multiplier
+        if (!want.completed) {
+          const multiplier = want.percent / 100
+          const haul = input * multiplier
 
-        console.log('want haul: ', haul)
+          const revenue = want.progress + haul
 
-        const revenue = want.progress + haul
+          console.log(
+            `
+            ------------------------------------------------------------
+            stats:
+            name : ${want.name}
+            input (req.body.income): ${req.body.income}
+            multiplier (want.percent / 100): ${multiplier}
+            
+            want.goal: ${want.goal}
 
-        if (revenue > want.goal) {
-          const leftover = revenue - want.goal
+            want.progress: ${want.progress}
+            haul (input * multiplier): ${haul} 
+            revenue (want.progress + haul): ${revenue}
+            `
+          )
 
-          want.progress += revenue - leftover
-          user.undistributedCash += leftover
-        } else {
-          want.progress += haul
+          console.log('\nis revenue > want.goal? ', revenue > want.goal)
+          if (revenue > want.goal) {
+            // add this accounts points to global
+            user.points += want.percent
+
+            // remove completed goals points
+            want.percent = 0
+
+            // store excess cash
+            const leftover = revenue - want.goal
+            console.log(
+              `leftover (revenue (${revenue}) - want.goal (${
+                want.goal
+              })):  ${leftover}`
+            )
+
+            // add excess cash to global
+            user.undistributedCash += leftover
+
+            // set progress exactly equal to goal
+            want.progress += haul - leftover
+            console.log(
+              `want.progress += (haul - leftover): 
+              want.progress: ${want.progress} += 
+              haul: ${haul} - 
+              leftover: ${leftover}`
+            )
+
+            // set want as finished
+            want.completed = true
+
+            // store date completed
+            want.dateCompleted = moment()
+          } else {
+            // add cash to account
+            want.progress += haul
+          }
         }
       })
 
@@ -43,11 +88,23 @@ module.exports = app => {
     })
   })
 
+  app.post('/api/wipe', (req, res) => {
+    User.findOne({ email: req.body.email }).then(user => {
+      user.wants.forEach(want => (want.progress = 0))
+      user.needs.forEach(need => (need.total = 0))
+
+      user.undistributedCash = 0
+
+      user.save().then(user => res.json(user))
+    })
+  })
+
   app.post('/api/nuke', (req, res) => {
     User.findOne({ email: req.body.email }).then(user => {
       user.wants = []
       user.needs = []
 
+      user.undistributedCash = 0
       user.points = 100
 
       // delete all images from users cloudinary folder

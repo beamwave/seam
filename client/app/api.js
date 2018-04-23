@@ -30,6 +30,13 @@ export default {
     updateTransfer: file =>
       axios.post('/api/transfer_settings', file).then(res => res.data),
 
+    transfer: data => axios.post('/api/transfer', data).then(res => res.data),
+
+    invite: data => axios.post('/api/invite', data).then(res => res.data),
+
+    updateAccounts: data =>
+      axios.post('/api/update', data).then(res => res.data),
+
     getUser: email => axios.post('/api/get_user', email).then(res => res.data),
 
     createWant: details =>
@@ -48,6 +55,8 @@ export default {
       axios.post('/api/delete_image', data).then(res => res.data),
 
     divvy: data => axios.post('/api/divvy', data).then(res => res.data),
+
+    wipe: email => axios.post('/api/wipe', email).then(res => res.data),
 
     nuke: email => axios.post('/api/nuke', email).then(res => res.data)
   }

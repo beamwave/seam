@@ -1,5 +1,6 @@
-.remaining-points
-  margin: 0
+.remaining-points,
+.remaining-cash
+  margin: 10px 0 0
   text-align: center
 
 
@@ -27,7 +28,7 @@
 
   // common
   input, textarea
-    padding: 5px 15px
+    padding: 5px 10px
     border: none
     color: $titlegrey
     background-color: $lightgrey
@@ -85,3 +86,37 @@
     justify-self: center
     margin-bottom: 10px
     background: none
+
+  // transfer
+  > .transfer
+      padding-left: 25px
+
+  // distribute
+  > .distribute
+    padding-left: 25px
+
+  > .select
+    -webkit-appearance: none
+    -moz-appearance: none
+    appearance: none
+    box-sizing: content-box
+    padding: 5px 10px 2px
+    background: none
+    border: 2px solid $buttongrey
+    border-radius: 20px
+    font-size: $m
+    color: $grey
+    transition: 300ms all
+
+  > .icon
+    position: absolute
+    top: 40px
+    right: 20px
+    pointer-events: none
+    color: $buttongrey
+
+
+.center-group
+  justify-self: center
+  width: 75%
+  margin-top: 25px

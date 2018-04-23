@@ -40,7 +40,7 @@ export class Gallery extends Component {
     }
   }
 
-  fileSelectedHandler = ({ target }) =>
+  onUploadImage = ({ target }) =>
     this.setState({ selectedFile: target.files[0] }, this.fileUploadHandler)
 
   fileUploadHandler = () => {
@@ -80,19 +80,20 @@ export class Gallery extends Component {
     return (
       <div>
         <div className="gallery-header">
-          <h3>Dreamboard</h3>
-          <form>
+          <h3 className="title">Dreamboard</h3>
+          <form className="image-form">
             <input
-              className="file-upload"
               style={{ display: 'none' }}
               name="file"
               type="file"
-              onChange={this.fileSelectedHandler}
+              accept=".jpg,.jpeg,.png,.webp"
+              onChange={this.onUploadImage}
               ref={fileInput => (this.fileInput = fileInput)}
               data-cloudinary-field="image_id" // ?
             />
             <button
               type="submit"
+              className="upload"
               onClick={e => {
                 e.preventDefault()
                 this.fileInput.click()
@@ -101,7 +102,8 @@ export class Gallery extends Component {
               <FontAwesomeIcon
                 icon="plus"
                 size="xs"
-                onClick={() => this.deleteImage(url)}
+                className="plus"
+                // onClick={() => this.deleteImage(url)}
               />
               &nbsp;Upload Image
             </button>
@@ -154,7 +156,7 @@ export class Gallery extends Component {
                         data-url={url}
                         onClick={this.setWallpaper}
                       >
-                        Wallpaper
+                        Set wallpaper
                       </DropdownItem>
                       <DropdownItem
                         className="dropdown-item"
@@ -191,7 +193,7 @@ export class Gallery extends Component {
 
 const mapStateToProps = (state, props) => ({
   email: state.auth.email,
-  images: state.wants.find(want => want._id === props.url).images
+  images: state.wants.newWants.find(want => want._id === props.url).images
 })
 
 export default connect(mapStateToProps, {

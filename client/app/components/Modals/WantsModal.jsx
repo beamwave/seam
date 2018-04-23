@@ -51,7 +51,11 @@ export class WantsModal extends Component {
           <p className="remaining-points">
             <span>{this.props.newPoints}</span> points remaining
           </p>
-          <form className="wants-form" onSubmit={this.onCreateWant}>
+          <form
+            className="wants-form"
+            autoComplete="off"
+            onSubmit={this.onCreateWant}
+          >
             <div className="input-group">
               <label className="title" htmlFor="name">
                 Name
@@ -93,7 +97,11 @@ export class WantsModal extends Component {
               <label className="title" htmlFor="description">
                 Description
               </label>
-              <textarea className="description" name="description" />
+              <textarea
+                className="description"
+                name="description"
+                data-gramm_editor="false"
+              />
             </div>
 
             <div className="input-group">
@@ -104,6 +112,7 @@ export class WantsModal extends Component {
                 className="upload"
                 name="file"
                 type="file"
+                accept=".jpg,.jpeg,.png,.webp"
                 onChange={this.fileSelectedHandler}
                 data-cloudinary-field="image_id" // ?
               />

@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom'
 import moment from 'moment'
 import numeral from 'numeral'
 import CountUp from 'react-countup'
+import { Line } from 'rc-progress'
 import Sidebar from 'react-sidebar'
 import Header from './Header.jsx'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
+import { simplifyNumber } from '../helpers/helpers'
 
 import { startDivvy } from '../actions/app'
-// import { startSetUser, startDivvy } from '../actions/app'
 
 class DashboardPage extends Component {
   state = {
@@ -18,52 +19,6 @@ class DashboardPage extends Component {
     slider: 0,
     income: '',
     divvyCreatedAt: moment()
-  }
-
-  // componentDidMount = () => {
-  //   this.props.startSetUser({ email: this.props.email })
-  //   setTimeout(() => {
-  //     this.setState({ render: true })
-  //   }, 0)
-  // }
-
-  simplifyNumber = num => {
-    let amount = num.toString()
-    // console.log('amount: ', num.toString())
-    // console.log('length: ', num.toString().length)
-    if (amount.length > 3 && amount.length < 7) {
-      if (amount.length === 4) {
-        return `${amount[0]}k`
-      }
-      if (amount.length === 5) {
-        return `${amount[0]}${amount[1]}k`
-      }
-      if (amount.length === 6) {
-        return `${amount[0]}${amount[1]}${amount[2]}k`
-      }
-    } else if (amount.length >= 7 && amount.length < 10) {
-      if (amount.length === 7) {
-        return `${amount[0]}m`
-      }
-      if (amount.length === 8) {
-        return `${amount[0]}${amount[1]}m`
-      }
-      if (amount.length === 9) {
-        return `${amount[0]}${amount[1]}${amount[2]}m`
-      }
-    } else if (amount.length >= 10 && amount.length < 13) {
-      if (amount.length === 10) {
-        return `${amount[0]}b`
-      }
-      if (amount.length === 11) {
-        return `${amount[0]}${amount[1]}b`
-      }
-      if (amount.length === 12) {
-        return `${amount[0]}${amount[1]}${amount[2]}b`
-      }
-    } else {
-      return num
-    }
   }
 
   scrollLeft = () => {
@@ -87,18 +42,23 @@ class DashboardPage extends Component {
     e.preventDefault()
 
     const { email, startDivvy } = this.props
+    const { income } = this.state
 
-    console.log('ssending income: ', parseFloat(this.state.income, 10) * 100)
+    if (income.length === 0) {
+      return
+    }
+
+    this.setState({ income: '' })
 
     startDivvy({
       email,
-      income: parseFloat(this.state.income, 10) * 100, // convert to pennies
+      income: parseFloat(income, 10) * 100, // convert to pennies
       createdAt: this.state.divvyCreatedAt
     })
   }
 
   render = () => {
-    const { editMode, newPoints, wants, needs } = this.props
+    const { editMode, newPoints, wants, needs, oldWants, oldNeeds } = this.props
 
     let renderContainer = false
 
@@ -128,7 +88,8 @@ class DashboardPage extends Component {
                 />
               )}
             {newPoints > 0 &&
-              newPoints < 100 && (
+              newPoints <= 100 &&
+              (wants.length !== 0 || needs.length !== 0) && (
                 <input
                   className="input"
                   type="text"
@@ -219,19 +180,23 @@ class DashboardPage extends Component {
                               <h3>progress</h3>
                               <p>
                                 <span className="dollar-symbol">$</span>
-                                <Countup
-                                  start={0}
-                                  end={want.progress / 100}
-                                  duration={2.75}
-                                  useEasing={true}
-                                />
+                                {want.progress / 100 < 1000 && (
+                                  <CountUp
+                                    start={oldWants[i].progress / 100}
+                                    end={want.progress / 100}
+                                    duration={2.75}
+                                    useEasing={true}
+                                  />
+                                )}
+                                {want.progress / 100 >= 1000 &&
+                                  simplifyNumber(want.goal / 100)}
                               </p>
                             </div>
                             <div className="block">
                               <h3>goal</h3>
                               <p>
                                 <span className="dollar-symbol">$</span>
-                                {this.simplifyNumber(want.goal / 100)}
+                                {simplifyNumber(want.goal / 100)}
                               </p>
                             </div>
                           </div>
@@ -251,47 +216,133 @@ class DashboardPage extends Component {
                         to={`/wants/${want._id}`}
                         className="card want"
                       >
-                        <div className="top">
-                          <div
-                            className="image"
-                            id={want.wallpaper}
-                            style={{
-                              background: `url(${
-                                want.wallpaper
-                              }) center / cover no-repeat`
-                            }}
-                          />
-                          <div className="percent">
-                            <p className="text">{want.percent}</p>
-                            <p className="symbol">%</p>
+                        {want.progress < want.goal && (
+                          <div className="top">
+                            <div
+                              className="image"
+                              id={want.wallpaper}
+                              style={{
+                                background: `url(${
+                                  want.wallpaper
+                                }) center / cover no-repeat`
+                              }}
+                            />
+                            <div className="percent">
+                              <p className="text">{want.percent}</p>
+                              <p className="symbol">%</p>
+                            </div>
+                            <h2 className="name">{want.name}</h2>
                           </div>
-                          <h2 className="name">{want.name}</h2>
-                        </div>
-                        <div className="meta">
-                          <div className="block">
-                            <h3>progress</h3>
-                            <p>
-                              <span className="dollar-symbol">$</span>
-                              <CountUp
-                                ref={progress => {
-                                  this.progress = progress
-                                }}
-                                start={0}
-                                end={want.progress / 100}
-                                duration={5}
-                                useEasing={true}
+                        )}
+                        {want.completed && (
+                          <div className="top">
+                            <div
+                              className="image"
+                              id={want.wallpaper}
+                              style={{
+                                background: `url(${
+                                  want.wallpaper
+                                }) center / cover no-repeat`
+                              }}
+                            />
+                            <div className="ribbon" />
+                            <div className="percent">
+                              <p className="text -done">Complete</p>
+                            </div>
+                            <h2 className="name">{want.name}</h2>
+                          </div>
+                        )}
+                        {want.progress < want.goal && (
+                          <div className="meta">
+                            <div className="progress-container">
+                              <Line
+                                percent={want.progress / want.goal * 100}
+                                strokeWidth="5"
+                                trailWidth="5"
+                                strokeColor="#6fcf97"
+                                trailColor="#e0e0e0"
+                                strokeLinecap="square"
+                                className="progress"
                               />
-                              {/* {this.simplifyNumber(want.progress / 100)} */}
-                            </p>
+                            </div>
+                            <div className="block">
+                              <h3>progress</h3>
+                              <p>
+                                <span className="dollar-symbol">$</span>
+                                {/* 1000 = 1k, first use of function*/}
+                                {want.progress / 100 < 1000 &&
+                                  oldWants.length > 0 && (
+                                    <CountUp
+                                      start={oldWants[i].progress / 100}
+                                      end={want.progress / 100}
+                                      duration={2.75}
+                                      useEasing={true}
+                                    />
+                                  )}
+                                {want.progress / 100 < 1000 &&
+                                  oldWants.length === 0 &&
+                                  want.progress / 100}
+                                {want.progress / 100 >= 1000 &&
+                                  simplifyNumber(want.progress / 100)}
+                              </p>
+                            </div>
+                            <div className="block">
+                              <h3>goal</h3>
+                              <p>
+                                <span className="dollar-symbol">$</span>
+                                {simplifyNumber(want.goal / 100)}
+                              </p>
+                            </div>
                           </div>
-                          <div className="block">
-                            <h3>goal</h3>
-                            <p>
-                              <span className="dollar-symbol">$</span>
-                              {this.simplifyNumber(want.goal / 100)}
-                            </p>
+                        )}
+                        {want.completed && (
+                          <div className="meta -done">
+                            <div className="progress-container">
+                              <Line
+                                percent={100}
+                                strokeWidth="5"
+                                trailWidth="5"
+                                strokeColor="#f2c94c"
+                                trailColor="#e0e0e0"
+                                strokeLinecap="square"
+                                className="progress"
+                              />
+                            </div>
+                            <div className="block">
+                              <h3>progress</h3>
+                              <p>
+                                <span className="dollar-symbol">$</span>
+                                {oldWants.length > 0 &&
+                                  // {oldWants[i] !== undefined &&
+                                  want.progress / 100 < 1000 && (
+                                    <CountUp
+                                      start={oldWants[i].progress / 100}
+                                      end={want.progress / 100}
+                                      duration={2.75}
+                                      useEasing={true}
+                                    />
+                                  )}
+                                {oldWants[i] === undefined && (
+                                  <CountUp
+                                    start={0}
+                                    end={want.progress / 100}
+                                    duration={2.75}
+                                    useEasing={true}
+                                  />
+                                )}
+                                {want.progress / 100 >= 1000 &&
+                                  simplifyNumber(want.progress / 100)}
+                              </p>
+                            </div>
+                            <div className="block">
+                              <h3>goal</h3>
+                              <p>
+                                <span className="dollar-symbol">$</span>
+                                {simplifyNumber(want.goal / 100)}
+                              </p>
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </Link>
                     ))}
                   </div>
@@ -330,7 +381,7 @@ class DashboardPage extends Component {
                           <h3>payment</h3>
                           <p>
                             <span className="dollar-symbol">$</span>
-                            {this.simplifyNumber(need.payment)}
+                            {simplifyNumber(need.payment)}
                           </p>
                         </div>
                         <div className="block">
@@ -389,14 +440,14 @@ class DashboardPage extends Component {
                           <h3>progress</h3>
                           <p>
                             <span className="dollar-symbol">$</span>
-                            {this.simplifyNumber(want.progress / 100)}
+                            {simplifyNumber(want.progress / 100)}
                           </p>
                         </div>
                         <div className="block">
                           <h3>goal</h3>
                           <p>
                             <span className="dollar-symbol">$</span>
-                            {this.simplifyNumber(want.goal / 100)}
+                            {simplifyNumber(want.goal / 100)}
                           </p>
                         </div>
                       </div>
@@ -446,7 +497,7 @@ class DashboardPage extends Component {
                           <h3>payment</h3>
                           <p>
                             <span className="dollar-symbol">$</span>
-                            {this.simplifyNumber(need.payment)}
+                            {simplifyNumber(need.payment)}
                           </p>
                         </div>
                         <div className="block">
@@ -477,8 +528,8 @@ const mapStateToProps = state => ({
   email: state.auth.email,
   newPoints: state.app.newPoints,
   wants: state.wants.newWants,
-  needs: state.needs.newNeeds,
   oldWants: state.wants.oldWants,
+  needs: state.needs.newNeeds,
   oldNeeds: state.needs.oldNeeds
 })
 

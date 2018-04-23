@@ -1,42 +1,256 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Line } from 'rc-progress'
+import AutosizeInput from 'react-input-autosize'
+import numeral from 'numeral'
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from 'reactstrap'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import fontawesome from '@fortawesome/fontawesome'
+
 import Gallery from './Gallery.jsx'
 import { startSetUser } from '../actions/app'
+import { updateWant } from '../actions/wants'
+import { loadModal } from '../actions/modal'
+import { SHARE_MODAL } from '../constants/modaltypes'
 
 export class WantsPage extends Component {
-  // componentDidMount = () => {
-  //   this.props.startSetUser({ email: this.props.email })
+  state = {
+    dropdownOpen: false,
+    shareModalOpened: false,
+    editMode: false,
+    name: this.props.want.name,
+    percent: this.props.want.percent,
+    goal: this.props.want.goal,
+    description: this.props.want.description
+  }
+
+  // onFieldChange = ({ target }) => {
+  //   this.setState({
+  //     [target.name]: target.value
+  //   })
   // }
+
+  showShareModal = () => this.props.loadModal(SHARE_MODAL)
+
+  onNameChange = ({ target }) => this.setState({ name: target.value })
+
+  incrementPercent = () =>
+    this.setState(prevState => ({ percent: prevState.percent + 1 }))
+
+  decrementPercent = () =>
+    this.setState(prevState => ({ percent: prevState.percent - 1 }))
+
+  toggleDropdown = () =>
+    this.setState({ dropdownOpen: !this.state.dropdownOpen })
+
+  activateEditMode = () => this.setState({ editMode: true })
+
+  deactivateEditMode = () =>
+    this.setState({ editMode: false, percent: this.props.want.percent })
+
+  onSave = () => {
+    const { _id } = this.props.want
+    const { email, updateWant } = this.props
+    const { name, percent, goal, description } = this.state
+
+    const data = {
+      _id,
+      email,
+      name,
+      percent,
+      description,
+      goal
+    }
+
+    updateWant(data).then(() => this.deactivateEditMode())
+  }
 
   render = () => {
     // _id = id of specific want
-    const { name, goal, percent, _id, description } = this.props.want
+    const {
+      name,
+      goal,
+      progress,
+      completed,
+      percent,
+      _id,
+      description,
+      shared
+    } = this.props.want
+
+    const {
+      editMode,
+      name: stateName,
+      percent: statePercent,
+      goal: stateGoal,
+      description: stateDescription
+    } = this.state
 
     return (
       <div className="want-page">
         <header className="want-header">
-          <div className="primary-header">
-            <h2 className="name">{name}</h2>
-          </div>
+          {!editMode && (
+            <div className="primary-header" onMouseLeave={this.turnOffDropdown}>
+              <h2 className="name">{name}</h2>
+              <Dropdown
+                isOpen={this.state.dropdownOpen}
+                toggle={this.toggleDropdown}
+                className="dropdown-root options"
+                style={{ opacity: this.state.dropdownOpen ? 1 : 0 }}
+              >
+                <DropdownToggle className="dropdown-toggle">
+                  <FontAwesomeIcon icon="ellipsis-h" className="ellipsis" />
+                </DropdownToggle>
+                <DropdownMenu
+                  left="true"
+                  className="dropdown-menu"
+                  style={{
+                    display:
+                      this.state.dropdownOpen === false ? 'none' : 'block'
+                  }}
+                >
+                  <DropdownItem
+                    className="dropdown-item"
+                    onClick={this.activateEditMode}
+                  >
+                    Edit
+                  </DropdownItem>
+                  <DropdownItem className="dropdown-item">
+                    Delete account
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+          )}
+          {editMode && (
+            <div className="primary-header-edit">
+              <div className="title">
+                <p className="text">Edit Mode</p>
+                <FontAwesomeIcon
+                  icon="times"
+                  className="close"
+                  onClick={this.deactivateEditMode}
+                />
+              </div>
+
+              <AutosizeInput
+                className="name"
+                value={stateName}
+                onChange={this.onNameChange}
+                style={{ fontSize: 24 }}
+              />
+              <button className="save" onClick={this.onSave}>
+                Save Changes
+              </button>
+            </div>
+          )}
           <div className="want-subhead">
-            <div className="description">
-              <h3>Description</h3>
-              {description.length > 0 ? (
-                <p>{description}</p>
-              ) : (
-                <p>You have not given this account a description.</p>
-              )}
-            </div>
-            <div className="percent">
-              <h3>Percent</h3>
-              <p>{percent}</p>
-            </div>
+            {!completed && (
+              <div className="progress-container">
+                <Line
+                  percent={progress / goal * 100}
+                  strokeWidth="5"
+                  trailWidth="5"
+                  strokeColor="#6fcf97"
+                  trailColor="#e0e0e0"
+                  strokeLinecap="square"
+                  className="progress"
+                />
+                <p className="number">{numeral(goal / 100).format('$0,0')}</p>
+              </div>
+            )}
+            {completed && (
+              <div className="progress-container">
+                <Line
+                  percent={progress / goal * 100}
+                  strokeWidth="5"
+                  trailWidth="5"
+                  strokeColor="#f2c94c"
+                  trailColor="#e0e0e0"
+                  strokeLinecap="square"
+                  className="progress"
+                />
+                <p className="number">Complete!</p>
+              </div>
+            )}
           </div>
         </header>
         <main className="want-body">
-          <div className="goal">
-            <h3>Goal</h3>
-            <p>{goal}</p>
+          {!editMode && (
+            <div className="percent">
+              <h3 className="title">Percent</h3>
+              <div className="percent-group">
+                <p className="number">{percent}</p>
+                <span className="symbol">%</span>
+              </div>
+            </div>
+          )}
+          {editMode && (
+            <div className="percent">
+              <h3 className="title">Percent</h3>
+              <div className="percent-group">
+                <div
+                  className="angle angleleft"
+                  onClick={this.decrementPercent}
+                >
+                  <FontAwesomeIcon icon="angle-left" className="icon" />
+                </div>
+                <p className="number">{statePercent}</p>
+                <span className="symbol">%</span>
+                <div
+                  className="angle angleright"
+                  onClick={this.incrementPercent}
+                >
+                  <FontAwesomeIcon icon="angle-right" className="icon" />
+                </div>
+              </div>
+            </div>
+          )}
+          {!editMode && (
+            <div className="description">
+              <h3 className="title">Description</h3>
+              {description.length > 0 ? (
+                <p className="text">{description}</p>
+              ) : (
+                <p className="text">
+                  You have not given this account a description.
+                </p>
+              )}
+            </div>
+          )}
+          {editMode && (
+            <div className="description">
+              <h3 className="title">Description</h3>
+              {description.length > 0 ? (
+                <textarea
+                  className="text-edit"
+                  value={description}
+                  data-gramm_editor="false"
+                />
+              ) : (
+                <p className="text">
+                  You have not given this account a description.
+                </p>
+              )}
+            </div>
+          )}
+          <div className="shared">
+            <h3 className="title">Shared</h3>
+            {shared.length === 0 ? (
+              <div className="invite-container" onClick={this.showShareModal}>
+                <div className="invite">
+                  <FontAwesomeIcon icon="plus" />
+                </div>
+                <p className="subhead">add</p>
+              </div>
+            ) : (
+              <p className="text">You have shared this account with people.</p>
+            )}
           </div>
           <div className="gallery">
             <Gallery
@@ -53,7 +267,11 @@ export class WantsPage extends Component {
 
 const mapStateToProps = (state, props) => ({
   email: state.auth.email,
-  want: state.wants.find(want => want._id === props.match.params.id)
+  want: state.wants.newWants.find(want => want._id === props.match.params.id)
 })
 
-export default connect(mapStateToProps, { startSetUser })(WantsPage)
+export default connect(mapStateToProps, {
+  startSetUser,
+  updateWant,
+  loadModal
+})(WantsPage)
