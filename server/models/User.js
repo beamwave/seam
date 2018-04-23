@@ -119,6 +119,10 @@ const schema = new Schema(
       type: String,
       default: ''
     },
+    available: {
+      type: Number,
+      default: 4
+    },
     photo: {
       type: String,
       default:

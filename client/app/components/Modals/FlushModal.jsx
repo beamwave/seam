@@ -11,7 +11,6 @@ export class FlushModal extends Component {
 
   onNuke = e => {
     const { email, startNuke } = this.props
-    console.log('email: ', email)
 
     e.preventDefault()
     startNuke({ email: email })

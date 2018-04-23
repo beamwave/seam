@@ -58,7 +58,15 @@ class DashboardPage extends Component {
   }
 
   render = () => {
-    const { editMode, newPoints, wants, needs, oldWants, oldNeeds } = this.props
+    const {
+      editMode,
+      newPoints,
+      wants,
+      needs,
+      oldWants,
+      oldNeeds,
+      available
+    } = this.props
 
     let renderContainer = false
 
@@ -125,7 +133,9 @@ class DashboardPage extends Component {
             <div>
               <div className="header">
                 <h2>Wants</h2>
-                <p>({this.props.wants.length})</p>
+                <p>
+                  ({this.props.wants.length}/{available})
+                </p>
               </div>
               {/* if number of wants equals 0 (warning message) */}
               {wants.length === 0 && (
@@ -523,9 +533,10 @@ class DashboardPage extends Component {
 }
 
 const mapStateToProps = state => ({
+  email: state.auth.email,
   sidebarOpen: state.sidebarOpen,
   editMode: state.app.editMode,
-  email: state.auth.email,
+  available: state.app.available,
   newPoints: state.app.newPoints,
   wants: state.wants.newWants,
   oldWants: state.wants.oldWants,

@@ -2,9 +2,11 @@ import React from 'react'
 import { CardExpiryElement } from 'react-stripe-elements'
 
 export const ExpirationSection = () => (
-  <label>
-    Expiration date
-    <CardExpiryElement />
+  <label className="input-group">
+    <label htmlFor="exp" className="title">
+      Exp
+    </label>
+    <CardExpiryElement className="input" name="exp" />
   </label>
 )
 

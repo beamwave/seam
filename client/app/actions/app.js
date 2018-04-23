@@ -76,6 +76,16 @@ export const startInvite = data => dispatch =>
     dispatch(invite(user))
   })
 
+export const purchase = user => ({
+  type: 'PURCHASE',
+  user
+})
+
+export const startPurchase = data => dispatch =>
+  api.user.purchase(data).then(user => {
+    dispatch(purchase(user))
+  })
+
 export const wipe = user => ({
   type: 'WIPE',
   user

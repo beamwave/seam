@@ -19,23 +19,23 @@ module.exports = app => {
 
           const revenue = want.progress + haul
 
-          console.log(
-            `
-            ------------------------------------------------------------
-            stats:
-            name : ${want.name}
-            input (req.body.income): ${req.body.income}
-            multiplier (want.percent / 100): ${multiplier}
-            
-            want.goal: ${want.goal}
+          // console.log(
+          //   `
+          //   ------------------------------------------------------------
+          //   stats:
+          //   name : ${want.name}
+          //   input (req.body.income): ${req.body.income}
+          //   multiplier (want.percent / 100): ${multiplier}
 
-            want.progress: ${want.progress}
-            haul (input * multiplier): ${haul} 
-            revenue (want.progress + haul): ${revenue}
-            `
-          )
+          //   want.goal: ${want.goal}
 
-          console.log('\nis revenue > want.goal? ', revenue > want.goal)
+          //   want.progress: ${want.progress}
+          //   haul (input * multiplier): ${haul}
+          //   revenue (want.progress + haul): ${revenue}
+          //   `
+          // )
+
+          // console.log('\nis revenue > want.goal? ', revenue > want.goal)
           if (revenue > want.goal) {
             // add this accounts points to global
             user.points += want.percent
@@ -45,23 +45,23 @@ module.exports = app => {
 
             // store excess cash
             const leftover = revenue - want.goal
-            console.log(
-              `leftover (revenue (${revenue}) - want.goal (${
-                want.goal
-              })):  ${leftover}`
-            )
+            // console.log(
+            //   `leftover (revenue (${revenue}) - want.goal (${
+            //     want.goal
+            //   })):  ${leftover}`
+            // )
 
             // add excess cash to global
             user.undistributedCash += leftover
 
             // set progress exactly equal to goal
             want.progress += haul - leftover
-            console.log(
-              `want.progress += (haul - leftover): 
-              want.progress: ${want.progress} += 
-              haul: ${haul} - 
-              leftover: ${leftover}`
-            )
+            // console.log(
+            //   `want.progress += (haul - leftover):
+            //   want.progress: ${want.progress} +=
+            //   haul: ${haul} -
+            //   leftover: ${leftover}`
+            // )
 
             // set want as finished
             want.completed = true
@@ -79,12 +79,19 @@ module.exports = app => {
         const multiplier = need.percent / 100
         const haul = input * multiplier
 
-        console.log('need haul: ', haul)
+        // console.log('need haul: ', haul)
 
         need.total += haul
       })
 
       user.save().then(user => res.json(user))
+    })
+  })
+
+  app.post('/api/purchase', (req, res) => {
+    const { email } = req.body
+    User.findOne({ email }).then(user => {
+      console.log('user found.')
     })
   })
 

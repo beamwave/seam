@@ -34,6 +34,8 @@ export default {
 
     invite: data => axios.post('/api/invite', data).then(res => res.data),
 
+    purchase: data => axios.post('/api/purchase', data).then(res => res.data),
+
     updateAccounts: data =>
       axios.post('/api/update', data).then(res => res.data),
 

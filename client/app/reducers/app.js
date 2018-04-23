@@ -6,7 +6,8 @@ const initialState = {
   oldPoints: 100,
   newPoints: 100,
   oldUndistributedCash: 0,
-  newUndistributedCash: 0
+  newUndistributedCash: 0,
+  available: 4
 }
 
 export const appReducer = (state = initialState, action = {}) => {
@@ -33,22 +34,6 @@ export const appReducer = (state = initialState, action = {}) => {
         newPoints: action.user.points
       }
 
-    case 'WIPE':
-      return {
-        ...state,
-        oldUndistributedCash: state.newUndistributedCash,
-        newUndistributedCash: action.user.undistributedCash
-      }
-
-    case 'NUKE':
-      return {
-        ...state,
-        oldPoints: 100,
-        newPoints: 100,
-        oldUndistributedCash: state.newUndistributedCash,
-        newUndistributedCash: action.user.undistributedCash
-      }
-
     case 'CREATE_WANT':
       return {
         ...state,
@@ -65,6 +50,25 @@ export const appReducer = (state = initialState, action = {}) => {
 
     case 'IMAGES':
       return { ...state, wallpaper: action.user.wallpaper }
+
+    case 'PURCHASE':
+      return { ...state, available: action.user.available }
+
+    case 'WIPE':
+      return {
+        ...state,
+        oldUndistributedCash: state.newUndistributedCash,
+        newUndistributedCash: action.user.undistributedCash
+      }
+
+    case 'NUKE':
+      return {
+        ...state,
+        oldPoints: 100,
+        newPoints: 100,
+        oldUndistributedCash: state.newUndistributedCash,
+        newUndistributedCash: action.user.undistributedCash
+      }
 
     default:
       return state

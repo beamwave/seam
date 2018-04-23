@@ -19,20 +19,16 @@
 .buy-form
   display: grid
 
-  > .annotation
-    display: inline-block
-    justify-self: center
-    margin: 20px 0 0
-    height: 40px
-    width: 275px
-    line-height: 1.7 !important
+  .annotation
+    justify-self: start
+    margin: 8px 0
     font: italic 400 $s Amiko, Helvetica, sans-serif
     color: darken($buttongrey, 5%)
 
 // percent and goal
 .split-card-data
   display: grid
-  grid-template-columns: 1fr 1fr
+  grid-template-columns: max-content 1fr
   grid-column-gap: 30px
 
 
@@ -42,7 +38,7 @@
   grid-template-columns: repeat(2, max-content)
   grid-gap: 10px
   justify-self: end
-  margin: 0
+  margin: 25px 0 0
 
   > .cancel
     border: none
@@ -56,7 +52,7 @@
     padding: 5px 15px
     border: none
     color: $white
-    background: $want-green-text
+    background: $need-blue-text
     transition: 300ms all
     &:hover
       transition: 300ms

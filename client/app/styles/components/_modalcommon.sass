@@ -23,11 +23,12 @@
 .input-group
   display: grid
   position: relative
+  align-content: center
   width: 100%
   margin-top: 10px
 
   // common
-  input, textarea
+  input, textarea, .input
     padding: 5px 10px
     border: none
     color: $titlegrey
@@ -114,6 +115,50 @@
     right: 20px
     pointer-events: none
     color: $buttongrey
+
+  > .purchase
+    padding: 8px 9px
+    height: 35px
+    // border: 1px solid red
+  
+  > .quantity
+    height: 35px
+
+  > .stats
+    position: relative
+    justify-self: center
+    align-self: center
+    margin: 15px
+    height: 100px
+    width: 100px
+    border-radius: 50%
+    background-color: $need-blue
+
+    > .title
+      position: absolute
+      top: 0%
+      width: 100%
+      color: $need-blue-text
+      font: 600 14px Amiko, Helvetica, sans-serif
+
+    > .text
+      position: absolute
+      width: 100%
+      margin: 0
+      padding: 5px 0 0
+      top: 24%
+      vertical-align: center
+      color: $off-white
+      font: 400 20px Amiko, Helvetica, sans-serif
+    
+    > .subtext
+      position: absolute
+      top: 58%
+      margin: 0
+      width: 100%
+      text-transform: uppercase
+      color: $need-blue-dark
+      font: 600 12px Amiko, Helvetica, sans-serif
 
 
 .center-group

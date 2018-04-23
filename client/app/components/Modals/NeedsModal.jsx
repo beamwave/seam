@@ -62,7 +62,7 @@ export class NeedsModal extends Component {
               <label className="title" htmlFor="name">
                 Name
               </label>
-              <input type="text" name="name" />
+              <input type="text" name="name" autoFocus />
             </div>
 
             <div className="needs-numerical-data">
