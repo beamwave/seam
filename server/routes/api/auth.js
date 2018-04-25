@@ -32,30 +32,26 @@ module.exports = app => {
   app.post('/api/signup', async (req, res, next) => {
     const { username, email, password } = req.body.user
 
-    // const customer = await stripe.customers.create({ email })
-    // console.log('await customer created by stripe:')
-    // console.log(customer)
-
     const user = new User({ username, email })
 
     // user.stripe = customer.id
 
     user.setPassword(password)
-    console.log('password set.')
+    // console.log('password set.')
 
     user.setVerificationToken()
-    console.log('token set.')
+    // console.log('token set.')
 
     user
       .save()
       .then(async user => {
         const customer = await stripe.customers.create({ email })
-        console.log('stripe customer created:')
-        console.log(customer)
         user.stripe = customer.id
 
-        // sendConfirmationEmail(user)
-        res.json({ user: user.toAuthJSON() })
+        user.save().then(user => {
+          // sendConfirmationEmail(user)
+          res.json({ user: user.toAuthJSON() })
+        })
       })
       .catch(err => {
         console.log('YOUR ERROR: ', err.errors.email.message)

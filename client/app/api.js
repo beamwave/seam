@@ -15,11 +15,13 @@ export default {
     //     res => res.data.user
     //   )
     payWith: token =>
-      axios.post('/api/stripe', token, {
-        headers: {
-          Authorization: 'Bearer '.concat(localStorage.getItem('appJWT'))
-        }
-      }),
+      axios
+        .post('/api/stripe', token, {
+          headers: {
+            Authorization: 'Bearer '.concat(localStorage.getItem('appJWT'))
+          }
+        })
+        .then(res => res.data),
 
     updateGeneral: file =>
       axios.post('/api/general_settings', file).then(res => res.data),
@@ -33,8 +35,6 @@ export default {
     transfer: data => axios.post('/api/transfer', data).then(res => res.data),
 
     invite: data => axios.post('/api/invite', data).then(res => res.data),
-
-    purchase: data => axios.post('/api/purchase', data).then(res => res.data),
 
     updateAccounts: data =>
       axios.post('/api/update', data).then(res => res.data),

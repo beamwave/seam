@@ -4,33 +4,41 @@ import User from '../../models/User.js'
 
 module.exports = app => {
   app.post('/api/stripe', (req, res) => {
+    const { email, qty, id, key } = req.body
+
     // get jwt token
     const userToken = req.headers['authorization'].split(' ')[1]
 
     // find user based on jwt token
     // User.findOne({ verifiedToken: userToken }).then(async user => {
-    User.findOne({ email: req.body.email }).then(async user => {
+    User.findOne({ email }).then(async user => {
       if (user.stripe.length > 0) {
         // attempt to add card information to stripe customer
         try {
-          console.log(user.stripe)
           const source = await stripe.customers.update(user.stripe, {
-            source: req.body.id
+            source: id
           })
         } catch (e) {
           console.log(`customer update error: ${e}`)
         }
-
         // attempt to charge stripe customer with newly added card
         try {
+          // find customer
+          const recipient = await stripe.customers.retrieve(user.stripe)
           const charge = await stripe.charges.create({
-            amount: 99,
+            amount: (qty - 1) * 100 + 99,
             currency: 'usd',
             description: '0.99¢ for account',
-            customer: user.stripe
+            customer: recipient.id
           })
 
-          console.log(`charge successful.`)
+          if (user.available + +qty <= 96) {
+            user.available += +qty
+          }
+
+          const patron = await user.save()
+          console.log('user saved. Now sending to client...')
+          res.json(patron)
         } catch (e) {
           console.log(`customer charge error: ${e}`)
         }

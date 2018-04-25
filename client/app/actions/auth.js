@@ -19,6 +19,7 @@ export const logout = () => ({
 // TODO: handle logout
 export const startLogout = () => dispatch => {
   localStorage.removeItem('appJWT')
+  localStorage.removeItem('persist:root')
   dispatch(logout())
 }
 
@@ -28,10 +29,14 @@ export const startSignup = data => dispatch =>
     dispatch(login(user))
   })
 
-export const handleToken = token => async dispatch => {
-  const res = await api.user.payWith(token)
+export const purchase = user => ({
+  type: 'PURCHASE',
+  user
+})
 
-  // dispatch({ type: FETCH_USER, payload: res.data })
+export const handleToken = token => async dispatch => {
+  const user = await api.user.payWith(token)
+  dispatch(purchase(user))
 }
 
 export const updateGeneral = data => ({

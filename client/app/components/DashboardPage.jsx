@@ -133,9 +133,7 @@ class DashboardPage extends Component {
             <div>
               <div className="header">
                 <h2>Wants</h2>
-                <p>
-                  ({this.props.wants.length}/{available})
-                </p>
+                <p>({this.props.wants.length})</p>
               </div>
               {/* if number of wants equals 0 (warning message) */}
               {wants.length === 0 && (

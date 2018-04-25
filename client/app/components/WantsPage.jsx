@@ -24,8 +24,9 @@ export class WantsPage extends Component {
     shareModalOpened: false,
     editMode: false,
     name: this.props.want.name,
+    goal: '',
+    // goal: this.props.want.goal,
     percent: this.props.want.percent,
-    goal: this.props.want.goal,
     description: this.props.want.description
   }
 
@@ -35,9 +36,21 @@ export class WantsPage extends Component {
   //   })
   // }
 
-  showShareModal = () => this.props.loadModal(SHARE_MODAL)
+  onSubmitChanges = e => {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      this.onSave()
+    }
+  }
+
+  listenKeyboard = e => {
+    if (e.key === 'Escape' || e.keyCode === 27) {
+      this.deactivateEditMode()
+    }
+  }
 
   onNameChange = ({ target }) => this.setState({ name: target.value })
+
+  showShareModal = () => this.props.loadModal(SHARE_MODAL)
 
   incrementPercent = () =>
     this.setState(prevState => ({ percent: prevState.percent + 1 }))
@@ -48,23 +61,38 @@ export class WantsPage extends Component {
   toggleDropdown = () =>
     this.setState({ dropdownOpen: !this.state.dropdownOpen })
 
-  activateEditMode = () => this.setState({ editMode: true })
+  activateEditMode = () => {
+    this.setState({ editMode: true })
+    window.addEventListener('keydown', this.listenKeyboard, true)
+  }
 
-  deactivateEditMode = () =>
+  deactivateEditMode = () => {
     this.setState({ editMode: false, percent: this.props.want.percent })
+    window.removeEventListener('keydown', this.listenKeyboard, true)
+  }
+
+  onGoalChange = ({ target }) => {
+    const regex = /^\d{1,}(\.\d{0,2})?$/
+
+    if (!target.value || target.value.match(regex)) {
+      this.setState(() => ({ goal: target.value }))
+    }
+  }
 
   onSave = () => {
     const { _id } = this.props.want
     const { email, updateWant } = this.props
     const { name, percent, goal, description } = this.state
 
+    const updatedGoal = +goal === 0 ? this.props.want.goal : +goal
+
     const data = {
       _id,
       email,
       name,
+      goal: updatedGoal * 100,
       percent,
-      description,
-      goal
+      description
     }
 
     updateWant(data).then(() => this.deactivateEditMode())
@@ -139,7 +167,7 @@ export class WantsPage extends Component {
               </div>
 
               <AutosizeInput
-                className="name"
+                className="name-edit"
                 value={stateName}
                 onChange={this.onNameChange}
                 style={{ fontSize: 24 }}
@@ -161,7 +189,27 @@ export class WantsPage extends Component {
                   strokeLinecap="square"
                   className="progress"
                 />
-                <p className="number">{numeral(goal / 100).format('$0,0')}</p>
+                {!editMode && (
+                  <div className="numerical-container">
+                    <p className="progression">{progress / 100} /</p>
+                    <p className="number">
+                      {numeral(goal / 100).format('$0,0')}
+                    </p>
+                  </div>
+                )}
+                {editMode && (
+                  <div className="numerical-container">
+                    <p className="progression">{progress / 100}/</p>
+                    <AutosizeInput
+                      className="number-edit"
+                      style={{ fontSize: 12 }}
+                      placeholder={numeral(goal / 100).format('$0,0')}
+                      onChange={this.onGoalChange}
+                      onKeyPress={this.onSubmitChanges}
+                      value={stateGoal}
+                    />
+                  </div>
+                )}
               </div>
             )}
             {completed && (

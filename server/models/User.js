@@ -174,12 +174,10 @@ schema.methods.isValidPassword = function isValidPassword(password) {
 schema.methods.generateJWT = function generateJWT() {
   return jwt.sign(
     {
-      email: this.email,
-      wants: this.wants
-      // images: this.images
+      email: this.email
     },
     process.env.JWT_SECRET
-    // { expiresIn: 2 } // fix check for expired tokens! (redux middleware)
+    // { expiresIn: 15 * 60 } // fix check for expired tokens! (redux middleware)
   )
 }
 
