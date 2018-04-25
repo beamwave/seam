@@ -76,6 +76,14 @@ export const startInvite = data => dispatch =>
     dispatch(invite(user))
   })
 
+export const deleteAccount = user => ({
+  type: 'DELETE',
+  user
+})
+
+export const startDeleteAccount = data => dispatch =>
+  api.user.deleteAccount(data).then(user => dispatch(deleteAccount(user)))
+
 export const wipe = user => ({
   type: 'WIPE',
   user

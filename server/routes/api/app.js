@@ -95,6 +95,38 @@ module.exports = app => {
     })
   })
 
+  // delete a single want or need
+  app.post('/api/delete', (req, res) => {
+    console.log('delete route hit.')
+    const { email, _id, type } = req.body
+    console.log(email, _id, type)
+    User.findOne({ email }).then(user => {
+      const percent =
+        type === 'want'
+          ? user.wants.id(_id).percent
+          : user.needs.id(_id).percent
+
+      const progress =
+        type === 'want'
+          ? user.wants.id(_id).progress
+          : user.needs.id(_id).progress
+
+      user.wants =
+        type === 'want'
+          ? user.wants.filter((want, i) => want.id !== _id)
+          : user.wants
+      user.needs =
+        type === 'want'
+          ? user.needs.filter((need, i) => need.id !== _id)
+          : user.needs
+
+      user.undistributedCash += progress
+      user.points += percent
+
+      user.save().then(user => res.json(user))
+    })
+  })
+
   app.post('/api/wipe', (req, res) => {
     User.findOne({ email: req.body.email }).then(user => {
       user.wants.forEach(want => (want.progress = 0))

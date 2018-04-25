@@ -92,6 +92,7 @@ class DashboardPage extends Component {
                   className="input"
                   type="text"
                   placeholder={`create want or need from sidebar`}
+                  autoComplete="off"
                   disabled
                 />
               )}
@@ -102,6 +103,7 @@ class DashboardPage extends Component {
                   className="input"
                   type="text"
                   placeholder={`${newPoints} points still need to be used`}
+                  autoComplete="off"
                   disabled
                 />
               )}
@@ -109,10 +111,11 @@ class DashboardPage extends Component {
               <input
                 className="input"
                 type="text"
-                placeholder="Enter income"
                 name="income"
+                placeholder="Enter income"
                 value={this.state.income}
                 onChange={this.onIncomeChange}
+                autoComplete="off"
               />
             )}
 

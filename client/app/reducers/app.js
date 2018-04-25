@@ -54,6 +54,15 @@ export const appReducer = (state = initialState, action = {}) => {
     case 'PURCHASE':
       return { ...state, available: action.user.available }
 
+    case 'DELETE':
+      return {
+        ...state,
+        oldPoints: state.newPoints,
+        newPoints: action.user.points,
+        oldUndistributedCash: state.newUndistributedCash,
+        newUndistributedCash: action.user.undistributedCash
+      }
+
     case 'WIPE':
       return {
         ...state,

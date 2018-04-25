@@ -56,6 +56,12 @@ export const needsReducer = (state = initialState, action = {}) => {
         newNeeds: action.user.needs
       }
 
+    case 'DELETE':
+      return {
+        oldNeeds: action.user.needs,
+        newNeeds: action.user.needs
+      }
+
     case 'WIPE':
       return {
         oldNeeds: action.user.needs,

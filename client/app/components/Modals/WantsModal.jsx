@@ -49,7 +49,7 @@ export class WantsModal extends Component {
             />
           </div>
           <p className="remaining-points">
-            <span>{this.props.newPoints}</span> points remaining
+            <span>{this.props.newPoints}</span> percentage points remaining
           </p>
           <form
             className="wants-form"

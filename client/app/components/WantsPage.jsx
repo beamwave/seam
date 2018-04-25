@@ -13,7 +13,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 
 import Gallery from './Gallery.jsx'
-import { startSetUser } from '../actions/app'
+import { startSetUser, startDeleteAccount } from '../actions/app'
 import { updateWant } from '../actions/wants'
 import { loadModal } from '../actions/modal'
 import { SHARE_MODAL } from '../constants/modaltypes'
@@ -25,16 +25,9 @@ export class WantsPage extends Component {
     editMode: false,
     name: this.props.want.name,
     goal: '',
-    // goal: this.props.want.goal,
     percent: this.props.want.percent,
     description: this.props.want.description
   }
-
-  // onFieldChange = ({ target }) => {
-  //   this.setState({
-  //     [target.name]: target.value
-  //   })
-  // }
 
   onSubmitChanges = e => {
     if (e.key === 'Enter' || e.keyCode === 13) {
@@ -47,8 +40,6 @@ export class WantsPage extends Component {
       this.deactivateEditMode()
     }
   }
-
-  onNameChange = ({ target }) => this.setState({ name: target.value })
 
   showShareModal = () => this.props.loadModal(SHARE_MODAL)
 
@@ -71,12 +62,28 @@ export class WantsPage extends Component {
     window.removeEventListener('keydown', this.listenKeyboard, true)
   }
 
+  onNameChange = ({ target }) => this.setState({ name: target.value })
+
   onGoalChange = ({ target }) => {
     const regex = /^\d{1,}(\.\d{0,2})?$/
 
     if (!target.value || target.value.match(regex)) {
       this.setState(() => ({ goal: target.value }))
     }
+  }
+
+  onDeleteAccount = () => {
+    const { _id } = this.props.want
+    const { email, startDeleteAccount } = this.props
+
+    const data = {
+      _id,
+      email,
+      type: 'want'
+    }
+
+    this.props.history.push('/')
+    startDeleteAccount(data)
   }
 
   onSave = () => {
@@ -124,35 +131,42 @@ export class WantsPage extends Component {
         <header className="want-header">
           {!editMode && (
             <div className="primary-header" onMouseLeave={this.turnOffDropdown}>
-              <h2 className="name">{name}</h2>
-              <Dropdown
-                isOpen={this.state.dropdownOpen}
-                toggle={this.toggleDropdown}
-                className="dropdown-root options"
-                style={{ opacity: this.state.dropdownOpen ? 1 : 0 }}
-              >
-                <DropdownToggle className="dropdown-toggle">
-                  <FontAwesomeIcon icon="ellipsis-h" className="ellipsis" />
-                </DropdownToggle>
-                <DropdownMenu
-                  left="true"
-                  className="dropdown-menu"
-                  style={{
-                    display:
-                      this.state.dropdownOpen === false ? 'none' : 'block'
-                  }}
+              <div className="content-container">
+                <h2 className="name">{name}</h2>
+                <Dropdown
+                  isOpen={this.state.dropdownOpen}
+                  toggle={this.toggleDropdown}
+                  className="dropdown-root options"
+                  style={{ opacity: this.state.dropdownOpen ? 1 : 0 }}
                 >
-                  <DropdownItem
-                    className="dropdown-item"
-                    onClick={this.activateEditMode}
+                  <DropdownToggle className="dropdown-toggle">
+                    <FontAwesomeIcon icon="ellipsis-h" className="ellipsis" />
+                  </DropdownToggle>
+                  <DropdownMenu
+                    left="true"
+                    className="dropdown-menu"
+                    style={{
+                      display:
+                        this.state.dropdownOpen === false ? 'none' : 'block'
+                    }}
                   >
-                    Edit
-                  </DropdownItem>
-                  <DropdownItem className="dropdown-item">
-                    Delete account
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+                    {!completed && (
+                      <DropdownItem
+                        className="dropdown-item"
+                        onClick={this.activateEditMode}
+                      >
+                        Edit
+                      </DropdownItem>
+                    )}
+                    <DropdownItem
+                      className="dropdown-item delete-button"
+                      onClick={this.onDeleteAccount}
+                    >
+                      Delete account
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </div>
             </div>
           )}
           {editMode && (
@@ -191,7 +205,7 @@ export class WantsPage extends Component {
                 />
                 {!editMode && (
                   <div className="numerical-container">
-                    <p className="progression">{progress / 100} /</p>
+                    <p className="progression">${progress / 100} /</p>
                     <p className="number">
                       {numeral(goal / 100).format('$0,0')}
                     </p>
@@ -199,7 +213,7 @@ export class WantsPage extends Component {
                 )}
                 {editMode && (
                   <div className="numerical-container">
-                    <p className="progression">{progress / 100}/</p>
+                    <p className="progression">${progress / 100}/</p>
                     <AutosizeInput
                       className="number-edit"
                       style={{ fontSize: 12 }}
@@ -223,7 +237,7 @@ export class WantsPage extends Component {
                   strokeLinecap="square"
                   className="progress"
                 />
-                <p className="number">Complete!</p>
+                <p className="complete">Complete!</p>
               </div>
             )}
           </div>
@@ -320,6 +334,7 @@ const mapStateToProps = (state, props) => ({
 
 export default connect(mapStateToProps, {
   startSetUser,
+  startDeleteAccount,
   updateWant,
   loadModal
 })(WantsPage)

@@ -53,6 +53,12 @@ export const wantsReducer = (state = {}, action = {}) => {
         newWants: action.user.wants
       }
 
+    case 'DELETE':
+      return {
+        oldWants: action.user.wants,
+        newWants: action.user.wants
+      }
+
     case 'WIPE':
       return {
         oldWants: action.user.wants,

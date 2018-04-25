@@ -36,6 +36,9 @@ export default {
 
     invite: data => axios.post('/api/invite', data).then(res => res.data),
 
+    deleteAccount: data =>
+      axios.post('/api/delete', data).then(res => res.data),
+
     updateAccounts: data =>
       axios.post('/api/update', data).then(res => res.data),
 

@@ -61,6 +61,7 @@
     "react-hot-loader": "^4.0.0",
     "react-image-gallery": "^0.8.7",
     "react-input-autosize": "^2.2.1",
+    "react-keydown": "^1.9.7",
     "react-modal": "^3.3.2",
     "react-moment": "^0.7.0",
     "react-redux": "^5.0.7",

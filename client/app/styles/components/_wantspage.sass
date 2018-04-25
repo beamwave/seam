@@ -1,4 +1,8 @@
 
+.delete-button
+  transition: 100ms all
+  &:hover
+    background-color: lighten($delete-red-bg, 5%)
 
 .numerical-container
   display: grid
@@ -12,17 +16,24 @@
   &:hover .options
       opacity: 1 !important
 
-  > .name
-    margin: 0 0 5px
-    text-align: center
-  
-  > .options
-    margin: 0 0 9px 5px
-    &:hover
-      cursor: pointer
+  > .content-container
+    display: grid
+    position: relative
+    padding: 0
+
+    > .name
+      margin: 0 0 5px
+      text-align: center
     
-  .ellipsis
-    color: $titlegrey
+    > .options
+      position: absolute
+      top: 8px
+      right: -35px
+      &:hover
+        cursor: pointer
+      
+    .ellipsis
+      color: $titlegrey
 
 
 
@@ -85,6 +96,11 @@
     > .progress
       height: 10px
       width: 20vw
+
+    > .complete
+      margin-top: 1px
+      font: 700 16px Amiko, Helvetica, sans-serif
+      color: $bronze
 
     > .numerical-container
       display: grid

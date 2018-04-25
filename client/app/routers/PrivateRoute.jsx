@@ -7,6 +7,18 @@ import Sidebar from 'react-sidebar'
 import SidebarContent from '../components/SidebarContent.jsx'
 import ModalContainer from '../components/ModalContainer.jsx'
 
+import { loadModal } from '../actions/modal'
+
+import {
+  WANTS_MODAL,
+  NEEDS_MODAL,
+  TRANSFER_MODAL,
+  DISTRIBUTE_MODAL,
+  WIPE_MODAL,
+  FLUSH_MODAL,
+  BUY_MODAL
+} from '../constants/modaltypes'
+
 import { startSetUser } from '../actions/app'
 
 const mql = window.matchMedia(`(min-width: 800px)`)
@@ -18,20 +30,48 @@ class PrivateRoute extends Component {
     sidebarOpen: false
   }
 
+  listenKeyboard = e => {
+    if ((e.ctrlKey || e.metaKey) && e.which == 69) {
+      // if (e.key === 'Meta' && e.key === 'e') {
+      alert('cmd+e pressed!')
+    }
+
+    if (e.metaKey && e.which == 74) {
+      this.showWantsModal()
+    }
+
+    if (e.metaKey && e.which == 75) {
+      this.showNeedsModal()
+    }
+  }
+
   componentWillMount = () => {
     this.props.startSetUser({ email: this.props.email })
+    window.addEventListener('keydown', this.listenKeyboard, true)
+
     mql.addListener(this.mediaQueryChanged)
     this.setState({ mql: mql, sidebarDocked: mql.matches })
   }
 
-  componentWillUnmount = () =>
+  componentWillUnmount = () => {
+    window.removeEventListener('keydown', this.listenKeyboard, true)
+
     this.state.mql.removeListener(this.mediaQueryChanged)
+  }
 
   mediaQueryChanged = () =>
     this.setState({ sidebarDocked: this.state.mql.matches })
 
   onSetSidebarOpen = () =>
     this.setState({ sidebarOpen: !this.state.sidebarOpen })
+
+  showWantsModal = () => this.props.loadModal(WANTS_MODAL)
+  showNeedsModal = () => this.props.loadModal(NEEDS_MODAL)
+  showTransferModal = () => this.props.loadModal(TRANSFER_MODAL)
+  showDistributeModal = () => this.props.loadModal(DISTRIBUTE_MODAL)
+  showWipeModal = () => this.props.loadModal(WIPE_MODAL)
+  showFlushModal = () => this.props.loadModal(FLUSH_MODAL)
+  showBuyModal = () => this.props.loadModal(BUY_MODAL)
 
   render = () => {
     const {
@@ -100,4 +140,6 @@ const mapStateToProps = state => ({
   email: state.auth.email
 })
 
-export default connect(mapStateToProps, { startSetUser })(PrivateRoute)
+export default connect(mapStateToProps, { startSetUser, loadModal })(
+  PrivateRoute
+)
