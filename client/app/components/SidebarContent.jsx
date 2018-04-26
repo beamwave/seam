@@ -35,7 +35,9 @@ export class SidebarContent extends Component {
   showBuyModal = () => this.props.loadModal(BUY_MODAL)
 
   setAdjust = () => this.setState({ buttonSet: 'adjust', activeSet: 1 })
-  setDelete = () => this.setState({ buttonSet: 'delete', activeSet: 2 })
+  setDelete = () => {
+    this.setState({ buttonSet: 'delete', activeSet: 2 })
+  }
 
   getCash = () => {
     const {

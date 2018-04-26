@@ -4,6 +4,7 @@ import crypto from 'crypto'
 import mime from 'mime'
 import User from '../../models/User'
 import mongoose from 'mongoose'
+import { URLSearchParams } from 'url'
 
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {
@@ -295,6 +296,123 @@ module.exports = app => {
       }
 
       user.save().then(user => res.json(user))
+    })
+  })
+
+  app.post('/api/distribute', (req, res) => {
+    const { email, amount, one, many } = req.body
+    console.log('hit distribute route')
+    User.findOne({ email }).then(user => {
+      const validWants = user.wants.filter(want => !want.completed)
+      const validNeeds = user.needs
+
+      if (one) {
+        try {
+          const want = user.wants.find(want => want.id == one)
+          const need = user.needs.find(need => need.id == one)
+          if (want) {
+            user.undistributedCash -= amount
+            user.wants.id(one).progress += amount
+            user.save().then(user => res.json(user))
+          }
+          if (need) {
+            user.needs.id(one).total += amount
+            user.save().then(user => res.json(user))
+          }
+        } catch (e) {
+          console.log('error adding amount to account: ', e)
+        }
+      }
+
+      if (many === 'wants') {
+        const validWants = user.wants.filter(want => !want.completed)
+        const divisor = Math.floor(amount / validWants.length)
+        const remainder = (amount % validWants.length) * 100
+
+        console.log('amount: ', amount)
+        console.log('divisor: ', divisor)
+        console.log('remainder: ', remainder)
+
+        console.log(
+          'wants - validWants array before: ',
+          validWants.map(want => want.progress)
+        )
+        validWants.map(want => {
+          if (want.progress + divisor <= want.goal) {
+            want.progress += divisor
+          }
+        })
+
+        console.log(
+          'wants - validWants array after: ',
+          validWants.map(want => want.progress)
+        )
+        console.log('undistcash before: ', user.undistributedCash)
+        user.undistributedCash -= amount
+        user.undistributedCash += remainder
+        console.log('undistcash after: ', user.undistributedCash)
+        user.wants = validWants
+        user.save().then(user => res.json(user))
+      }
+
+      if (many === 'needs') {
+        const divisor = Math.floor(amount / user.needs.length)
+        const remainder = (amount % user.needs.length) * 100
+        user.needs.map(need => {
+          need.total += divisor
+        })
+        user.undistributedCash += remainder
+        user.save().then(user => res.json(user))
+      }
+
+      if (many === 'evenly') {
+        const lengths = validWants.length + user.needs.length
+        const divisor = Math.floor(user.undistributedCash / lengths)
+        const remainder = (user.undistributedCash % lengths) * 100
+
+        const wants = validWants.map(want => {
+          if (want.progress + divisor <= want.goal) {
+            want.progress + divisor
+          }
+          // handle case for when it IS over goal
+        })
+
+        const needs = validNeeds.map(need => {
+          need.total += divisor
+        })
+        console.log('wants before: ', user.wants)
+        console.log('needs before: ', user.needs)
+        user.wants = wants
+        user.needs = needs
+        console.log('wants after: ', user.wants)
+        console.log('needs after: ', user.needs)
+        user.undistributedCash += remainder
+        user.save().then(user => res.json(user))
+      }
+
+      if (many === 'percentage') {
+        let check = []
+        const wants = validWants.map(want => {
+          const newTotal = want.percent * amount
+          want.progress += newTotal
+
+          check.push(newTotal)
+        })
+        console.log('after wants, new total: ', newTotal)
+
+        const needs = validNeeds.map(need => {
+          const newTotal = need.percent * user.undistributedCash
+          need.total += newTotal
+        })
+        console.log('after needs, new total: ', amount)
+        console.log('undistributed cash: ', amount)
+        console.log('new total reduced: ', newTotal.reduce((a, b) => a + b))
+      }
+
+      // not correct
+      // user.undistributedCash = 0
+
+      // user.save().then(user => res.json(user))
     })
   })
 }

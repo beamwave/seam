@@ -65,7 +65,8 @@ class DashboardPage extends Component {
       needs,
       oldWants,
       oldNeeds,
-      available
+      available,
+      dateCompleted
     } = this.props
 
     let renderContainer = false
@@ -200,14 +201,14 @@ class DashboardPage extends Component {
                                   />
                                 )}
                                 {want.progress / 100 >= 1000 &&
-                                  simplifyNumber(want.goal / 100)}
+                                  simplifyNumber(Math.floor(want.goal / 100))}
                               </p>
                             </div>
                             <div className="block">
                               <h3>goal</h3>
                               <p>
                                 <span className="dollar-symbol">$</span>
-                                {simplifyNumber(want.goal / 100)}
+                                {simplifyNumber(Math.floor(want.goal / 100))}
                               </p>
                             </div>
                           </div>
@@ -294,14 +295,17 @@ class DashboardPage extends Component {
                                   oldWants.length === 0 &&
                                   want.progress / 100}
                                 {want.progress / 100 >= 1000 &&
-                                  simplifyNumber(want.progress / 100)}
+                                  // want.progress / 100}
+                                  simplifyNumber(
+                                    Math.floor(want.progress / 100)
+                                  )}
                               </p>
                             </div>
                             <div className="block">
                               <h3>goal</h3>
                               <p>
                                 <span className="dollar-symbol">$</span>
-                                {simplifyNumber(want.goal / 100)}
+                                {simplifyNumber(Math.floor(want.goal / 100))}
                               </p>
                             </div>
                           </div>
@@ -320,36 +324,17 @@ class DashboardPage extends Component {
                               />
                             </div>
                             <div className="block">
-                              <h3>progress</h3>
-                              <p>
-                                <span className="dollar-symbol">$</span>
-                                {oldWants.length > 0 &&
-                                  // {oldWants[i] !== undefined &&
-                                  want.progress / 100 < 1000 && (
-                                    <CountUp
-                                      start={oldWants[i].progress / 100}
-                                      end={want.progress / 100}
-                                      duration={2.75}
-                                      useEasing={true}
-                                    />
-                                  )}
-                                {oldWants[i] === undefined && (
-                                  <CountUp
-                                    start={0}
-                                    end={want.progress / 100}
-                                    duration={2.75}
-                                    useEasing={true}
-                                  />
-                                )}
-                                {want.progress / 100 >= 1000 &&
-                                  simplifyNumber(want.progress / 100)}
-                              </p>
-                            </div>
-                            <div className="block">
                               <h3>goal</h3>
                               <p>
                                 <span className="dollar-symbol">$</span>
-                                {simplifyNumber(want.goal / 100)}
+                                {simplifyNumber(Math.floor(want.goal / 100))}
+                              </p>
+                            </div>
+                            <div className="block">
+                              <h3>done</h3>
+                              <p>
+                                <span className="dollar-symbol" />
+                                {moment(dateCompleted).format('MMM DD')}
                               </p>
                             </div>
                           </div>
@@ -451,14 +436,14 @@ class DashboardPage extends Component {
                           <h3>progress</h3>
                           <p>
                             <span className="dollar-symbol">$</span>
-                            {simplifyNumber(want.progress / 100)}
+                            {simplifyNumber(Math.floor(want.progress / 100))}
                           </p>
                         </div>
                         <div className="block">
                           <h3>goal</h3>
                           <p>
                             <span className="dollar-symbol">$</span>
-                            {simplifyNumber(want.goal / 100)}
+                            {simplifyNumber(Math.floor(want.goal / 100))}
                           </p>
                         </div>
                       </div>

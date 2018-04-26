@@ -19,7 +19,7 @@ import {
   BUY_MODAL
 } from '../constants/modaltypes'
 
-import { startSetUser } from '../actions/app'
+import { startSetUser, editMode } from '../actions/app'
 
 const mql = window.matchMedia(`(min-width: 800px)`)
 
@@ -31,17 +31,29 @@ class PrivateRoute extends Component {
   }
 
   listenKeyboard = e => {
-    if ((e.ctrlKey || e.metaKey) && e.which == 69) {
-      // if (e.key === 'Meta' && e.key === 'e') {
-      alert('cmd+e pressed!')
+    // if ((e.ctrlKey || e.metaKey) && e.which == 69) {
+    // if (e.key === 'Meta' && e.key === 'e') {
+    // alert('cmd+e pressed!')
+    // }
+
+    if (e.ctrlKey && e.which == 69) {
+      this.props.editMode()
     }
 
-    if (e.metaKey && e.which == 74) {
+    if (e.ctrlKey && e.which == 87) {
       this.showWantsModal()
     }
 
-    if (e.metaKey && e.which == 75) {
+    if (e.ctrlKey && e.which == 78) {
       this.showNeedsModal()
+    }
+
+    if (e.ctrlKey && e.which == 84) {
+      this.showTransferModal()
+    }
+
+    if (e.ctrlKey && e.which == 68) {
+      this.showDistributeModal()
     }
   }
 
@@ -140,6 +152,6 @@ const mapStateToProps = state => ({
   email: state.auth.email
 })
 
-export default connect(mapStateToProps, { startSetUser, loadModal })(
+export default connect(mapStateToProps, { startSetUser, loadModal, editMode })(
   PrivateRoute
 )

@@ -27,6 +27,13 @@ export const appReducer = (state = initialState, action = {}) => {
         newUndistributedCash: action.user.undistributedCash
       }
 
+    case 'DISTRIBUTE':
+      return {
+        ...state,
+        oldUndistributedCash: state.newUndistributedCash,
+        newUndistributedCash: action.user.undistributedCash
+      }
+
     case 'UPDATE':
       return {
         ...state,

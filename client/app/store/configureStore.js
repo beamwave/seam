@@ -22,13 +22,10 @@ const checkTokenExpirationMiddleware = store => next => action => {
   if (localStorage.appJWT) {
     const token = jwtDecode(localStorage.appJWT)
 
-    console.log('exp: ', token.exp)
     if (token.exp < Date.now() / 1000) {
-      console.log('logging out')
       next(action)
       store.dispatch(startLogout())
     }
-    console.log('continue')
   }
   next(action)
 }

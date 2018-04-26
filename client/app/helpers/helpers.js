@@ -11,10 +11,18 @@ export const simplifyNumber = num => {
       }
 
     case 5:
-      return `${amount[0]}${amount[1]}k`
+      if (+amount[2] === 0) {
+        return `${amount[0]}${amount[1]}k`
+      } else {
+        return `${amount[0]}${amount[1]}.${amount[2]}k`
+      }
 
     case 6:
-      return `${amount[0]}${amount[1]}${amount[2]}k`
+      if (+amount[3] === 0) {
+        return `${amount[0]}${amount[1]}${amount[2]}k`
+      } else {
+        return `${amount[0]}${amount[1]}${amount[2]}.${amount[3]}k`
+      }
 
     // millions
     case 7:

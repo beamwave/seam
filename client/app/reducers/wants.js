@@ -35,6 +35,12 @@ export const wantsReducer = (state = {}, action = {}) => {
         newWants: action.user.wants
       }
 
+    case 'DISTRIBUTE':
+      return {
+        oldWants: state.newWants,
+        newWants: action.user.wants
+      }
+
     case 'TRANSFER':
       return {
         oldWants: state.newWants,

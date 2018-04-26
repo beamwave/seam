@@ -46,9 +46,8 @@ export const startWallpaper = data => async dispatch => {
   api.user.setWallpaper(data).then(user => dispatch(setWallpaper(user)))
 }
 
-export const deleteImage = data => async dispatch => {
+export const deleteImage = data => async dispatch =>
   api.user.deleteImage(data).then(user => dispatch(display(user)))
-}
 
 export const divvy = user => ({
   type: 'DIVVY',
@@ -65,6 +64,14 @@ export const transfer = user => ({
 
 export const startTransfer = data => async dispatch =>
   api.user.transfer(data).then(user => dispatch(transfer(user)))
+
+export const distribute = user => ({
+  type: 'DISTRIBUTE',
+  user
+})
+
+export const startDistribute = data => async dispatch =>
+  api.user.distribute(data).then(user => dispatch(distribute(user)))
 
 export const invite = user => ({
   type: 'INVITE',

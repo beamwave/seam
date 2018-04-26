@@ -75,6 +75,23 @@ module.exports = app => {
         }
       })
 
+      let rearrange = []
+      const incomplete = user.wants.filter(want => {
+        if (want.completed) {
+          rearrange.push(want)
+        }
+        return !want.completed
+      })
+
+      rearrange.forEach(want => {
+        incomplete.push(want)
+      })
+
+      user.wants = incomplete
+
+      // console.log('rearrange: ', rearrange)
+      // console.log('incomplete: ', incomplete)
+
       user.needs.forEach(need => {
         const multiplier = need.percent / 100
         const haul = input * multiplier

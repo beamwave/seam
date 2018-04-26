@@ -91,13 +91,13 @@ export class WantsPage extends Component {
     const { email, updateWant } = this.props
     const { name, percent, goal, description } = this.state
 
-    const updatedGoal = +goal === 0 ? this.props.want.goal : +goal
+    const updatedGoal = +goal === 0 ? +this.props.want.goal : +goal * 100
 
     const data = {
       _id,
       email,
       name,
-      goal: updatedGoal * 100,
+      goal: updatedGoal,
       percent,
       description
     }
@@ -205,7 +205,9 @@ export class WantsPage extends Component {
                 />
                 {!editMode && (
                   <div className="numerical-container">
-                    <p className="progression">${progress / 100} /</p>
+                    <p className="progression">
+                      {numeral(progress / 100).format('$0,0')} /
+                    </p>
                     <p className="number">
                       {numeral(goal / 100).format('$0,0')}
                     </p>
@@ -237,7 +239,9 @@ export class WantsPage extends Component {
                   strokeLinecap="square"
                   className="progress"
                 />
-                <p className="complete">Complete!</p>
+                <p className="complete">
+                  (${progress / 100} / ${progress / 100}) Complete!
+                </p>
               </div>
             )}
           </div>

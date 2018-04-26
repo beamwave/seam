@@ -38,6 +38,12 @@ export const needsReducer = (state = initialState, action = {}) => {
         newNeeds: action.user.needs
       }
 
+    case 'DISTRIBUTE':
+      return {
+        oldNeeds: state.newNeeds,
+        newNeeds: action.user.needs
+      }
+
     case 'TRANSFER':
       return {
         oldNeeds: state.newNeeds,

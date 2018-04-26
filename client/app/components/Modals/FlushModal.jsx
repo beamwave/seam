@@ -13,7 +13,12 @@ export class FlushModal extends Component {
     const { email, startNuke } = this.props
 
     e.preventDefault()
-    startNuke({ email: email })
+    if (!!this.props.history) {
+      this.props.history.push('/')
+      startNuke({ email: email })
+    } else {
+      startNuke({ email: email })
+    }
     this.onClose()
   }
 

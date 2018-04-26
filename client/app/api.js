@@ -61,6 +61,9 @@ export default {
 
     divvy: data => axios.post('/api/divvy', data).then(res => res.data),
 
+    distribute: data =>
+      axios.post('/api/distribute', data).then(res => res.data),
+
     wipe: email => axios.post('/api/wipe', email).then(res => res.data),
 
     nuke: email => axios.post('/api/nuke', email).then(res => res.data)
