@@ -3,8 +3,8 @@ import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Header from '../components/Header.jsx'
 
-import Sidebar from 'react-sidebar'
-import SidebarContent from '../components/SidebarContent.jsx'
+// import Sidebar from 'react-sidebar'
+// import SidebarContent from '../components/SidebarContent.jsx'
 import ModalContainer from '../components/ModalContainer.jsx'
 
 import { loadModal } from '../actions/modal'
@@ -21,14 +21,14 @@ import {
 
 import { startSetUser, editMode } from '../actions/app'
 
-const mql = window.matchMedia(`(min-width: 800px)`)
+// const mql = window.matchMedia(`(min-width: 800px)`)
 
 class PrivateRoute extends Component {
-  state = {
-    mql: mql,
-    docked: this.props.docked,
-    sidebarOpen: false
-  }
+  // state = {
+  //   mql: mql,
+  //   docked: this.props.docked,
+  //   sidebarOpen: false
+  // }
 
   listenKeyboard = e => {
     // if ((e.ctrlKey || e.metaKey) && e.which == 69) {
@@ -61,21 +61,23 @@ class PrivateRoute extends Component {
     this.props.startSetUser({ email: this.props.email })
     window.addEventListener('keydown', this.listenKeyboard, true)
 
-    mql.addListener(this.mediaQueryChanged)
-    this.setState({ mql: mql, sidebarDocked: mql.matches })
+    console.log('props: ', this.props.email)
+
+    // mql.addListener(this.mediaQueryChanged)
+    // this.setState({ mql: mql, sidebarDocked: mql.matches })
   }
 
   componentWillUnmount = () => {
     window.removeEventListener('keydown', this.listenKeyboard, true)
 
-    this.state.mql.removeListener(this.mediaQueryChanged)
+    // this.state.mql.removeListener(this.mediaQueryChanged)
   }
 
-  mediaQueryChanged = () =>
-    this.setState({ sidebarDocked: this.state.mql.matches })
+  // mediaQueryChanged = () =>
+  //   this.setState({ sidebarDocked: this.state.mql.matches })
 
-  onSetSidebarOpen = () =>
-    this.setState({ sidebarOpen: !this.state.sidebarOpen })
+  // onSetSidebarOpen = () =>
+  //   this.setState({ sidebarOpen: !this.state.sidebarOpen })
 
   showWantsModal = () => this.props.loadModal(WANTS_MODAL)
   showNeedsModal = () => this.props.loadModal(NEEDS_MODAL)
@@ -93,7 +95,7 @@ class PrivateRoute extends Component {
       ...rest
     } = this.props
 
-    const sidebar = <SidebarContent />
+    // const sidebar = <SidebarContent />
 
     return (
       <Route
@@ -101,16 +103,18 @@ class PrivateRoute extends Component {
         component={props =>
           isAuthenticated ? (
             <div>
-              <Sidebar
+              {/* <Sidebar
                 sidebar={sidebar}
                 open={this.state.sidebarOpen}
                 docked={this.state.sidebarDocked}
                 onSetOpen={this.onSetSidebarOpen}
-              >
-                <Header onSetSidebarOpen={this.onSetSidebarOpen} />
-                <Component {...props} />
-                <ModalContainer />
-              </Sidebar>
+              > */}
+              <Header />
+              {/* <Header onSetSidebarOpen={this.onSetSidebarOpen} /> */}
+              {/* Get above from props */}
+              <Component {...props} />
+              <ModalContainer />
+              {/* </Sidebar> */}
             </div>
           ) : (
             <Redirect to="/login" />
