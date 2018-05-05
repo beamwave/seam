@@ -49,31 +49,35 @@ export class SidebarContent extends Component {
       newUndistributedCash
     } = this.props
 
-    const prevWantsCash =
-      oldWants.length > 0
-        ? oldWants.map(want => want.progress / 100).reduce((a, b) => a + b)
+    try {
+      const prevWantsCash =
+        oldWants.length > 0
+          ? oldWants.map(want => want.progress / 100).reduce((a, b) => a + b)
+          : 0
+
+      const newWantsCash =
+        wants.length > 0
+          ? wants.map(want => want.progress / 100).reduce((a, b) => a + b)
+          : 0
+
+      const prevNeedsCash = oldNeeds.length
+        ? oldNeeds.map(need => need.total / 100).reduce((a, b) => a + b)
         : 0
 
-    const newWantsCash =
-      wants.length > 0
-        ? wants.map(want => want.progress / 100).reduce((a, b) => a + b)
-        : 0
+      const newNeedsCash =
+        needs.length > 0
+          ? needs.map(need => need.total / 100).reduce((a, b) => a + b)
+          : 0
 
-    const prevNeedsCash = oldNeeds.length
-      ? oldNeeds.map(need => need.total / 100).reduce((a, b) => a + b)
-      : 0
+      const undistributedCash = newUndistributedCash / 100
 
-    const newNeedsCash =
-      needs.length > 0
-        ? needs.map(need => need.total / 100).reduce((a, b) => a + b)
-        : 0
+      const oldMoney = prevWantsCash + prevNeedsCash + undistributedCash
+      const newMoney = newWantsCash + newNeedsCash + undistributedCash
 
-    const undistributedCash = newUndistributedCash / 100
-
-    const oldMoney = prevWantsCash + prevNeedsCash + undistributedCash
-    const newMoney = newWantsCash + newNeedsCash + undistributedCash
-
-    return { oldMoney, newMoney }
+      return { oldMoney, newMoney }
+    } catch (e) {
+      console.log('sidebar content error: ', e)
+    }
   }
 
   render = () => {
@@ -106,15 +110,15 @@ export class SidebarContent extends Component {
         <div className="sidebar-group">
           <h3 className="title">Total Cash</h3>
           <p className="details">
-            <CountUp
+            {/* <CountUp
               start={this.getCash().oldMoney}
               end={this.getCash().newMoney}
               prefix="$"
               separator=","
               duration={2.75}
               useEasing={true}
-              // easingFn={'outQuintic'} //, easeOutExpo, outQuintic, outCubic
-            />
+              easingFn={'outQuintic'} //, easeOutExpo, outQuintic, outCubic
+            /> */}
           </p>
         </div>
         <div className="sidebar-group">

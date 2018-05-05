@@ -1,12 +1,17 @@
 import React from 'react'
 import api from '../api'
 
-export const editMode = () => ({
-  type: 'EDITMODE'
+export const setDockMode = bool => ({
+  type: 'DOCK',
+  bool
 })
 
 export const toggleSidebar = () => ({
-  type: 'SIDEBAR'
+  type: 'TOGGLE_SIDEBAR'
+})
+
+export const editMode = () => ({
+  type: 'EDITMODE'
 })
 
 export const setUser = data => ({

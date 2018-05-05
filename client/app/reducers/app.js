@@ -2,6 +2,7 @@ import React from 'react'
 
 const initialState = {
   sidebarOpen: true,
+  docked: true,
   editMode: false,
   oldPoints: 100,
   newPoints: 100,
@@ -12,8 +13,20 @@ const initialState = {
 
 export const appReducer = (state = initialState, action = {}) => {
   switch (action.type) {
-    case 'SIDEBAR':
-      return { ...state, sidebarOpen: !state.sidebarOpen }
+    case 'DOCK':
+      return {
+        ...state,
+        sidebarOpen: !state.app.sidebarOpen
+      }
+
+    case 'TOGGLE_SIDEBAR':
+      return {
+        ...state,
+        sidebarOpen: !state.app.sidebarOpen
+      }
+
+    // case 'SIDEBAR':
+    //   return { ...state, sidebarOpen: !state.sidebarOpen }
 
     case 'EDITMODE':
       return { ...state, editMode: !state.editMode }

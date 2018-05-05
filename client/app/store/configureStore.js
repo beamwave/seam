@@ -1,6 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import 'react-redux'
 import thunk from 'redux-thunk'
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import { persistStore, persistReducer } from 'redux-persist'
 import { appReducer } from '../reducers/app'
 import { authReducer } from '../reducers/auth'
@@ -14,7 +15,8 @@ import storage from 'redux-persist/lib/storage'
 
 const persistConfig = {
   key: 'root',
-  storage
+  storage,
+  stateReconciler: autoMergeLevel2
 }
 
 // this middleware is called everytime the store is updated

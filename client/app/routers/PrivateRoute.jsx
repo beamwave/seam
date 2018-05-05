@@ -61,8 +61,6 @@ class PrivateRoute extends Component {
     this.props.startSetUser({ email: this.props.email })
     window.addEventListener('keydown', this.listenKeyboard, true)
 
-    console.log('props: ', this.props.email)
-
     // mql.addListener(this.mediaQueryChanged)
     // this.setState({ mql: mql, sidebarDocked: mql.matches })
   }
