@@ -58,6 +58,7 @@ class PrivateRoute extends Component {
   }
 
   componentWillMount = () => {
+    console.log('activating start set user')
     this.props.startSetUser({ email: this.props.email })
     window.addEventListener('keydown', this.listenKeyboard, true)
 
