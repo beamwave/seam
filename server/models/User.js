@@ -126,7 +126,7 @@ const schema = new Schema(
     photo: {
       type: String,
       default:
-        'http://res.cloudinary.com/project-phantom/image/upload/v1523817544/global/blank-profile-picture.png'
+        'https://res.cloudinary.com/project-phantom/image/upload/v1523817544/global/blank-profile-picture.png'
     },
     stripe: {
       type: String,
