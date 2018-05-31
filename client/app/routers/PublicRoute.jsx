@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-// get component from Browser router
+// get component from browser router
 export const PublicRoute = ({
   isAuthenticated,
   component: Component,

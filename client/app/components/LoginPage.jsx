@@ -26,8 +26,6 @@ export class LoginPage extends Component {
       password: this.state.password
     }
 
-    // const emailRegex = //
-
     if (this.state.email.length === 0) {
       this.setState(prevState => ({
         errors: {

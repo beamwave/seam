@@ -1,11 +1,11 @@
 import React from 'react'
 
-// const initialState = {
-//   oldWants: [],
-//   newWants: []
-// }
+const initialState = {
+  oldWants: [],
+  newWants: []
+}
 
-export const wantsReducer = (state = {}, action = {}) => {
+export const wantsReducer = (state = initialState, action = {}) => {
   switch (action.type) {
     case 'INITIAL_DATA':
       return { oldWants: [], newWants: action.data.wants }

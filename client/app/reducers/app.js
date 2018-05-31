@@ -25,9 +25,6 @@ export const appReducer = (state = initialState, action = {}) => {
         sidebarOpen: !state.app.sidebarOpen
       }
 
-    // case 'SIDEBAR':
-    //   return { ...state, sidebarOpen: !state.sidebarOpen }
-
     case 'EDITMODE':
       return { ...state, editMode: !state.editMode }
 

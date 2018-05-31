@@ -86,22 +86,6 @@ export class Header extends Component {
   }
 }
 
-// export const Header = ({ isAuthenticated, startLogout }) => (
-//   <header>
-//     <Link to="/dashboard">
-//       <FontAwesomeIcon icon="bars" />
-//       Home
-//     </Link>
-//     <Link to="/needs">Needs</Link>
-//     <Link to="/wants">Wants</Link>
-//     <Link to="/payments">Payments</Link>
-//     <Link to="/settings">Settings</Link>
-//     {isAuthenticated ? (
-//       <button onClick={() => startLogout()}>Logout</button>
-//     ) : null}
-//   </header>
-// )
-
 const mapStateToProps = state => {
   return {
     isAuthenticated: !!state.auth.token,

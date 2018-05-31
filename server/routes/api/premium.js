@@ -1,16 +1,12 @@
 import stripeApi from 'stripe'
 const stripe = stripeApi(process.env.SECRET_KEY)
 import User from '../../models/User.js'
+import { verifyToken } from '../../utils/verifyToken'
 
 module.exports = app => {
-  app.post('/api/stripe', (req, res) => {
+  app.post('/api/stripe', verifyToken, (req, res) => {
     const { email, qty, id, key } = req.body
 
-    // get jwt token
-    const userToken = req.headers['authorization'].split(' ')[1]
-
-    // find user based on jwt token
-    // User.findOne({ verifiedToken: userToken }).then(async user => {
     User.findOne({ email }).then(async user => {
       if (user.stripe.length > 0) {
         // attempt to add card information to stripe customer

@@ -2,18 +2,13 @@ import multer from 'multer'
 import crypto from 'crypto'
 import mime from 'mime'
 import cloudinary from 'cloudinary'
-import User from '../../models/User.js'
-import parseErrors from '../../utils/parseErrors.js'
 import stripeApi from 'stripe'
 const stripe = stripeApi(process.env.SECRET_KEY)
+import User from '../../models/User.js'
+import parseErrors from '../../utils/parseErrors.js'
+import { verifyToken } from '../../utils/verifyToken'
 
 module.exports = app => {
-  // cloudinary.config({
-  //   cloud_name: process.env.CLOUD_NAME,
-  //   api_key: process.env.CLOUD_API_KEY,
-  //   api_secret: process.env.CLOUD_API_SECRET
-  // })
-
   const storage = multer.diskStorage({
     filename: (req, file, cb) => {
       crypto.pseudoRandomBytes(16, (e, raw) => {
@@ -89,56 +84,62 @@ module.exports = app => {
     })
   })
 
-  app.post('/api/general_settings', upload.single('file'), (req, res) => {
-    const { email, username, newEmail } = req.body
-    User.findOne({ email: req.body.email }).then(user => {
-      if (newEmail.length > 0) {
-        user.email = newEmail
-      }
-      if (username.length > 0) {
-        user.username = username
-      }
-      if (req.file.path.length > 0) {
-        cloudinary.v2.uploader.upload(
-          req.file.path,
-          {
-            folder: `${user.id}/profile`, // folder name on cloudinary
-            tags: [user.id] // tags for images
-          },
-          (e, result) => {
-            if (e) {
-              console.log('cloudinary error: ', e) // HANDLE BETTER FOR PROD
-            } else {
-              // overwrite profile image
-              user.photo = result.secure_url
+  // update user settings
+  app.post(
+    '/api/general_settings',
+    verifyToken,
+    upload.single('file'),
+    (req, res) => {
+      const { email, username, newEmail } = req.body
+      User.findOne({ email: req.body.email }).then(user => {
+        if (newEmail.length > 0) {
+          user.email = newEmail
+        }
+        if (username.length > 0) {
+          user.username = username
+        }
+        if (req.file.path.length > 0) {
+          cloudinary.v2.uploader.upload(
+            req.file.path,
+            {
+              folder: `${user.id}/profile`, // folder name on cloudinary
+              tags: [user.id] // tags for images
+            },
+            (e, result) => {
+              if (e) {
+                console.log('cloudinary error: ', e) // HANDLE BETTER FOR PROD
+              } else {
+                // overwrite profile image
+                user.photo = result.secure_url
 
-              user.save().then(user => {
-                res.json(user)
-              })
+                user.save().then(user => {
+                  res.json(user)
+                })
+              }
             }
-          }
-        )
-      } else {
-        user.save().then(user => {
-          res.json(user)
-        })
-      }
-    })
-  })
+          )
+        } else {
+          user.save().then(user => {
+            res.json(user)
+          })
+        }
+      })
+    }
+  )
 
-  app.post('/api/password_settings', (req, res) => {
+  app.post('/api/password_settings', verifyToken, (req, res) => {
     User.findOne({ email: req.body.email }).then(user => {
       if (req.body.email.length) console.log('user found man: ', user)
     })
   })
 
-  app.post('/api/transfer_settings', (req, res) => {
+  app.post('/api/transfer_settings', verifyToken, (req, res) => {
     User.findOne({ email: req.body.email }).then(user => {
       console.log('user found man: ', user)
     })
   })
 
-  app.post('/api/get_user', (req, res) => {
+  app.post('/api/get_user', verifyToken, (req, res) => {
     User.findOne({ email: req.body.email }).then(user => res.json(user))
   })
 }

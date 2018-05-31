@@ -47,11 +47,6 @@ export class CheckoutForm extends Component {
       console.log('qty: ', qty)
       this.props.handleToken(token).then(() => this.onClose())
     })
-    // this.props.stripe.createToken({ name: 'Eric' }).then(({ token }) => {
-    //   token.user = this.props.token
-    //   // console.log(token)
-    //   this.props.handleToken(token)
-    // })
   }
 
   onQtyChange = ({ target }) => {

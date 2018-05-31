@@ -28,7 +28,6 @@ export class Pages extends Component {
   state = {
     mql: mql,
     sidebarDocked: false,
-    // docked: this.props.docked,
     sidebarOpen: false
   }
 
@@ -43,7 +42,6 @@ export class Pages extends Component {
 
   mediaQueryChanged = () => {
     const { setDockMode } = this.props
-    // setDockMode({ sidebarDocked: this.state.mql.matches })
     this.setState({ sidebarDocked: this.state.mql.matches })
   }
 
@@ -78,7 +76,6 @@ export class Pages extends Component {
 }
 
 const mapStateToProps = state => ({
-  // docked: state.app.sidebarDocked,
   sidebarOpen: state.app.sidebarOpen
 })
 

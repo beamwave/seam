@@ -1,6 +1,7 @@
 import cloudinary from 'cloudinary'
-import User from '../../models/User'
 import moment from 'moment'
+import User from '../../models/User'
+import { verifyToken } from '../../utils/verifyToken'
 
 module.exports = app => {
   cloudinary.config({
@@ -9,7 +10,7 @@ module.exports = app => {
     api_secret: process.env.CLOUD_API_SECRET
   })
 
-  app.post('/api/divvy', (req, res) => {
+  app.post('/api/divvy', verifyToken, (req, res) => {
     User.findOne({ email: req.body.email }).then(user => {
       const input = req.body.income
       user.wants.forEach(want => {
@@ -105,7 +106,7 @@ module.exports = app => {
     })
   })
 
-  app.post('/api/purchase', (req, res) => {
+  app.post('/api/purchase', verifyToken, (req, res) => {
     const { email } = req.body
     User.findOne({ email }).then(user => {
       console.log('user found.')
@@ -113,7 +114,7 @@ module.exports = app => {
   })
 
   // delete a single want or need
-  app.post('/api/delete', (req, res) => {
+  app.post('/api/delete', verifyToken, (req, res) => {
     console.log('delete route hit.')
     const { email, _id, type } = req.body
     console.log(email, _id, type)
@@ -144,7 +145,8 @@ module.exports = app => {
     })
   })
 
-  app.post('/api/wipe', (req, res) => {
+  // erase all cash
+  app.post('/api/wipe', verifyToken, (req, res) => {
     User.findOne({ email: req.body.email }).then(user => {
       user.wants.forEach(want => (want.progress = 0))
       user.needs.forEach(need => (need.total = 0))
@@ -155,7 +157,8 @@ module.exports = app => {
     })
   })
 
-  app.post('/api/nuke', (req, res) => {
+  // destroy all accounts
+  app.post('/api/nuke', verifyToken, (req, res) => {
     User.findOne({ email: req.body.email }).then(user => {
       user.wants = []
       user.needs = []

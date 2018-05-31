@@ -52,16 +52,3 @@ export const configureStore = () => {
   const persistor = persistStore(store)
   return { store, persistor }
 }
-
-// export default () => {
-//   const store = createStore(
-//     combineReducers({
-//       app: appReducer,
-//       auth: authReducer,
-//       modal: modalReducer,
-//       wants: wantsReducer
-//     }),
-//     composeEnhancers(applyMiddleware(thunk))
-//   )
-//   return store
-// }
