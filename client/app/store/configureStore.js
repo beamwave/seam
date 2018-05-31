@@ -15,21 +15,21 @@ import storage from 'redux-persist/lib/storage'
 
 const persistConfig = {
   key: 'root',
-  storage,
-  blacklist: ['auth'],
-  stateReconciler: autoMergeLevel2
+  storage
+  // blacklist: ['auth'],
+  // stateReconciler: autoMergeLevel2
 }
 
 // this middleware is called everytime the store is updated
 const checkTokenExpirationMiddleware = store => next => action => {
-  if (localStorage.appJWT) {
-    const token = jwtDecode(localStorage.appJWT)
+  // if (localStorage.appJWT) {
+  //   const token = jwtDecode(localStorage.appJWT)
 
-    if (token.exp < Date.now() / 1000) {
-      next(action)
-      store.dispatch(startLogout())
-    }
-  }
+  //   if (token.exp < Date.now() / 1000) {
+  //     next(action)
+  //     store.dispatch(startLogout())
+  //   }
+  // }
   next(action)
 }
 
