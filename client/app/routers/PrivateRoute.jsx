@@ -155,6 +155,11 @@ const mapStateToProps = state => ({
   email: state.auth.email
 })
 
-export default connect(mapStateToProps, { startSetUser, loadModal, editMode })(
-  PrivateRoute
-)
+export default connect(
+  mapStateToProps,
+  { startSetUser, loadModal, editMode },
+  null,
+  {
+    pure: false
+  }
+)(PrivateRoute)

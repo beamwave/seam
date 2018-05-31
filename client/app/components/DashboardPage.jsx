@@ -194,7 +194,11 @@ class DashboardPage extends Component {
                                 <span className="dollar-symbol">$</span>
                                 {want.progress / 100 < 1000 && (
                                   <CountUp
-                                    start={oldWants[i].progress / 100}
+                                    start={
+                                      oldWants[i]
+                                        ? oldWants[i].progress / 100
+                                        : 0
+                                    }
                                     end={want.progress / 100}
                                     duration={2.75}
                                     useEasing={true}

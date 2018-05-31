@@ -110,15 +110,15 @@ export class SidebarContent extends Component {
         <div className="sidebar-group">
           <h3 className="title">Total Cash</h3>
           <p className="details">
-            {/* <CountUp
-              start={this.getCash().oldMoney}
-              end={this.getCash().newMoney}
+            <CountUp
+              start={this.getCash() !== undefined ? this.getCash().oldMoney : 0}
+              end={this.getCash() !== undefined ? this.getCash().newMoney : 0}
               prefix="$"
               separator=","
               duration={2.75}
               useEasing={true}
-              easingFn={'outQuintic'} //, easeOutExpo, outQuintic, outCubic
-            /> */}
+              // easingFn={'outQuintic'} //, easeOutExpo, outQuintic, outCubic
+            />
           </p>
         </div>
         <div className="sidebar-group">
